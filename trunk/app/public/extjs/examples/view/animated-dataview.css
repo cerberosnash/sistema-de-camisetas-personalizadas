@@ -1,0 +1,157 @@
+/*!
+ * Ext JS Library 3.2.1
+ * Copyright(c) 2006-2010 Ext JS, Inc.
+ * licensing@extjs.com
+ * http://www.extjs.com/license
+*/
+#DataViewCamisetas {
+    background-color: #fff;
+    text-shadow: #fff 0 1px 0;
+}
+
+#DataViewCamisetas ul {
+    position: relative;
+    display: block;
+    height: auto;
+    font-size: 85%;
+}
+
+#DataViewCamisetas ul li img {
+    margin-bottom: 1px;
+    height: 160px;
+    width: 160px;
+}
+
+#DataViewCamisetas ul li {
+    float: left;
+    padding: 8px;
+    margin: 5px;
+    /*    margin: 10px 0 0 25px;*/
+    text-align: center;
+    line-height: 1.25em;
+    color: #333;
+    font-family: "Helvetica Neue",sans-serif;
+    height: 180px;
+    width: 180px;
+    overflow: hidden;
+    border-top: 1px solid transparent;
+    cursor: pointer;
+}
+
+#DataViewCamisetas ul li.camiseta-hover {
+    background-color: #eee;
+    -moz-border-radius: 8px;
+    -webkit-border-radius: 8px;
+    border-top: 1px solid rgba(0, 0, 0, .15);
+}
+
+#DataViewCamisetas ul li.x-view-selected {
+    background-color: rgba(100, 100, 100, .15);
+    -moz-border-radius: 8px;
+    -webkit-border-radius: 8px;
+    border-top: 1px solid rgba(0, 0, 0, .15);
+}
+
+#DataViewCamisetas ul li img {
+    display: block;
+}
+
+#DataViewCamisetas li strong {
+    color: #000;
+    display: block;
+}
+
+#DataViewCamisetas li span {
+    color: #999;
+}
+
+.details{
+    margin: 10px;
+}
+
+.details span{
+    display: block;
+    margin-bottom: 5px;
+}
+
+
+
+
+
+
+
+/*!
+ * Ext JS Library 3.2.1
+ * Copyright(c) 2006-2010 Ext JS, Inc.
+ * licensing@extjs.com
+ * http://www.extjs.com/license
+*/
+#DataViewFavoritos {
+    background-color: #fff;
+    text-shadow: #fff 0 1px 0;
+}
+
+#DataViewFavoritos ul {
+    position: relative;
+    display: block;
+    height: auto;
+    font-size: 85%;
+}
+
+#DataViewFavoritos ul li img {
+    margin-bottom: 1px;
+    height: 160px;
+    width: 160px;
+}
+
+#DataViewFavoritos ul li {
+    float: left;
+    padding: 8px;
+    margin: 5px;
+    /*    margin: 10px 0 0 25px;*/
+    text-align: center;
+    line-height: 1.25em;
+    color: #333;
+    font-family: "Helvetica Neue",sans-serif;
+    height: 180px;
+    width: 180px;
+    overflow: hidden;
+    border-top: 1px solid transparent;
+    cursor: pointer;
+}
+
+#DataViewFavoritos ul li.camiseta-hover {
+    background-color: #eee;
+    -moz-border-radius: 8px;
+    -webkit-border-radius: 8px;
+    border-top: 1px solid rgba(0, 0, 0, .15);
+}
+
+#DataViewFavoritos ul li.x-view-selected {
+    background-color: rgba(100, 100, 100, .15);
+    -moz-border-radius: 8px;
+    -webkit-border-radius: 8px;
+    border-top: 1px solid rgba(0, 0, 0, .15);
+}
+
+#DataViewFavoritos ul li img {
+    display: block;
+}
+
+#DataViewFavoritos li strong {
+    color: #000;
+    display: block;
+}
+
+#DataViewFavoritos li span {
+    color: #999;
+}
+
+.details{
+    margin: 10px;
+}
+
+.details span{
+    display: block;
+    margin-bottom: 5px;
+}
