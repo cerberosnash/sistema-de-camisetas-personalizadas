@@ -6,7 +6,17 @@ class Base_Controller_Action extends Zend_Controller_Action {
     protected $_autenticacao;
 
     public function startAutenticacao() {
-        $this->_autenticacao = new Zend_Session_Namespace('autenticacao');
+        session_start();
+        if (!isset($_SESSION['Zend_Session_Namespace'])) {
+            $this->_autenticacao = $_SESSION['Zend_Session_Namespace'] = new Zend_Session_Namespace('autenticacao');
+        } else {
+            $this->_autenticacao = $_SESSION['Zend_Session_Namespace'];
+        }
+    }
+
+    protected function _prepareJson($out) {
+        $callback = '(' . json_encode($out) . ')';
+        $this->_response->appendBody($callback);
     }
 
     public function setMCA() {

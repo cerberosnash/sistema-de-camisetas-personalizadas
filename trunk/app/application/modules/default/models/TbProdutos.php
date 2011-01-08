@@ -10,7 +10,6 @@
  * @author     ##NAME## <##EMAIL##>
  * @version    SVN: $Id: Builder.php 6820 2009-11-30 17:27:49Z jwage $
  */
-class TbProdutos extends Base_TbProdutos
-{
+class TbProdutos extends Base_TbProdutos {
 
 }

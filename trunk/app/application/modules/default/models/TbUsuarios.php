@@ -10,73 +10,7 @@
  * @author     ##NAME## <##EMAIL##>
  * @version    SVN: $Id: Builder.php 6820 2009-11-30 17:27:49Z jwage $
  */
-class TbUsuarios extends Base_TbUsuarios {
-
-    public function Autenticar($array) {
-        $query = Doctrine_Query::create()
-                        ->select('*')
-                        ->from('TbUsuarios u')
-                        ->where('u.tx_email = ?', $array['email'])
-                        ->andWhere('u.tx_senha = ?', $array['senha'])
-                        ->andWhere('u.st_ativo = true')
-        ;
-        $resul['usuario'] = $query->execute(array(), Doctrine::HYDRATE_ARRAY);
-        return $resul;
-    }
-
-    public function getComboUnidOrganiz($search, $page) {
-        if ($page != 0) {
-            $page = $page / 10;
-        }
-
-        $query = new Doctrine_Pager(
-                                Doctrine_Query::create()
-                                ->select('u.sq_unid_organiz, u.nm_unid_organiz')
-                                ->from('InsUnidOrganiz u')
-                                ->where('LOWER(u.nm_unid_organiz) LIKE ?', '%' . $search . '%')
-                                ->andWhere('u.st_ativo = true')
-                                ->orderBy('u.nm_unid_organiz ASC'), ++$page, self::$limit);
-        $resul['unidades'] = $query->execute(array(), Doctrine::HYDRATE_ARRAY);
-
-        if (empty($search)) {
-            $count = Doctrine_Core::getTable('InsUnidOrganiz')
-                            ->findByDql('where st_ativo = true')
-                            ->count();
-        } else {
-            $count = count($resul['unidades']);
-        }
-
-        $resul['totalCount'] = $count;
-        return $resul;
-    }
-
-    public static function insert(InsUnidOrganiz $unidOrganiz) {
-        try {
-            $unidOrganiz->save();
-            return $unidOrganiz->sq_unid_organiz;
-        } catch (Doctrine_Exception $e) {
-            throw new Exception($e->getMessage());
-        }
-    }
-
-    public function update(InsUnidOrganiz $unidOrganiz) {
-        try {
-            $unidOrganiz->save();
-        } catch (Doctrine_Exception $e) {
-            throw new Exception($e->getMessage());
-        }
-    }
-
-    public static function deleteById($formData) {
-        try {
-            $query = Doctrine_Query::create()
-                            ->update('InsUnidOrganiz u')
-                            ->set('u.st_ativo', 'false')
-                            ->where('u.sq_unid_organiz = ?', $formData);
-            return $query->execute();
-        } catch (Doctrine_Exception $e) {
-            throw new Exception($e->getMessage());
-        }
-    }
+class TbUsuarios extends Base_TbUsuarios
+{
 
 }

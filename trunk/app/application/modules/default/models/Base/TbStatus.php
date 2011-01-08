@@ -24,25 +24,28 @@ abstract class Base_TbStatus extends Doctrine_Record
         $this->setTableName('tb_status');
         $this->hasColumn('sq_status', 'integer', 4, array(
              'type' => 'integer',
-             'length' => 4,
-             'fixed' => false,
+             'fixed' => 0,
              'unsigned' => false,
              'primary' => true,
+             'autoincrement' => true,
+             'length' => '4',
              ));
         $this->hasColumn('tx_status', 'string', null, array(
              'type' => 'string',
-             'fixed' => false,
+             'fixed' => 0,
              'unsigned' => false,
              'notnull' => true,
              'primary' => false,
+             'length' => '',
              ));
         $this->hasColumn('st_ativo', 'boolean', 1, array(
              'type' => 'boolean',
-             'length' => 1,
-             'fixed' => false,
+             'fixed' => 0,
              'unsigned' => false,
              'notnull' => true,
+             'default' => 'true',
              'primary' => false,
+             'length' => '1',
              ));
     }
 

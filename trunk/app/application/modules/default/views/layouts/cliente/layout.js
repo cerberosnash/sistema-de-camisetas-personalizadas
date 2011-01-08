@@ -18,7 +18,7 @@ try{
             var urlSecurityCode = "/camisetas/outros/png-1.0/captcha.php";
             var urlPedidos = "/camisetas/outros/png-1.0/pedidos.php";
             var urlGaleriaCamisetas = '/camisetas/outros/png-1.0/get-images.php';
-            var urlCamisetasCarrinho = '/camisetas/outros/png-1.0/carrinho.php';
+            var controllerCarrinho = '/camisetas/outros/png-1.0/carrinho.php';
             var urlFavoritos = '/camisetas/outros/png-1.0/favoritos.php';
             var urlProcessarBoleto = '/camisetas/outros/png-1.0/processar_boleto.php';
             var urlUploadCamisetas = '/camisetas/outros/png-1.0/upload.php';
@@ -1288,7 +1288,7 @@ try{
                 }],
                 proxy: new Ext.data.HttpProxy({
                     method: 'post',
-                    url: urlCamisetasCarrinho
+                    url: controllerCarrinho
                 })
             });
 
@@ -2261,7 +2261,7 @@ try{
                             var conn = new Ext.data.Connection();
                             var data = null;
                             conn.request({
-                                url: urlCamisetasCarrinho,
+                                url: controllerCarrinho,
                                 method: 'POST',
                                 params: {
                                     acao: 'finalizar'
@@ -2313,7 +2313,7 @@ try{
                 var conn = new Ext.data.Connection();
                 var data = null;
                 conn.request({
-                    url: urlCamisetasCarrinho,
+                    url: controllerCarrinho,
                     method: 'POST',
                     params: {
                         acao: 'remover',
@@ -2355,10 +2355,10 @@ try{
                 var conn = new Ext.data.Connection();
                 var data = null;
                 conn.request({
-                    url: urlCamisetasCarrinho,
+                    url: controllerCarrinho + 'adicionar',
                     method: 'POST',
                     params: {
-                        acao: 'adicionar',
+                        // acao: 'adicionar',
                         id: id
                     },
                     success: function(responseObject) {
@@ -2369,7 +2369,7 @@ try{
                                     Ext.example.msg('Acao', 'Camiseta adicionada no carrinho com sucesso');
                                     storeCarrinho.load({
                                         params:{
-                                            acao: 'carregar',
+                                            //  acao: 'carregar',
                                             start:0,
                                             limit:20
                                         }
@@ -2394,7 +2394,7 @@ try{
                     var conn = new Ext.data.Connection();
                     var data = null;
                     conn.request({
-                        url: urlCamisetasCarrinho,
+                        url: controllerCarrinho,
                         method: 'POST',
                         params: {
                             acao: 'quantidade',
