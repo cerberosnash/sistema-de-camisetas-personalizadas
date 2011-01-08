@@ -1,0 +1,516 @@
+TbAtividades:
+  connection: doctrine
+  tableName: tb_atividades
+  columns:
+    sq_atividade:
+      type: integer(4)
+      fixed: false
+      unsigned: false
+      primary: true
+    tx_atividade:
+      type: string()
+      fixed: false
+      unsigned: false
+      notnull: true
+      primary: false
+    st_ativo:
+      type: boolean(1)
+      fixed: false
+      unsigned: false
+      notnull: true
+      default: 'true'
+      primary: false
+  relations:
+    TbHistoricoAtividades:
+      local: sq_atividade
+      foreign: sq_atividade
+      type: many
+TbFavoritos:
+  connection: doctrine
+  tableName: tb_favoritos
+  columns:
+    sq_favorito:
+      type: integer(4)
+      fixed: false
+      unsigned: false
+      primary: true
+    sq_usuario:
+      type: integer(4)
+      fixed: false
+      unsigned: false
+      notnull: true
+      primary: false
+    sq_produto:
+      type: integer(4)
+      fixed: false
+      unsigned: false
+      notnull: true
+      primary: false
+    st_ativo:
+      type: boolean(1)
+      fixed: false
+      unsigned: false
+      notnull: true
+      default: 'true'
+      primary: false
+  relations:
+    TbUsuarios:
+      local: sq_usuario
+      foreign: sq_usuario
+      type: one
+    TbProdutos:
+      local: sq_produto
+      foreign: sq_produto
+      type: one
+TbHistoricoAtividades:
+  connection: doctrine
+  tableName: tb_historico_atividades
+  columns:
+    sq_historico_atividade:
+      type: integer(4)
+      fixed: false
+      unsigned: false
+      primary: true
+    sq_usuario:
+      type: integer(4)
+      fixed: false
+      unsigned: false
+      notnull: true
+      primary: false
+    sq_atividade:
+      type: integer(4)
+      fixed: false
+      unsigned: false
+      notnull: true
+      primary: false
+    dt_atividade:
+      type: timestamp(25)
+      fixed: false
+      unsigned: false
+      notnull: true
+      primary: false
+  relations:
+    TbUsuarios:
+      local: sq_usuario
+      foreign: sq_usuario
+      type: one
+    TbAtividades:
+      local: sq_atividade
+      foreign: sq_atividade
+      type: one
+TbMunicipios:
+  connection: doctrine
+  tableName: tb_municipios
+  columns:
+    sq_municipio:
+      type: integer(4)
+      fixed: false
+      unsigned: false
+      primary: true
+    sq_uf:
+      type: integer(4)
+      fixed: false
+      unsigned: false
+      notnull: true
+      primary: false
+    nm_municipio:
+      type: string()
+      fixed: false
+      unsigned: false
+      notnull: true
+      primary: false
+    st_ativo:
+      type: boolean(1)
+      fixed: false
+      unsigned: false
+      notnull: true
+      default: 'true'
+      primary: false
+  relations:
+    TbUfs:
+      local: sq_uf
+      foreign: sq_uf
+      type: one
+    TbUsuarios:
+      local: sq_municipio
+      foreign: sq_municipio
+      type: many
+TbPedidos:
+  connection: doctrine
+  tableName: tb_pedidos
+  columns:
+    sq_pedido:
+      type: integer(4)
+      fixed: false
+      unsigned: false
+      primary: true
+    sq_status:
+      type: integer(4)
+      fixed: false
+      unsigned: false
+      notnull: true
+      primary: false
+    sq_usuario:
+      type: integer(4)
+      fixed: false
+      unsigned: false
+      notnull: true
+      primary: false
+    dt_pedido:
+      type: date(25)
+      fixed: false
+      unsigned: false
+      notnull: true
+      primary: false
+    vl_pedido:
+      type: float()
+      fixed: false
+      unsigned: false
+      notnull: true
+      primary: false
+    st_ativo:
+      type: boolean(1)
+      fixed: false
+      unsigned: false
+      notnull: true
+      default: 'true'
+      primary: false
+  relations:
+    TbUsuarios:
+      local: sq_usuario
+      foreign: sq_usuario
+      type: one
+    TbStatus:
+      local: sq_status
+      foreign: sq_status
+      type: one
+    TbProdutoPedido:
+      local: sq_pedido
+      foreign: sq_pedido
+      type: many
+TbPerfil:
+  connection: doctrine
+  tableName: tb_perfil
+  columns:
+    sq_perfil:
+      type: integer(4)
+      fixed: false
+      unsigned: false
+      primary: true
+    tx_perfil:
+      type: string()
+      fixed: false
+      unsigned: false
+      notnull: true
+      primary: false
+    st_ativo:
+      type: boolean(1)
+      fixed: false
+      unsigned: false
+      notnull: true
+      default: 'true'
+      primary: false
+  relations:
+    TbUsuarios:
+      local: sq_perfil
+      foreign: sq_perfil
+      type: many
+TbProdutoPedido:
+  connection: doctrine
+  tableName: tb_produto_pedido
+  columns:
+    sq_produto_pedido:
+      type: integer(4)
+      fixed: false
+      unsigned: false
+      primary: true
+    sq_pedido:
+      type: integer(4)
+      fixed: false
+      unsigned: false
+      notnull: true
+      primary: false
+    sq_produto:
+      type: integer(4)
+      fixed: false
+      unsigned: false
+      notnull: true
+      primary: false
+    st_ativo:
+      type: boolean(1)
+      fixed: false
+      unsigned: false
+      notnull: true
+      default: 'true'
+      primary: false
+    nu_quantidade:
+      type: integer(4)
+      fixed: false
+      unsigned: false
+      notnull: true
+      primary: false
+  relations:
+    TbPedidos:
+      local: sq_pedido
+      foreign: sq_pedido
+      type: one
+    TbProdutos:
+      local: sq_produto
+      foreign: sq_produto
+      type: one
+TbProdutos:
+  connection: doctrine
+  tableName: tb_produtos
+  columns:
+    sq_produto:
+      type: integer(4)
+      fixed: false
+      unsigned: false
+      primary: true
+    vl_produto:
+      type: float()
+      fixed: false
+      unsigned: false
+      notnull: true
+      primary: false
+    co_produto:
+      type: string()
+      fixed: false
+      unsigned: false
+      notnull: true
+      primary: false
+    tm_produto:
+      type: string()
+      fixed: true
+      unsigned: false
+      notnull: true
+      primary: false
+    nm_produto:
+      type: string()
+      fixed: false
+      unsigned: false
+      notnull: true
+      primary: false
+    ds_produto:
+      type: string()
+      fixed: false
+      unsigned: false
+      notnull: false
+      primary: false
+    st_privado:
+      type: boolean(1)
+      fixed: false
+      unsigned: false
+      notnull: true
+      default: 'true'
+      primary: false
+    st_ativo:
+      type: boolean(1)
+      fixed: false
+      unsigned: false
+      notnull: true
+      default: 'true'
+      primary: false
+  relations:
+    TbFavoritos:
+      local: sq_produto
+      foreign: sq_produto
+      type: many
+    TbProdutoPedido:
+      local: sq_produto
+      foreign: sq_produto
+      type: many
+TbStatus:
+  connection: doctrine
+  tableName: tb_status
+  columns:
+    sq_status:
+      type: integer(4)
+      fixed: false
+      unsigned: false
+      primary: true
+    tx_status:
+      type: string()
+      fixed: false
+      unsigned: false
+      notnull: true
+      primary: false
+    st_ativo:
+      type: boolean(1)
+      fixed: false
+      unsigned: false
+      notnull: true
+      default: 'true'
+      primary: false
+  relations:
+    TbPedidos:
+      local: sq_status
+      foreign: sq_status
+      type: many
+TbTelefones:
+  connection: doctrine
+  tableName: tb_telefones
+  columns:
+    sq_telefone:
+      type: integer(4)
+      fixed: false
+      unsigned: false
+      primary: true
+    tp_telefone:
+      type: string()
+      fixed: false
+      unsigned: false
+      notnull: true
+      primary: false
+    sq_usuario:
+      type: integer(4)
+      fixed: false
+      unsigned: false
+      notnull: true
+      primary: false
+    nu_telefone:
+      type: string()
+      fixed: false
+      unsigned: false
+      notnull: true
+      primary: false
+    nu_ddd:
+      type: string()
+      fixed: false
+      unsigned: false
+      notnull: true
+      primary: false
+    st_ativo:
+      type: boolean(1)
+      fixed: false
+      unsigned: false
+      notnull: true
+      default: 'true'
+      primary: false
+  relations:
+    TbUsuarios:
+      local: sq_usuario
+      foreign: sq_usuario
+      type: one
+TbUfs:
+  connection: doctrine
+  tableName: tb_ufs
+  columns:
+    sq_uf:
+      type: integer(4)
+      fixed: false
+      unsigned: false
+      primary: true
+    nm_uf:
+      type: string()
+      fixed: false
+      unsigned: false
+      notnull: true
+      primary: false
+    st_ativo:
+      type: boolean(1)
+      fixed: false
+      unsigned: false
+      notnull: true
+      default: 'true'
+      primary: false
+    sg_uf:
+      type: string()
+      fixed: true
+      unsigned: false
+      notnull: true
+      primary: false
+  relations:
+    TbMunicipios:
+      local: sq_uf
+      foreign: sq_uf
+      type: many
+TbUsuarios:
+  connection: doctrine
+  tableName: tb_usuarios
+  columns:
+    sq_usuario:
+      type: integer(4)
+      fixed: false
+      unsigned: false
+      primary: true
+    sq_perfil:
+      type: integer(4)
+      fixed: false
+      unsigned: false
+      notnull: true
+      primary: false
+    sq_municipio:
+      type: integer(4)
+      fixed: false
+      unsigned: false
+      notnull: true
+      primary: false
+    nm_usuario:
+      type: string()
+      fixed: false
+      unsigned: false
+      notnull: true
+      primary: false
+    nu_cpf:
+      type: string()
+      fixed: false
+      unsigned: false
+      notnull: true
+      primary: false
+    tx_senha:
+      type: string()
+      fixed: false
+      unsigned: false
+      notnull: true
+      primary: false
+    tx_email:
+      type: string()
+      fixed: false
+      unsigned: false
+      notnull: true
+      primary: false
+    tx_endereco:
+      type: string()
+      fixed: false
+      unsigned: false
+      notnull: true
+      primary: false
+    nu_cep:
+      type: string()
+      fixed: false
+      unsigned: false
+      notnull: true
+      primary: false
+    st_ativo:
+      type: boolean(1)
+      fixed: false
+      unsigned: false
+      notnull: true
+      default: 'true'
+      primary: false
+  relations:
+    TbMunicipios:
+      local: sq_municipio
+      foreign: sq_municipio
+      type: one
+    TbPerfil:
+      local: sq_perfil
+      foreign: sq_perfil
+      type: one
+    TbFavoritos:
+      local: sq_usuario
+      foreign: sq_usuario
+      type: many
+    TbHistoricoAtividades:
+      local: sq_usuario
+      foreign: sq_usuario
+      type: many
+    TbPedidos:
+      local: sq_usuario
+      foreign: sq_usuario
+      type: many
+    TbTelefones:
+      local: sq_usuario
+      foreign: sq_usuario
+      type: many

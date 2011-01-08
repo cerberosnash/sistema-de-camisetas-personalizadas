@@ -1,0 +1,35 @@
+<html>
+    <body>
+
+        <h1>Sequences #</h1>
+        <?php foreach ($this->sequences as $sequence): ?>
+        <?php echo $sequence . '<br>'; /* endforeach; */ ?>
+        <?php endforeach; ?>
+
+            <h1>Databases #</h1>
+        <?php foreach ($this->databases as $database): ?>
+        <?php echo $database . '<br>'; /* endforeach; */ ?>
+        <?php endforeach; ?>
+
+                <h1>Constrainst #</h1>
+        <?php if (is_array($this->constraints)
+
+                    )foreach ($this->constraints as $constrainst): ?>
+        <?php echo $constrainst . '<br>'; /* endforeach; */ ?>
+        <?php endforeach; ?>
+
+                    <h1>Columns #</h1>
+        <?php if (is_array($this->columns)
+                        )foreach ($this->columns as $columm): ?>
+        <?php echo print_r($columm, true) . '<br>'; /* endforeach; */ ?>
+<?php endforeach; ?>
+
+                        <h1>Tables #</h1>
+        <?php if (is_array($this->tables)
+
+                            )foreach ($this->tables as $table): ?>
+        <?php echo $table . '<br>'; /* endforeach; */ ?>
+<?php endforeach; ?>
+
+    </body>
+</html>
