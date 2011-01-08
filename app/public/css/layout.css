@@ -1,0 +1,205 @@
+
+/*!
+* Ext JS Library 3.3.1
+* Copyright(c) 2006-2010 Sencha Inc.
+* licensing@sencha.com
+* http://www.sencha.com/license
+*/
+/*
+ * FileUploadField component styles
+*/
+.x-form-file-wrap {
+    position: relative;
+    height: 22px;
+}
+.x-form-file-wrap .x-form-file {
+    position: absolute;
+    right: 0;
+    -moz-opacity: 0;
+    filter:alpha(opacity:0);
+    opacity: 0;
+    z-index: 2;
+    height: 22px;
+}
+.x-form-file-wrap .x-form-file-btn {
+    position: absolute;
+    right: 0;
+    z-index: 1;
+}
+.x-form-file-wrap .x-form-file-text {
+    position: absolute;
+    left: 0;
+    z-index: 3;
+    color: #777;
+}
+
+
+iframe { display:block; width:100%; border:none;margin:0; padding:0; height:100%; }
+
+/*Extreme Components*/
+.c000000 {background-image: url(/camisetas/public/css/icons/cores/000000.gif) ! important;}
+.c1bbc81 {background-image: url(/camisetas/public/css/icons/cores/1bbc81.gif) ! important;}
+.c34a4c4 {background-image: url(/camisetas/public/css/icons/cores/34a4c4.gif) ! important;}
+.c171c46 {background-image: url(/camisetas/public/css/icons/cores/171c46.gif) ! important;}
+.c344ca3 {background-image: url(/camisetas/public/css/icons/cores/344ca3.gif) ! important;}
+.c520b0b {background-image: url(/camisetas/public/css/icons/cores/520b0b.gif) ! important;}
+.c174621 {background-image: url(/camisetas/public/css/icons/cores/174621.gif) ! important;}
+.c717171 {background-image: url(/camisetas/public/css/icons/cores/717171.gif) ! important;}
+.ca7bc1b {background-image: url(/camisetas/public/css/icons/cores/a7bc1b.gif) ! important;}
+.ca3346b {background-image: url(/camisetas/public/css/icons/cores/a3346b.gif) ! important;}
+.ca33434 {background-image: url(/camisetas/public/css/icons/cores/a33434.gif) ! important;}
+.cd83200 {background-image: url(/camisetas/public/css/icons/cores/d83200.gif) ! important;}
+.cf6d600 {background-image: url(/camisetas/public/css/icons/cores/f6d600.gif) ! important;}
+.cf60000 {background-image: url(/camisetas/public/css/icons/cores/f60000.gif) ! important;}
+.cffffff {background-image: url(/camisetas/public/css/icons/cores/ffffff.gif) ! important;}
+
+
+.todas-cores {
+    background-image: url(/camisetas/public/css/icons/cores/null.gif) ! important;
+} .ux-flag-ch {
+    background-image: url(/camisetas/public/css/icons/flags/flag_ch.png) ! important;
+} .ux-flag-lu {
+    background-image: url(/camisetas/public/css/icons/flags/flag_lu.png) ! important;
+} .ux-flag-li {
+    background-image: url(/camisetas/public/css/icons/flags/flag_li.png) ! important;
+} .ux-icon-combo-icon {
+    background-repeat: no-repeat;
+    background-position: 0 50%;
+    width: 18px;
+    height: 14px;
+}
+
+/* X-BROWSER-WARNING: this is not being honored by Safari */ .ux-icon-combo-input {
+    padding-left: 25px;
+} .x-form-field-wrap .ux-icon-combo-icon {
+    top: 3px;
+    left: 5px;
+} .ux-icon-combo-item {
+    background-repeat: no-repeat ! important;
+    background-position: 3px 50% ! important;
+    padding-left: 24px ! important;
+} .x-form-field-wrap .x-form-ellipsis-trigger {
+    background-image: url(../images/default/form/ellipsis-trigger.gif);
+    cursor: pointer;
+} .ux-mselect {
+    overflow: auto;
+    background: white;
+    position: relative; /* for calculating scroll offsets */
+    zoom: 1;
+    overflow: auto;
+} .ux-mselect-item {
+    font: normal 12px tahoma, arial, helvetica, sans-serif;
+    padding: 2px;
+    border: 1px solid #fff;
+    white-space: nowrap;
+    cursor: pointer;
+} .ux-mselect-selected {
+    border: 1px dotted #a3bae9 !important;
+    background: #DFE8F6;
+    cursor: pointer;
+} .x-view-drag-insert-above {
+    border-top: 1px dotted #3366cc;
+} .x-view-drag-insert-below {
+    border-bottom: 1px dotted #3366cc;
+}
+
+.ux-button-arrow-left {
+    background-image: url(../images/ext/left2.gif) ! important;
+    width: 16px;
+    height: 16px;
+}
+
+.ux-button-arrow-right {
+    background-image: url(../images/ext/right2.gif) ! important;
+    width: 16px;
+    height: 16px;
+}
+
+.ux-button-arrow-bottom {
+    background-image: url(../images/ext/bottom2.gif) ! important;
+    width: 16px;
+    height: 16px;
+}
+
+.ux-button-arrow-up {
+    background-image: url(../images/ext/up2.gif) ! important;
+    width: 16px;
+    height: 16px;
+}
+
+.ux-button-arrow-top {
+    background-image: url(../images/ext/top2.gif) ! important;
+    width: 16px;
+    height: 16px;
+}
+
+.ux-button-arrow-down {
+    background-image: url(../images/ext/down2.gif) ! important;
+    width: 16px;
+    height: 16px;
+}
+/*Extreme Components*/
+
+/*logo*/
+#logo {
+    background-image: url(/camisetas/outros/png-1.0/imagens/bg_logo.png) ! important;
+    height: 100%;
+}
+
+#marca {
+    background-image: url(/camisetas/outros/png-1.0/imagens/marca.png) ! important;
+    background-repeat: no-repeat;
+    height: 100%;
+    width: 600px;
+    float: left;
+}
+
+#contato {
+    background-image: url(/camisetas/outros/png-1.0/imagens/contato.png) ! important;
+    background-repeat: no-repeat;
+    height: 100%;
+    width: 200px;
+    float: right;
+    margin-right: 10px;
+}
+
+#loader {
+    background-image: url(/camisetas/outros/png-1.0/imagens/loader.gif) ! important;
+    height: 16px;
+    width: 16px;
+}
+
+#introducao{
+    background-image: url(/camisetas/outros/png-1.0/imagens/bg_intro.png) ! important;
+    position: absolute;
+    top: 0px;
+    left: 0px;
+    z-index: 99999999;
+    bottom: 0px;
+    right: 0px;
+}
+
+#marca-intro{
+    top:10px;
+    left: 10px;
+    position: absolute;
+    background-image: url(/camisetas/outros/png-1.0/imagens/marca.png) ! important;
+    background-repeat: no-repeat;
+    height: 100%;
+    width: 600px;
+    float: left;
+}
+
+#introducao div{
+    position: absolute;
+    margin: auto 0;
+    border: 0px solid red;
+    text-align: center;
+    bottom: 10px;
+    right: 100px;
+}
+
+#introducao div p{
+    margin-left: 20px;
+    width: 100px;
+}
