@@ -1,0 +1,70 @@
+
+<?php
+/*class Grid {
+	public static function generate(array $data) {
+		foreach ($data as $key => $value) {
+		$cont++;
+			if ($cont == count($data)) {
+				$modelos .= "{name: '$key'}";
+			} else {
+				$modelos .= "{name: '$key'},";
+			}
+		}
+		return 'fields: [' . $modelos . ']';		
+	}
+}*/
+
+try {
+ /*$tablefield = array('sq_unid_organiz_pai' => 'p',
+										'sq_unid_tipo'=> 'p',
+										'sq_unid_organiz'=> 'p',
+										'sg_unid_organiz'=> 'p',
+										'nm_unid_organiz'=> 'p',
+										'st_ativo'=> 'p',
+										'cd_uorg'=> 'p',
+							
+							'nm_unid_tipo'=> 't',
+							'sg_unid_tipo' => 't',
+							
+							'sq_municipio' => 'g', 'nm_municipio' => 'g',
+							'sg_uf'=> 'e','nm_uf'=> 'e');
+	//echo array_key_exists('p', $tablefield) . "teste";
+	echo $tablefield['sq_unid_organiz']. "." . 'sq_municipio';
+	$field = 'sg_unid_tipo';
+	$dir = 'ASC';
+	$tablefield = array('sq_unid_organiz_pai' => 'p',
+							'sq_unid_tipo'=> 'p',
+							'sq_unid_organiz'=> 'p',
+							'sg_unid_organiz'=> 'p',
+							'nm_unid_organiz'=> 'p',
+							'cd_uorg'=> 'p',
+							'st_ativo'=> 'p',
+							'nm_unid_tipo'=> 't',
+							'sg_unid_tipo' => 't',
+							'sq_municipio' => 'g', 
+							'nm_municipio' => 'g',
+							'sg_uf'=> 'e',
+							'nm_uf'=> 'e');
+			$search = 'presi';
+	foreach($tablefield as $field => $key) {
+	$cont++;
+		if(count($tablefield) == $cont) {
+			$like .= "LOWER(" . $key . "." . $field . ") LIKE '%$search%'";
+		} else {
+				$like .="LOWER(" . $key . "." . $field . ") LIKE '%$search%' OR ";
+		}
+		
+		}
+	echo $like;
+*/
+
+//var_dump(Doctrine_Core::getTable('InsUnidOrganiz')->searchUnidOrganiz(1, 'jhonata', 'ass'));
+
+echo var_dump(Doctrine_Core::getTable('InsUnidOrganiz')->findByDql('where ' . $like)->count()		);
+//echo var_dump(Doctrine_Core::getTable('InsUnidOrganiz')->findByDql('where ' . $like)->count()		);
+
+} catch (Doctrine_Exception $e) {
+    echo $e->getMessage();
+}
+?>
+

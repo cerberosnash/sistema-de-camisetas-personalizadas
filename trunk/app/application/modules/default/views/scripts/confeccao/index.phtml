@@ -1,0 +1,25 @@
+<?php echo $this->doctype(); ?>
+<html>
+    <head>
+        <?php
+        echo $this->headMeta();
+        echo $this->headTitle();
+        echo $this->headLink();
+        echo $this->headScript();
+        ?>
+    </head>
+    <body>
+        <script type="text/javascript" language="javascript" src="/<?php echo $this->systemname; ?>/application/modules/default/views/layouts/componentes/TabCloseMenu.js"></script>
+        <script type="text/javascript" language="javascript" src="/<?php echo $this->systemname; ?>/public/extjs/examples/tabs/tabs-adv.js"></script>
+        <script type="text/javascript" language="javascript" src="/<?php echo $this->systemname; ?>/public/extjs/examples/ux/ProgressBarPager.js"></script>
+        <script type="text/javascript" language="javascript" src="/<?php echo $this->systemname; ?>/public/extjs/examples/ux/Search.js"></script>
+        <script type="text/javascript" language="javascript" src="/<?php echo $this->systemname; ?>/public/extjs/examples/ux/PanelResizer.js"></script>
+        <script type="text/javascript" language="javascript" src="/<?php echo $this->systemname; ?>/public/extjs/examples/ux/PagingMemoryProxy.js"></script>
+        <script type="text/javascript" language="javascript" src="/<?php echo $this->systemname; ?>/public/extjs/examples/ux/statusbar/StatusBar.js"></script>
+        <script type="text/javascript" src="/<?php echo $this->systemname; ?>/application/modules/default/views/layouts/<?php echo $this->controller; ?>/layout.js"></script>
+        <script type="text/javascript" language="javascript" >
+            Ext.onReady(function(){new App.Default.Layout.Confeccao;});
+        </script>
+        <div id="tbar"></div>
+    </body>
+</html>

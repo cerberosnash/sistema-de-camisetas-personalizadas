@@ -1,0 +1,22 @@
+<?php echo $this->doctype(); ?>
+<html>
+    <head>
+        <?php
+        echo $this->headMeta();
+        echo $this->headTitle();
+        echo $this->headLink();
+        echo $this->headScript();
+        ?>
+        <script type="text/javascript">
+<?php echo $this->global; ?>
+        </script>
+    </head>
+    <body id="main">
+        <script>
+            Ext.onReady(function()
+            {
+<?php echo $this->out; ?>
+    });
+        </script>
+    </body>
+</html>
