@@ -10,7 +10,7 @@ Doctrine_Manager::getInstance()->bindComponent('TbAtividades', 'doctrine');
  * @property integer $sq_atividade
  * @property string $tx_atividade
  * @property boolean $st_ativo
- * @property Doctrine_Collection $TbHistorico
+ * @property Doctrine_Collection $TbHistoricoAtividades
  * 
  * @package    ##PACKAGE##
  * @subpackage ##SUBPACKAGE##
@@ -24,32 +24,35 @@ abstract class Base_TbAtividades extends Doctrine_Record
         $this->setTableName('tb_atividades');
         $this->hasColumn('sq_atividade', 'integer', 4, array(
              'type' => 'integer',
-             'length' => 4,
-             'fixed' => false,
+             'fixed' => 0,
              'unsigned' => false,
              'primary' => true,
+             'autoincrement' => true,
+             'length' => '4',
              ));
         $this->hasColumn('tx_atividade', 'string', null, array(
              'type' => 'string',
-             'fixed' => false,
+             'fixed' => 0,
              'unsigned' => false,
              'notnull' => true,
              'primary' => false,
+             'length' => '',
              ));
         $this->hasColumn('st_ativo', 'boolean', 1, array(
              'type' => 'boolean',
-             'length' => 1,
-             'fixed' => false,
+             'fixed' => 0,
              'unsigned' => false,
              'notnull' => true,
+             'default' => 'true',
              'primary' => false,
+             'length' => '1',
              ));
     }
 
     public function setUp()
     {
         parent::setUp();
-        $this->hasMany('TbHistorico', array(
+        $this->hasMany('TbHistoricoAtividades', array(
              'local' => 'sq_atividade',
              'foreign' => 'sq_atividade'));
     }

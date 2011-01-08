@@ -1,8 +1,7 @@
 <?php
-
 /**
  */
-class TbUsuariosTable extends Doctrine_Table {
-
+class TbUsuariosTable extends Doctrine_Table
+{
 
 }

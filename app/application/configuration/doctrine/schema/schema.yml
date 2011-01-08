@@ -7,6 +7,7 @@ TbAtividades:
       fixed: false
       unsigned: false
       primary: true
+      autoincrement: true
     tx_atividade:
       type: string()
       fixed: false
@@ -34,6 +35,7 @@ TbFavoritos:
       fixed: false
       unsigned: false
       primary: true
+      autoincrement: true
     sq_usuario:
       type: integer(4)
       fixed: false
@@ -71,6 +73,7 @@ TbHistoricoAtividades:
       fixed: false
       unsigned: false
       primary: true
+      autoincrement: true
     sq_usuario:
       type: integer(4)
       fixed: false
@@ -107,6 +110,7 @@ TbMunicipios:
       fixed: false
       unsigned: false
       primary: true
+      autoincrement: true
     sq_uf:
       type: integer(4)
       fixed: false
@@ -144,6 +148,7 @@ TbPedidos:
       fixed: false
       unsigned: false
       primary: true
+      autoincrement: true
     sq_status:
       type: integer(4)
       fixed: false
@@ -197,6 +202,7 @@ TbPerfil:
       fixed: false
       unsigned: false
       primary: true
+      autoincrement: true
     tx_perfil:
       type: string()
       fixed: false
@@ -224,6 +230,7 @@ TbProdutoPedido:
       fixed: false
       unsigned: false
       primary: true
+      autoincrement: true
     sq_pedido:
       type: integer(4)
       fixed: false
@@ -267,6 +274,7 @@ TbProdutos:
       fixed: false
       unsigned: false
       primary: true
+      autoincrement: true
     vl_produto:
       type: float()
       fixed: false
@@ -329,6 +337,7 @@ TbStatus:
       fixed: false
       unsigned: false
       primary: true
+      autoincrement: true
     tx_status:
       type: string()
       fixed: false
@@ -356,6 +365,7 @@ TbTelefones:
       fixed: false
       unsigned: false
       primary: true
+      autoincrement: true
     tp_telefone:
       type: string()
       fixed: false
@@ -401,6 +411,7 @@ TbUfs:
       fixed: false
       unsigned: false
       primary: true
+      autoincrement: true
     nm_uf:
       type: string()
       fixed: false
@@ -434,6 +445,7 @@ TbUsuarios:
       fixed: false
       unsigned: false
       primary: true
+      autoincrement: true
     sq_perfil:
       type: integer(4)
       fixed: false

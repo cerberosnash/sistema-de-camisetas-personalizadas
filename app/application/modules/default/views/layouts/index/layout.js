@@ -17,8 +17,8 @@ try{
             var urlCaptcha = "/camisetas/outros/png-1.0/captcha/CaptchaSecurityImages.php?width=72&height=25&characters=4&t=";
             var urlSecurityCode = "/camisetas/outros/png-1.0/captcha.php";
             var urlPedidos = "/camisetas/outros/png-1.0/pedidos.php";
-            var urlGaleriaCamisetas = '/camisetas/outros/png-1.0/get-images.php';
-            var urlCamisetasCarrinho = '/camisetas/outros/png-1.0/carrinho.php';
+            var urlGaleriaCamisetas = '/camisetas/galeria/carregar';
+            var controllerCarrinho = '/camisetas/carrinho/';
             var urlFavoritos = '/camisetas/outros/png-1.0/favoritos.php';
             var urlProcessarBoleto = '/camisetas/outros/png-1.0/processar_boleto.php';
             var urlUploadCamisetas = '/camisetas/outros/png-1.0/upload.php';
@@ -119,7 +119,7 @@ try{
                             var i = v/count;
                             pbar.updateProgress(i, Math.round(100*i)+'% Carregados...');
                             if(Math.round(100*i)==100){
-//                             //   windowAutenticacao.hide();
+                                //                             //   windowAutenticacao.hide();
                                 //                                //                                Ext.getCmp('btnAutenticacao').hide();
                                 //                                //                                Ext.getCmp('btnCadastro').hide();
                                 //                                //                                Ext.getCmp('btnFavoritos').show();
@@ -1016,7 +1016,8 @@ try{
                                         });
                                         RunnerAutenticacao.run(pbarAutenticacao, Ext.getCmp('aEntrar'), 19, data.url);
                                    
-                                    }else{
+                                    }
+                                    else{
                                         Ext.example.msg('Erro', data.error);
                                         pbarAutenticacao.updateText('Tente novamente!');
                                     }
@@ -1247,9 +1248,9 @@ try{
                 '<ul>',
                 '<tpl for=".">',
                 '<li class="camiseta">',
-                '<img src="'+urlGeradorCamisetas+'{nome}&cor={cor}&tamanho=200" />',
-                '<strong>{nome}</strong>',
-                '<span>{valor:brMoney}</span>',
+                '<img src="'+urlGeradorCamisetas+'{nm_produto}&cor={co_produto}&tamanho=200" />',
+                '<strong>{nm_produto}</strong>',
+                '<span>{vl_produto:brMoney}</span>',
                 '</li>',
                 '</tpl>',
                 '</ul>');
@@ -1257,11 +1258,11 @@ try{
             var storeCamisetas = new Ext.data.JsonStore({
                 root: 'images',
                 totalProperty: 'totalCount',
-                idProperty: 'id',
+                idProperty: 'sq_produto',
                 remoteSort: true,
                 autoDestroy: true,
-                fields: ['id','nome','cor','descricao','tamanho','vendidas','criacao', {
-                    name:'valor',
+                fields: ['sq_produto','nm_produto','co_produto','ds_produto','tm_produto','vendidas',{
+                    name:'vl_produto',
                     type: 'float'
                 }],
                 proxy: new Ext.data.HttpProxy({
@@ -1270,7 +1271,7 @@ try{
                 })
             });
             
-            storeCamisetas.setDefaultSort('id', 'desc');
+            storeCamisetas.setDefaultSort('sq_produto', 'desc');
             storeCamisetas.load({
                 params:{
                     start:0,
@@ -1283,9 +1284,9 @@ try{
                 totalProperty: 'totalCount',
                 idProperty: 'id',
                 remoteSort: true,
-                baseParams:{
-                    acao: 'carregar'
-                },
+                //                baseParams:{
+                //                    acao: 'carregar'
+                //                },
                 autoDestroy: true,
                 fields: ['id','nome','cor','descricao','tamanho','quantidade', {
                     name:'valor',
@@ -1293,13 +1294,13 @@ try{
                 }],
                 proxy: new Ext.data.HttpProxy({
                     method: 'post',
-                    url: urlCamisetasCarrinho
+                    url: controllerCarrinho + 'carregar'
                 })
             });
 
             storeCarrinho.load({
                 params:{
-                    acao: 'carregar',
+                    // acao: 'carregar',
                     start:0,
                     limit:20
                 }
@@ -1368,7 +1369,7 @@ try{
                         start: 0,
                         limit: 20,
                         dir: 'desc',
-                        sort: 'id',
+                        sort: 'sq_produto',
                         query: Ext.getCmp('query').getValue(),
                         preco_max: Ext.getCmp('preco_max').getValue(),
                         preco_min: Ext.getCmp('preco_min').getValue(),
@@ -1692,9 +1693,13 @@ try{
                     id: 'imagem',
                     width: 150,
                     emptyText: '',
-                    fieldLabel: 'Imagem',
-                    buttonText: 'Escolher...',
-                    iconCls: 'picture-save'
+                    buttonText: '',
+                    buttonCfg:{
+                        iconCls: 'picture-save'
+                    },
+                    fieldLabel: 'Imagem'
+                //               buttonText: 'Escolher...',
+                    
                 }],
                 buttons: []
             });
@@ -2283,11 +2288,11 @@ try{
                             var conn = new Ext.data.Connection();
                             var data = null;
                             conn.request({
-                                url: urlCamisetasCarrinho,
+                                url: controllerCarrinho + 'finalizar',
                                 method: 'POST',
-                                params: {
-                                    acao: 'finalizar'
-                                },
+                                //                                params: {
+                                //                                    acao: 'finalizar'
+                                //                                },
                                 success: function(responseObject) {
                                     if(responseObject.responseText){
                                         try{
@@ -2297,7 +2302,7 @@ try{
                                                 DataGridCarrinho.store.removeAll();
                                                 storeCarrinho.load({
                                                     params:{
-                                                        acao: 'carregar',
+                                                        //acao: 'carregar',
                                                         start:0,
                                                         limit:0
                                                     }
@@ -2335,10 +2340,10 @@ try{
                 var conn = new Ext.data.Connection();
                 var data = null;
                 conn.request({
-                    url: urlCamisetasCarrinho,
+                    url: controllerCarrinho + 'remover',
                     method: 'POST',
                     params: {
-                        acao: 'remover',
+                        // acao: 'remover',
                         id: id
                     },
                     success: function(responseObject) {
@@ -2354,7 +2359,7 @@ try{
                                     Ext.getCmp('btnRemoverCarrinho').disable();
                                     storeCarrinho.load({
                                         params:{
-                                            acao: 'carregar',
+                                            // acao: 'carregar',
                                             start:0,
                                             limit:20
                                         }
@@ -2377,11 +2382,11 @@ try{
                 var conn = new Ext.data.Connection();
                 var data = null;
                 conn.request({
-                    url: urlCamisetasCarrinho,
+                    url: controllerCarrinho + 'adicionar',
                     method: 'POST',
                     params: {
-                        acao: 'adicionar',
-                        id: id
+                        // acao: 'adicionar',
+                        sq_produto: id
                     },
                     success: function(responseObject) {
                         if(responseObject.responseText){
@@ -2391,7 +2396,7 @@ try{
                                     Ext.example.msg('Acao', 'Camiseta adicionada no carrinho com sucesso');
                                     storeCarrinho.load({
                                         params:{
-                                            acao: 'carregar',
+                                            //acao: 'carregar',
                                             start:0,
                                             limit:20
                                         }
@@ -2416,10 +2421,10 @@ try{
                     var conn = new Ext.data.Connection();
                     var data = null;
                     conn.request({
-                        url: urlCamisetasCarrinho,
+                        url: controllerCarrinho + 'quantidade',
                         method: 'POST',
                         params: {
-                            acao: 'quantidade',
+                            //   acao: 'quantidade',
                             id: rec.get('id'),
                             quantidade: Ext.getCmp('QtdCarrinho').getValue()
                         },
@@ -2433,7 +2438,7 @@ try{
                                         rec.set('quantidade',Ext.getCmp('QtdCarrinho').getValue());
                                         storeCarrinho.load({
                                             params:{
-                                                acao: 'carregar',
+                                                // acao: 'carregar',
                                                 start:0,
                                                 limit: 20
                                             }

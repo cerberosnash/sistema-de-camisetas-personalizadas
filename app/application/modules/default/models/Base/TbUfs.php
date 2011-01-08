@@ -10,6 +10,7 @@ Doctrine_Manager::getInstance()->bindComponent('TbUfs', 'doctrine');
  * @property integer $sq_uf
  * @property string $nm_uf
  * @property boolean $st_ativo
+ * @property string $sg_uf
  * @property Doctrine_Collection $TbMunicipios
  * 
  * @package    ##PACKAGE##
@@ -24,25 +25,36 @@ abstract class Base_TbUfs extends Doctrine_Record
         $this->setTableName('tb_ufs');
         $this->hasColumn('sq_uf', 'integer', 4, array(
              'type' => 'integer',
-             'length' => 4,
-             'fixed' => false,
+             'fixed' => 0,
              'unsigned' => false,
              'primary' => true,
+             'autoincrement' => true,
+             'length' => '4',
              ));
         $this->hasColumn('nm_uf', 'string', null, array(
              'type' => 'string',
-             'fixed' => false,
+             'fixed' => 0,
              'unsigned' => false,
              'notnull' => true,
              'primary' => false,
+             'length' => '',
              ));
         $this->hasColumn('st_ativo', 'boolean', 1, array(
              'type' => 'boolean',
-             'length' => 1,
-             'fixed' => false,
+             'fixed' => 0,
+             'unsigned' => false,
+             'notnull' => true,
+             'default' => 'true',
+             'primary' => false,
+             'length' => '1',
+             ));
+        $this->hasColumn('sg_uf', 'string', null, array(
+             'type' => 'string',
+             'fixed' => 1,
              'unsigned' => false,
              'notnull' => true,
              'primary' => false,
+             'length' => '',
              ));
     }
 

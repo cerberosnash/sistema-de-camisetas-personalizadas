@@ -11,9 +11,9 @@ class AutenticacaoController extends Base_Controller_Action {
 
         if ($this->getRequest()->isPost()) {
             try {
-                $session = new Zend_Session_Namespace('autenticacao');
-                $session->perfil = strtolower('cliente');
-                $out = array('success' => true, 'url' => '/camisetas/' . $session->perfil);
+                // $session = new Zend_Session_Namespace('autenticacao');
+                $this->_autenticacao->perfil = strtolower('cliente');
+                $out = array('success' => true, 'url' => '/camisetas/' . $this->_autenticacao->perfil,perfil=>$this->_autenticacao->perfil);
             } catch (Exception $e) {
                 $out = array(
                     success => false,
