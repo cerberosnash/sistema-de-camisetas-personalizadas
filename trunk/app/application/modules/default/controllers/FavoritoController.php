@@ -1,22 +1,30 @@
 <?php
 
-class GaleriaController extends Base_Controller_Action {
+class FavoritoController extends Base_Controller_Action {
 
-    public function indexAction() {
-              $this->_helper->layout->disableLayout();
-      //  $this->_helper->viewRenderer->setNoRender(); //suppress auto-rendering
-    
-//        if (is_null($_SESSION['profissional'])) {
-//            $this->_redirect("/login");
-//        } else {
-//            $this->_redirect("/inicio");
-//        }
+    private $upload;
+
+    public function init() {
+        $this->_helper->layout->disableLayout();
+        $this->_helper->viewRenderer->setNoRender();
+        $this->upload = new Zend_Session_Namespace('upload');
     }
 
-    private function _installation() {
-        if (K_INSTALL == "N") {
-            $this->_redirect("/install");
+    public function adicionarAction() {
+        if ($_SESSION['upload']['crop'] === true) {
+            if ($_POST['tamanho'] && $_POST['cor'] && $_POST['nome'] && $_POST['descricao'] && $_SESSION['upload']['imagem']) {
+                $out = array('success' => true,
+                    'crop' => true, 'id' => substr($_SESSION['upload']['imagem'], 0, 32));
+                unset($_SESSION['upload']['imagem']);
+            } else {
+                $out = array('success' => false,
+                    'crop' => true);
+            }
+        } else {
+            $out = array('success' => false,
+                'crop' => false);
         }
+        $this->_prepareJson($out);
     }
 
 }

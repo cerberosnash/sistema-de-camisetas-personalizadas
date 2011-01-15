@@ -1,6 +1,6 @@
 <?php
 
-class GaleriaController extends Base_Controller_Action {
+class RelatorioController extends Base_Controller_Action {
 
     public function indexAction() {
               $this->_helper->layout->disableLayout();
