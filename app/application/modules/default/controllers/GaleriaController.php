@@ -9,10 +9,10 @@ class GaleriaController extends Base_Controller_Action {
 
     public function carregarAction() {
 
-        $out = Doctrine_Core::getTable('TbProdutos')->listar(1);
-        var_dump($out);
+        $out = Doctrine_Core::getTable('TbProdutos')->listar($this->_getAllParams());
+        //var_dump($out);
         //$out = array('totalCount' => $cont, 'totalCarrinho' => $this->valorTotal(), 'images' => $images);
-      //  $this->_prepareJson($out);
+        $this->_prepareJson($out);
         //echo '([{"sq_produto":1,"vl_produto":"29.99","co_produto":"#FFFFFF","tm_produto":"M ","nm_produto":"Cerberos","ds_produto":"Camiseta estampada nas cores preto e vermelho","st_privado":true,"st_ativo":true}])';
     }
 

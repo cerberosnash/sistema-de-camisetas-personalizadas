@@ -25,7 +25,7 @@ try{
             var urlMinhaCamiseta = '/camisetas/outros/png-1.0/minha_camiseta.php';
             var urlLogoff = '/camisetas/logoff';
             var urlCorMinhaCamiseta = '/camisetas/outros/png-1.0/cor.php';
-            var urlSalvarMinhaCamiseta = '/camisetas/outros/png-1.0/salvar_mc.php';
+            var urlSalvarMinhaCamiseta = '/camisetas/favorito/adicionar';
             var urlMostrarMinhaCamiseta = '/camisetas/outros/png-1.0/mostrar_camiseta.php';
             var urlAguarde = '/camisetas/outros/png-1.0/aguarde.php';
             var urlValidarRecorte = '/camisetas/outros/png-1.0/validar_recorte.php';
@@ -1110,21 +1110,21 @@ try{
             var tplVisualizacao = new Ext.XTemplate(
                 '<div class="details">',
                 '<tpl for=".">',
-                '<img alt="carregando..." width="300" height="279" src="/camisetas/outros/png-1.0/camiseta.php?imagem={nome}&cor={cor}&tamanho=300"/>',
+                '<img alt="carregando..." width="300" height="279" src="/camisetas/outros/png-1.0/camiseta.php?imagem={sq_produto}&cor={co_produto}&tamanho=300"/>',
                 '<b>Codigo: </b>',
-                '<span>{id}</span>',
+                '<span>{sq_produto}</span>',
                 '<b>Nome: </b>',
-                '<span>{nome}</span>',
+                '<span>{nm_produto}</span>',
                 '<b>Tamanho: </b>',
-                '<span>tm{tamanho}</span>',
+                '<span>{tm_produto}</span>',
                 '<b>Valor: </b>',
-                '<span>R${valor}</span>',
+                '<span>R${vl_produto}</span>',
                 '<b>Descricao: </b>',
-                '<span>{descricao}</span>',
+                '<span>{ds_produto}</span>',
                 '<b>Data Criacao: </b>',
-                '<span>{criacao}</span>',
+                '<span>{dt_produto}</span>',
                 '<b>Vendidas: </b>',
-                '<span>{vendidas} Unidades</span>',
+                '<span>{nu_vendidos} Unidades</span>',
                 '</div>',
                 '</tpl>',
                 '</div>'
@@ -1248,7 +1248,7 @@ try{
                 '<ul>',
                 '<tpl for=".">',
                 '<li class="camiseta">',
-                '<img src="'+urlGeradorCamisetas+'{nm_produto}&cor={co_produto}&tamanho=200" />',
+                '<img src="'+urlGeradorCamisetas+'{sq_produto}&cor={co_produto}&tamanho=200" />',
                 '<strong>{nm_produto}</strong>',
                 '<span>{vl_produto:brMoney}</span>',
                 '</li>',
@@ -1261,7 +1261,16 @@ try{
                 idProperty: 'sq_produto',
                 remoteSort: true,
                 autoDestroy: true,
-                fields: ['sq_produto','nm_produto','co_produto','ds_produto','tm_produto','vendidas',{
+                baseParams:{
+                    query: '',
+                    tamanho: '',
+                    cor: '',
+                    preco_max: '9.99',
+                    preco_min: '99.99',
+                    start:0,
+                    limit:20
+                },
+                fields: ['sq_produto','nm_produto','co_produto','ds_produto','tm_produto',{
                     name:'vl_produto',
                     type: 'float'
                 }],
@@ -1272,12 +1281,7 @@ try{
             });
             
             storeCamisetas.setDefaultSort('sq_produto', 'desc');
-            storeCamisetas.load({
-                params:{
-                    start:0,
-                    limit:20
-                }
-            });
+            storeCamisetas.load();
 
             var storeCarrinho = new Ext.data.JsonStore({
                 root: 'images',
@@ -2014,7 +2018,7 @@ try{
                             items: new Ext.Panel({
                                 deferredRender:false,
                                 border:false,
-                                html: '<img alt="carregando..." width="650" height="604" src="/camisetas/outros/png-1.0/camiseta.php?imagem='+selNode[0].data.nome+'&cor='+selNode[0].data.cor+'&tamanho=650"/>'
+                                html: '<img alt="carregando..." width="650" height="604" src="/camisetas/outros/png-1.0/camiseta.php?imagem='+selNode[0].data.id+'&cor='+selNode[0].data.cor+'&tamanho=650"/>'
                             }),
                             buttons: []
                         });
@@ -2642,7 +2646,7 @@ try{
                             resizable: false,
                             iconCls: 'silk-add',
                             layout:'fit',
-                            title: selNode[0].data.nome,
+                            title: selNode[0].data.nm_produto,
                             width:650,
                             height:650,
                             modal: true,
@@ -2651,7 +2655,7 @@ try{
                             items: new Ext.Panel({
                                 deferredRender:false,
                                 border:false,
-                                html: '<img alt="carregando..." width="650" height="604" src="/camisetas/outros/png-1.0/camiseta.php?imagem='+selNode[0].data.nome+'&cor='+selNode[0].data.cor+'&tamanho=650"/>'
+                                html: '<img alt="carregando..." width="650" height="604" src="/camisetas/outros/png-1.0/camiseta.php?imagem='+selNode[0].data.sq_produto+'&cor='+selNode[0].data.co_produto+'&tamanho=650"/>'
                             }),
                             buttons: []
                         });
@@ -2663,8 +2667,8 @@ try{
                             tplVisualizacao.overwrite(painelVisualizacaoGaleria.body, selNode[0].data);
                             Ext.getCmp('btnAddCarrinho').enable();
                             Ext.getCmp('btnAddFavoritos').enable();
-                            Ext.getCmp('btnAddCarrinho').value = selNode[0].data.id;
-                            Ext.getCmp('btnAddFavoritos').value = selNode[0].data.id;
+                            Ext.getCmp('btnAddCarrinho').value = selNode[0].data.sq_produto;
+                            Ext.getCmp('btnAddFavoritos').value = selNode[0].data.sq_produto;
                         }catch(e){
                             Ext.example.msg('Erro', '{0}',e);
                         }
