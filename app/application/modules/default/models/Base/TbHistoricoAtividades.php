@@ -26,35 +26,34 @@ abstract class Base_TbHistoricoAtividades extends Doctrine_Record
         $this->setTableName('tb_historico_atividades');
         $this->hasColumn('sq_historico_atividade', 'integer', 4, array(
              'type' => 'integer',
-             'fixed' => 0,
+             'length' => 4,
+             'fixed' => false,
              'unsigned' => false,
              'primary' => true,
-             'autoincrement' => true,
-             'length' => '4',
+             'sequence' => 'tb_historico_atividades_sq_historico_atividade',
              ));
         $this->hasColumn('sq_usuario', 'integer', 4, array(
              'type' => 'integer',
-             'fixed' => 0,
+             'length' => 4,
+             'fixed' => false,
              'unsigned' => false,
              'notnull' => true,
              'primary' => false,
-             'length' => '4',
              ));
         $this->hasColumn('sq_atividade', 'integer', 4, array(
              'type' => 'integer',
-             'fixed' => 0,
+             'length' => 4,
+             'fixed' => false,
              'unsigned' => false,
              'notnull' => true,
              'primary' => false,
-             'length' => '4',
              ));
-        $this->hasColumn('dt_atividade', 'timestamp', 25, array(
+        $this->hasColumn('dt_atividade', 'timestamp', null, array(
              'type' => 'timestamp',
-             'fixed' => 0,
+             'fixed' => false,
              'unsigned' => false,
              'notnull' => true,
              'primary' => false,
-             'length' => '25',
              ));
     }
 

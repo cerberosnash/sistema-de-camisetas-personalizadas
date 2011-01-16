@@ -15,6 +15,7 @@ Doctrine_Manager::getInstance()->bindComponent('TbProdutos', 'doctrine');
  * @property string $ds_produto
  * @property boolean $st_privado
  * @property boolean $st_ativo
+ * @property string $hs_produto
  * @property Doctrine_Collection $TbFavoritos
  * @property Doctrine_Collection $TbProdutoPedido
  * 
@@ -30,69 +31,71 @@ abstract class Base_TbProdutos extends Doctrine_Record
         $this->setTableName('tb_produtos');
         $this->hasColumn('sq_produto', 'integer', 4, array(
              'type' => 'integer',
-             'fixed' => 0,
+             'length' => 4,
+             'fixed' => false,
              'unsigned' => false,
              'primary' => true,
-             'autoincrement' => true,
-             'length' => '4',
+             'sequence' => 'tb_produtos_sq_produto',
              ));
         $this->hasColumn('vl_produto', 'float', null, array(
              'type' => 'float',
-             'fixed' => 0,
+             'fixed' => false,
              'unsigned' => false,
              'notnull' => true,
              'primary' => false,
-             'length' => '',
              ));
         $this->hasColumn('co_produto', 'string', null, array(
              'type' => 'string',
-             'fixed' => 0,
+             'fixed' => false,
              'unsigned' => false,
              'notnull' => true,
              'primary' => false,
-             'length' => '',
              ));
         $this->hasColumn('tm_produto', 'string', null, array(
              'type' => 'string',
-             'fixed' => 1,
+             'fixed' => true,
              'unsigned' => false,
              'notnull' => true,
              'primary' => false,
-             'length' => '',
              ));
         $this->hasColumn('nm_produto', 'string', null, array(
              'type' => 'string',
-             'fixed' => 0,
+             'fixed' => false,
              'unsigned' => false,
              'notnull' => true,
              'primary' => false,
-             'length' => '',
              ));
         $this->hasColumn('ds_produto', 'string', null, array(
              'type' => 'string',
-             'fixed' => 0,
+             'fixed' => false,
              'unsigned' => false,
              'notnull' => false,
              'primary' => false,
-             'length' => '',
              ));
         $this->hasColumn('st_privado', 'boolean', 1, array(
              'type' => 'boolean',
-             'fixed' => 0,
+             'length' => 1,
+             'fixed' => false,
              'unsigned' => false,
              'notnull' => true,
-             'default' => 'true',
+             'default' => true,
              'primary' => false,
-             'length' => '1',
              ));
         $this->hasColumn('st_ativo', 'boolean', 1, array(
              'type' => 'boolean',
-             'fixed' => 0,
+             'length' => 1,
+             'fixed' => false,
              'unsigned' => false,
              'notnull' => true,
-             'default' => 'true',
+             'default' => true,
              'primary' => false,
-             'length' => '1',
+             ));
+        $this->hasColumn('hs_produto', 'string', null, array(
+             'type' => 'string',
+             'fixed' => false,
+             'unsigned' => false,
+             'notnull' => true,
+             'primary' => false,
              ));
     }
 

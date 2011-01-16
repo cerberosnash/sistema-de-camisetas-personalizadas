@@ -2104,10 +2104,10 @@ try{
                             url: urlSalvarMinhaCamiseta,
                             method: 'POST',
                             params: {
-                                cor: Ext.getCmp('cor_mc').getValue(),
-                                tamanho: Ext.getCmp('tamanho_mc').getValue(),
-                                nome: Ext.getCmp('nome_mc').getValue(),
-                                descricao: Ext.getCmp('descricao_mc').getValue()
+                                co_produto: Ext.getCmp('cor_mc').getValue(),
+                                tm_produto: Ext.getCmp('tamanho_mc').getValue(),
+                                nm_produto: Ext.getCmp('nome_mc').getValue(),
+                                ds_produto: Ext.getCmp('descricao_mc').getValue()
                             },
                             success: function(responseObject) {
                                 if(responseObject.responseText){
@@ -2856,7 +2856,8 @@ try{
 
                                 novaAba = Ext.getCmp('PainelCentral').add(viewPortCarrinho);
                                 Ext.getCmp('PainelCentral').activate(novaAba);
-                            }catch(e){
+                            }
+                            catch(e){
                                 Ext.example.msg('Erro', '{0}',e);
                             }
                         }

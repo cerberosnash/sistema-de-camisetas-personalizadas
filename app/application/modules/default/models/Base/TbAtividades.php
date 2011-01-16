@@ -24,28 +24,27 @@ abstract class Base_TbAtividades extends Doctrine_Record
         $this->setTableName('tb_atividades');
         $this->hasColumn('sq_atividade', 'integer', 4, array(
              'type' => 'integer',
-             'fixed' => 0,
+             'length' => 4,
+             'fixed' => false,
              'unsigned' => false,
              'primary' => true,
-             'autoincrement' => true,
-             'length' => '4',
+             'sequence' => 'tb_atividades_sq_atividade',
              ));
         $this->hasColumn('tx_atividade', 'string', null, array(
              'type' => 'string',
-             'fixed' => 0,
+             'fixed' => false,
              'unsigned' => false,
              'notnull' => true,
              'primary' => false,
-             'length' => '',
              ));
         $this->hasColumn('st_ativo', 'boolean', 1, array(
              'type' => 'boolean',
-             'fixed' => 0,
+             'length' => 1,
+             'fixed' => false,
              'unsigned' => false,
              'notnull' => true,
-             'default' => 'true',
+             'default' => true,
              'primary' => false,
-             'length' => '1',
              ));
     }
 

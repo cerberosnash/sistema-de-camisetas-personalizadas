@@ -26,36 +26,35 @@ abstract class Base_TbMunicipios extends Doctrine_Record
         $this->setTableName('tb_municipios');
         $this->hasColumn('sq_municipio', 'integer', 4, array(
              'type' => 'integer',
-             'fixed' => 0,
+             'length' => 4,
+             'fixed' => false,
              'unsigned' => false,
              'primary' => true,
-             'autoincrement' => true,
-             'length' => '4',
+             'sequence' => 'tb_municipios_sq_municipio',
              ));
         $this->hasColumn('sq_uf', 'integer', 4, array(
              'type' => 'integer',
-             'fixed' => 0,
+             'length' => 4,
+             'fixed' => false,
              'unsigned' => false,
              'notnull' => true,
              'primary' => false,
-             'length' => '4',
              ));
         $this->hasColumn('nm_municipio', 'string', null, array(
              'type' => 'string',
-             'fixed' => 0,
+             'fixed' => false,
              'unsigned' => false,
              'notnull' => true,
              'primary' => false,
-             'length' => '',
              ));
         $this->hasColumn('st_ativo', 'boolean', 1, array(
              'type' => 'boolean',
-             'fixed' => 0,
+             'length' => 1,
+             'fixed' => false,
              'unsigned' => false,
              'notnull' => true,
-             'default' => 'true',
+             'default' => true,
              'primary' => false,
-             'length' => '1',
              ));
     }
 
