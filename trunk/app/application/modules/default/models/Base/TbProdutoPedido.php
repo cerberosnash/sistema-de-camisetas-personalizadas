@@ -1,5 +1,4 @@
 <?php
-
 // Connection Component Binding
 Doctrine_Manager::getInstance()->bindComponent('TbProdutoPedido', 'doctrine');
 
@@ -13,70 +12,71 @@ Doctrine_Manager::getInstance()->bindComponent('TbProdutoPedido', 'doctrine');
  * @property integer $sq_produto
  * @property boolean $st_ativo
  * @property integer $nu_quantidade
- * @property TbPedidos $TbPedidos
  * @property TbProdutos $TbProdutos
+ * @property TbPedidos $TbPedidos
  * 
  * @package    ##PACKAGE##
  * @subpackage ##SUBPACKAGE##
  * @author     ##NAME## <##EMAIL##>
  * @version    SVN: $Id: Builder.php 6820 2009-11-30 17:27:49Z jwage $
  */
-abstract class Base_TbProdutoPedido extends Doctrine_Record {
-
-    public function setTableDefinition() {
+abstract class Base_TbProdutoPedido extends Doctrine_Record
+{
+    public function setTableDefinition()
+    {
         $this->setTableName('tb_produto_pedido');
         $this->hasColumn('sq_produto_pedido', 'integer', 4, array(
-            'type' => 'integer',
-            'fixed' => 0,
-            'unsigned' => false,
-            'primary' => true,
-            'autoincrement' => true,
-            'length' => '4',
-        ));
+             'type' => 'integer',
+             'length' => 4,
+             'fixed' => false,
+             'unsigned' => false,
+             'primary' => true,
+             'sequence' => 'tb_produto_pedido_sq_produto_pedido',
+             ));
         $this->hasColumn('sq_pedido', 'integer', 4, array(
-            'type' => 'integer',
-            'fixed' => 0,
-            'unsigned' => false,
-            'notnull' => true,
-            'primary' => false,
-            'length' => '4',
-        ));
+             'type' => 'integer',
+             'length' => 4,
+             'fixed' => false,
+             'unsigned' => false,
+             'notnull' => true,
+             'primary' => false,
+             ));
         $this->hasColumn('sq_produto', 'integer', 4, array(
-            'type' => 'integer',
-            'fixed' => 0,
-            'unsigned' => false,
-            'notnull' => true,
-            'primary' => false,
-            'length' => '4',
-        ));
+             'type' => 'integer',
+             'length' => 4,
+             'fixed' => false,
+             'unsigned' => false,
+             'notnull' => true,
+             'primary' => false,
+             ));
         $this->hasColumn('st_ativo', 'boolean', 1, array(
-            'type' => 'boolean',
-            'fixed' => 0,
-            'unsigned' => false,
-            'notnull' => true,
-            'default' => 'true',
-            'primary' => false,
-            'length' => '1',
-        ));
+             'type' => 'boolean',
+             'length' => 1,
+             'fixed' => false,
+             'unsigned' => false,
+             'notnull' => true,
+             'default' => true,
+             'primary' => false,
+             ));
         $this->hasColumn('nu_quantidade', 'integer', 4, array(
-            'type' => 'integer',
-            'fixed' => 0,
-            'unsigned' => false,
-            'notnull' => true,
-            'primary' => false,
-            'length' => '4',
-        ));
+             'type' => 'integer',
+             'length' => 4,
+             'fixed' => false,
+             'unsigned' => false,
+             'notnull' => true,
+             'primary' => false,
+             ));
     }
 
-    public function setUp() {
+    public function setUp()
+    {
         parent::setUp();
-        $this->hasOne('TbPedidos', array(
-            'local' => 'sq_pedido',
-            'foreign' => 'sq_pedido'));
-
         $this->hasOne('TbProdutos', array(
-            'local' => 'sq_produto',
-            'foreign' => 'sq_produto'));
-    }
+             'local' => 'sq_produto',
+             'foreign' => 'sq_produto'));
 
+        $this->hasOne('TbPedidos', array(
+             'local' => 'sq_pedido',
+             'foreign' => 'sq_pedido'));
+    }
 }

@@ -29,52 +29,50 @@ abstract class Base_TbPedidos extends Doctrine_Record
         $this->setTableName('tb_pedidos');
         $this->hasColumn('sq_pedido', 'integer', 4, array(
              'type' => 'integer',
-             'fixed' => 0,
+             'length' => 4,
+             'fixed' => false,
              'unsigned' => false,
              'primary' => true,
-             'autoincrement' => true,
-             'length' => '4',
+             'sequence' => 'tb_pedidos_sq_pedido',
              ));
         $this->hasColumn('sq_status', 'integer', 4, array(
              'type' => 'integer',
-             'fixed' => 0,
+             'length' => 4,
+             'fixed' => false,
              'unsigned' => false,
              'notnull' => true,
              'primary' => false,
-             'length' => '4',
              ));
         $this->hasColumn('sq_usuario', 'integer', 4, array(
              'type' => 'integer',
-             'fixed' => 0,
+             'length' => 4,
+             'fixed' => false,
              'unsigned' => false,
              'notnull' => true,
              'primary' => false,
-             'length' => '4',
              ));
-        $this->hasColumn('dt_pedido', 'date', 25, array(
+        $this->hasColumn('dt_pedido', 'date', null, array(
              'type' => 'date',
-             'fixed' => 0,
+             'fixed' => false,
              'unsigned' => false,
              'notnull' => true,
              'primary' => false,
-             'length' => '25',
              ));
         $this->hasColumn('vl_pedido', 'float', null, array(
              'type' => 'float',
-             'fixed' => 0,
+             'fixed' => false,
              'unsigned' => false,
              'notnull' => true,
              'primary' => false,
-             'length' => '',
              ));
         $this->hasColumn('st_ativo', 'boolean', 1, array(
              'type' => 'boolean',
-             'fixed' => 0,
+             'length' => 1,
+             'fixed' => false,
              'unsigned' => false,
              'notnull' => true,
-             'default' => 'true',
+             'default' => true,
              'primary' => false,
-             'length' => '1',
              ));
     }
 

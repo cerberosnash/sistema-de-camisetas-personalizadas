@@ -17,8 +17,8 @@ Doctrine_Manager::getInstance()->bindComponent('TbUsuarios', 'doctrine');
  * @property string $tx_endereco
  * @property string $nu_cep
  * @property boolean $st_ativo
- * @property TbMunicipios $TbMunicipios
  * @property TbPerfil $TbPerfil
+ * @property TbMunicipios $TbMunicipios
  * @property Doctrine_Collection $TbFavoritos
  * @property Doctrine_Collection $TbHistoricoAtividades
  * @property Doctrine_Collection $TbPedidos
@@ -36,97 +36,91 @@ abstract class Base_TbUsuarios extends Doctrine_Record
         $this->setTableName('tb_usuarios');
         $this->hasColumn('sq_usuario', 'integer', 4, array(
              'type' => 'integer',
-             'fixed' => 0,
+             'length' => 4,
+             'fixed' => false,
              'unsigned' => false,
              'primary' => true,
-             'autoincrement' => true,
-             'length' => '4',
+             'sequence' => 'tb_usuarios_sq_usuario',
              ));
         $this->hasColumn('sq_perfil', 'integer', 4, array(
              'type' => 'integer',
-             'fixed' => 0,
+             'length' => 4,
+             'fixed' => false,
              'unsigned' => false,
              'notnull' => true,
              'primary' => false,
-             'length' => '4',
              ));
         $this->hasColumn('sq_municipio', 'integer', 4, array(
              'type' => 'integer',
-             'fixed' => 0,
+             'length' => 4,
+             'fixed' => false,
              'unsigned' => false,
              'notnull' => true,
              'primary' => false,
-             'length' => '4',
              ));
         $this->hasColumn('nm_usuario', 'string', null, array(
              'type' => 'string',
-             'fixed' => 0,
+             'fixed' => false,
              'unsigned' => false,
              'notnull' => true,
              'primary' => false,
-             'length' => '',
              ));
         $this->hasColumn('nu_cpf', 'string', null, array(
              'type' => 'string',
-             'fixed' => 0,
+             'fixed' => false,
              'unsigned' => false,
              'notnull' => true,
              'primary' => false,
-             'length' => '',
              ));
         $this->hasColumn('tx_senha', 'string', null, array(
              'type' => 'string',
-             'fixed' => 0,
+             'fixed' => false,
              'unsigned' => false,
              'notnull' => true,
              'primary' => false,
-             'length' => '',
              ));
         $this->hasColumn('tx_email', 'string', null, array(
              'type' => 'string',
-             'fixed' => 0,
+             'fixed' => false,
              'unsigned' => false,
              'notnull' => true,
              'primary' => false,
-             'length' => '',
              ));
         $this->hasColumn('tx_endereco', 'string', null, array(
              'type' => 'string',
-             'fixed' => 0,
+             'fixed' => false,
              'unsigned' => false,
              'notnull' => true,
              'primary' => false,
-             'length' => '',
              ));
         $this->hasColumn('nu_cep', 'string', null, array(
              'type' => 'string',
-             'fixed' => 0,
+             'fixed' => false,
              'unsigned' => false,
              'notnull' => true,
              'primary' => false,
-             'length' => '',
              ));
         $this->hasColumn('st_ativo', 'boolean', 1, array(
              'type' => 'boolean',
-             'fixed' => 0,
+             'length' => 1,
+             'fixed' => false,
              'unsigned' => false,
              'notnull' => true,
-             'default' => 'true',
+             'default' => true,
              'primary' => false,
-             'length' => '1',
              ));
     }
 
     public function setUp()
     {
         parent::setUp();
-        $this->hasOne('TbMunicipios', array(
-             'local' => 'sq_municipio',
-             'foreign' => 'sq_municipio'));
-
         $this->hasOne('TbPerfil', array(
              'local' => 'sq_perfil',
              'foreign' => 'sq_perfil'));
+
+        $this->hasOne('TbMunicipios', array(
+             'local' => 'sq_municipio',
+             'foreign' => 'sq_municipio'));
 
         $this->hasMany('TbFavoritos', array(
              'local' => 'sq_usuario',

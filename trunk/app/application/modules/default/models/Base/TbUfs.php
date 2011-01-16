@@ -25,36 +25,34 @@ abstract class Base_TbUfs extends Doctrine_Record
         $this->setTableName('tb_ufs');
         $this->hasColumn('sq_uf', 'integer', 4, array(
              'type' => 'integer',
-             'fixed' => 0,
+             'length' => 4,
+             'fixed' => false,
              'unsigned' => false,
              'primary' => true,
-             'autoincrement' => true,
-             'length' => '4',
+             'sequence' => 'tb_ufs_sq_uf',
              ));
         $this->hasColumn('nm_uf', 'string', null, array(
              'type' => 'string',
-             'fixed' => 0,
+             'fixed' => false,
              'unsigned' => false,
              'notnull' => true,
              'primary' => false,
-             'length' => '',
              ));
         $this->hasColumn('st_ativo', 'boolean', 1, array(
              'type' => 'boolean',
-             'fixed' => 0,
+             'length' => 1,
+             'fixed' => false,
              'unsigned' => false,
              'notnull' => true,
-             'default' => 'true',
+             'default' => true,
              'primary' => false,
-             'length' => '1',
              ));
         $this->hasColumn('sg_uf', 'string', null, array(
              'type' => 'string',
-             'fixed' => 1,
+             'fixed' => true,
              'unsigned' => false,
              'notnull' => true,
              'primary' => false,
-             'length' => '',
              ));
     }
 

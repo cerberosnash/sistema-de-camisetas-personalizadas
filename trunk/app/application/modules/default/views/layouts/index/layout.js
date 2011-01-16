@@ -9,7 +9,7 @@ try{
 
         constructor: function(){
 
-            var urlAutenticacao = '/camisetas/autenticacao/autenticar';
+            var controlerAutenticacao = '/camisetas/autenticacao/autenticar';
             var urlRecuperarSenha = '/camisetas/autenticacao/recuperar';
             var urlGeradorCamisetas = "/camisetas/outros/png-1.0/camiseta.php?imagem=";
             var urlEstados = "/camisetas/outros/png-1.0/estados.php";
@@ -25,7 +25,7 @@ try{
             var urlMinhaCamiseta = '/camisetas/outros/png-1.0/minha_camiseta.php';
             var urlLogoff = '/camisetas/logoff';
             var urlCorMinhaCamiseta = '/camisetas/outros/png-1.0/cor.php';
-            var urlSalvarMinhaCamiseta = '/camisetas/favorito/adicionar';
+            var controllerFavoritos = '/camisetas/favoritos/';
             var urlMostrarMinhaCamiseta = '/camisetas/outros/png-1.0/mostrar_camiseta.php';
             var urlAguarde = '/camisetas/outros/png-1.0/aguarde.php';
             var urlValidarRecorte = '/camisetas/outros/png-1.0/validar_recorte.php';
@@ -990,7 +990,7 @@ try{
                     var conn = new Ext.data.Connection();
                     var data = null;
                     conn.request({
-                        url: urlAutenticacao,
+                        url: controlerAutenticacao,
                         method: 'POST',
                         params: {
                             email : Ext.getCmp('aEmail').getValue(),
@@ -1110,7 +1110,7 @@ try{
             var tplVisualizacao = new Ext.XTemplate(
                 '<div class="details">',
                 '<tpl for=".">',
-                '<img alt="carregando..." width="300" height="279" src="/camisetas/outros/png-1.0/camiseta.php?imagem={sq_produto}&cor={co_produto}&tamanho=300"/>',
+                '<img alt="carregando..." width="300" height="279" src="/camisetas/outros/png-1.0/camiseta.php?imagem={hs_produto}&cor={co_produto}&tamanho=300"/>',
                 '<b>Codigo: </b>',
                 '<span>{sq_produto}</span>',
                 '<b>Nome: </b>',
@@ -1248,7 +1248,7 @@ try{
                 '<ul>',
                 '<tpl for=".">',
                 '<li class="camiseta">',
-                '<img src="'+urlGeradorCamisetas+'{sq_produto}&cor={co_produto}&tamanho=200" />',
+                '<img src="'+urlGeradorCamisetas+'{hs_produto}&cor={co_produto}&tamanho=200" />',
                 '<strong>{nm_produto}</strong>',
                 '<span>{vl_produto:brMoney}</span>',
                 '</li>',
@@ -1270,7 +1270,7 @@ try{
                     start:0,
                     limit:20
                 },
-                fields: ['sq_produto','nm_produto','co_produto','ds_produto','tm_produto',{
+                fields: ['sq_produto','nm_produto','co_produto','ds_produto','tm_produto','hs_produto',{
                     name:'vl_produto',
                     type: 'float'
                 }],
@@ -1337,22 +1337,27 @@ try{
                 remoteSort: true,
                 autoDestroy: true,
                 baseParams:{
-                    acao: 'carregar'
+                    query: '',
+                    tamanho: '',
+                    cor: '',
+                    preco_max: '9.99',
+                    preco_min: '99.99',
+                    start:0,
+                    limit:20
                 },
-                fields: ['id','nome','cor','descricao','tamanho','vendidas','criacao', {
-                    name:'valor',
+                fields: ['sq_produto','nm_produto','co_produto','ds_produto','tm_produto','hs_produto',{
+                    name:'vl_produto',
                     type: 'float'
                 }],
                 proxy: new Ext.data.HttpProxy({
                     method: 'post',
-                    url: urlFavoritos
+                    url: controllerFavoritos + 'carregar'
                 })
             });
         
-            storeFavoritos.setDefaultSort('id', 'desc');
+            storeFavoritos.setDefaultSort('sq_produto', 'desc');
             storeFavoritos.load({
                 params:{
-                    acao: 'carregar',
                     start:0,
                     limit:20
                 }
@@ -1386,11 +1391,10 @@ try{
             var AtualizarDataViewFavoritos = function(){
                 storeFavoritos.load({
                     params: {
-                        acao: 'carregar',
                         start: 0,
                         limit: 20,
                         dir: 'desc',
-                        sort: 'id',
+                        sort: 'sq_produto',
                         query: Ext.getCmp('fr_query').getValue(),
                         preco_max: Ext.getCmp('fr_preco_max').getValue(),
                         preco_min: Ext.getCmp('fr_preco_min').getValue(),
@@ -2009,7 +2013,7 @@ try{
                             resizable: false,
                             iconCls: 'silk-add',
                             layout:'fit',
-                            title: selNode[0].data.nome,
+                            title: selNode[0].data.nm_produto,
                             width:650,
                             height:650,
                             modal: true,
@@ -2018,7 +2022,7 @@ try{
                             items: new Ext.Panel({
                                 deferredRender:false,
                                 border:false,
-                                html: '<img alt="carregando..." width="650" height="604" src="/camisetas/outros/png-1.0/camiseta.php?imagem='+selNode[0].data.id+'&cor='+selNode[0].data.cor+'&tamanho=650"/>'
+                                html: '<img alt="carregando..." width="650" height="604" src="/camisetas/outros/png-1.0/camiseta.php?imagem='+selNode[0].data.hs_produto+'&cor='+selNode[0].data.co_produto+'&tamanho=650"/>'
                             }),
                             buttons: []
                         });
@@ -2030,8 +2034,8 @@ try{
                             tplVisualizacao.overwrite(painelVisualizacaoFavoritos.body, selNode[0].data);
                             Ext.getCmp('btnDelFavorito').enable();
                             Ext.getCmp('btnAddFavCarrinho').enable();
-                            Ext.getCmp('btnAddFavCarrinho').value = selNode[0].data.id;
-                            Ext.getCmp('btnDelFavorito').value = selNode[0].data.id;
+                            Ext.getCmp('btnAddFavCarrinho').value = selNode[0].data.sq_produto;
+                            Ext.getCmp('btnDelFavorito').value = selNode[0].data.sq_produto;
                         }catch(e){
                             Ext.example.msg('Erro', '{0}',e);
                         }
@@ -2132,13 +2136,13 @@ try{
                         var conn = new Ext.data.Connection();
                         var data = null;
                         conn.request({
-                            url: urlSalvarMinhaCamiseta,
+                            url: controllerFavoritos + 'criar',
                             method: 'POST',
                             params: {
-                                cor: Ext.getCmp('cor_mc').getValue(),
-                                tamanho: Ext.getCmp('tamanho_mc').getValue(),
-                                nome: Ext.getCmp('nome_mc').getValue(),
-                                descricao: Ext.getCmp('descricao_mc').getValue()
+                                co_produto: Ext.getCmp('cor_mc').getValue(),
+                                tm_produto: Ext.getCmp('tamanho_mc').getValue(),
+                                nm_produto: Ext.getCmp('nome_mc').getValue(),
+                                ds_produto: Ext.getCmp('descricao_mc').getValue()
                             },
                             success: function(responseObject) {
                                 if(responseObject.responseText){
@@ -2146,14 +2150,8 @@ try{
                                         data = eval(responseObject.responseText);
                                         if(data.success===true && data.id){
                                             Ext.example.msg('Salvando', 'Camiseta {0} salva com sucesso',data.id);
-                                            Ext.example.msg('Noticia', 'A Camiseta {0} agpra estara nos seus favoritos',data.id);
-                                            storeFavoritos.load({
-                                                params:{
-                                                    acao: 'carregar',
-                                                    start: 0,
-                                                    limit: 20
-                                                }
-                                            });
+                                            Ext.example.msg('Noticia', 'A Camiseta {0} agora estara nos seus favoritos',data.id);
+                                            AtualizarDataViewFavoritos();
                                             Ext.get('iMinhaCamiseta').dom.src = urlMinhaCamiseta + '?t=' + new Date().getTime()+Math.random(0,9999);
 
                                             Ext.getCmp('salvar_mc').disable();
@@ -2197,11 +2195,10 @@ try{
                     var conn = new Ext.data.Connection();
                     var data = null;
                     conn.request({
-                        url: urlFavoritos,
+                        url: controllerFavoritos + 'adicionar',
                         method: 'POST',
                         params: {
-                            acao: 'adicionar',
-                            id: id
+                            sq_produto: id
                         },
                         success: function(responseObject) {
                             if(responseObject.responseText){
@@ -2209,13 +2206,7 @@ try{
                                     data = eval(responseObject.responseText);
                                     if(data.success===true){
                                         Ext.example.msg('Acao', 'Favorito adicionado com sucesso');
-                                        storeFavoritos.load({
-                                            params:{
-                                                acao: 'carregar',
-                                                start: 0,
-                                                limit: 20
-                                            }
-                                        });
+                                        AtualizarDataViewFavoritos();
 
                                     }else{
                                         Ext.example.msg('Erro', 'Falha ao adicionar ao favorito');
@@ -2244,11 +2235,10 @@ try{
                                 var conn = new Ext.data.Connection();
                                 var data = null;
                                 conn.request({
-                                    url: urlFavoritos,
+                                    url: controllerFavoritos + 'remover',
                                     method: 'POST',
                                     params: {
-                                        acao: 'remover',
-                                        id: id
+                                        sq_produto: id
                                     },
                                     success: function(responseObject) {
                                         if(responseObject.responseText){
@@ -2256,11 +2246,7 @@ try{
                                                 data = eval(responseObject.responseText);
                                                 if(data.success===true){
                                                     Ext.example.msg('Acao', 'Favorito removido com sucesso');
-                                                    storeFavoritos.load({
-                                                        params:{
-                                                            acao: 'carregar'
-                                                        }
-                                                    });
+                                                    AtualizarDataViewFavoritos();
 
                                                 }else{
                                                     Ext.example.msg('Erro', 'Falha ao remover favorito');
@@ -2655,7 +2641,7 @@ try{
                             items: new Ext.Panel({
                                 deferredRender:false,
                                 border:false,
-                                html: '<img alt="carregando..." width="650" height="604" src="/camisetas/outros/png-1.0/camiseta.php?imagem='+selNode[0].data.sq_produto+'&cor='+selNode[0].data.co_produto+'&tamanho=650"/>'
+                                html: '<img alt="carregando..." width="650" height="604" src="/camisetas/outros/png-1.0/camiseta.php?imagem='+selNode[0].data.hs_produto+'&cor='+selNode[0].data.co_produto+'&tamanho=650"/>'
                             }),
                             buttons: []
                         });
