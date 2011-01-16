@@ -30,7 +30,9 @@ try{
             var urlAguarde = '/camisetas/outros/png-1.0/aguarde.php';
             var urlValidarRecorte = '/camisetas/outros/png-1.0/validar_recorte.php';
             var urlAlteracaoCliente = '/camisetas/outros/png-1.0/alteracao_cliente.php';
-          
+
+            /*DataStores - Inicio*/
+
             var storeEstados = new Ext.data.JsonStore({
                 root: 'estados',
                 totalProperty: 'totalCount',
@@ -94,6 +96,15 @@ try{
                 })
             });
 
+            storePedidos.on('loadexception',function(a,b,c){
+                var data = eval(c.responseText);
+                if(data.success===false){
+                    alert('[Error]\n[storePedidos]\n['+data.error+']');
+                }else{
+                    alert('[Error]\n[storePedidos]\n[Erro desconhecido.]');
+                }
+            });
+
             storePedidos.on('load',function(store){
                 if(parseInt(store.reader.jsonData.totalCount)>0){
                     Ext.getCmp('btnBoletos').enable();
@@ -103,6 +114,171 @@ try{
             });
 
             storePedidos.load();
+
+            var storeTamanhosCamisetas = new Ext.data.ArrayStore({
+                fields: ['mValor', 'vValor'],
+                data : [
+                ['Todos', ''],
+                ['Pequena', 'P'],
+                ['Media', 'M'],
+                ['Grande', 'G']
+                ]
+            });
+
+            var storeValoresCamisetas = new Ext.data.ArrayStore({
+                fields: ['mValor', 'vValor'],
+                data : [
+                ['R$ 9.99', '9.99'],
+                ['R$ 19.99', '19.99'],
+                ['R$ 29.99', '29.99'],
+                ['R$ 39.99', '39.99'],
+                ['R$ 49.99', '49.99'],
+                ['R$ 59.99', '59.99'],
+                ['R$ 69.99', '69.99'],
+                ['R$ 79.99', '79.99'],
+                ['R$ 89.99', '89.99'],
+                ['R$ 99.99', '99.99']
+                ]
+            });
+
+            var storeBancos = new Ext.data.ArrayStore({
+                fields: ['mValor', 'vValor'],
+                data : [
+                ['Banco do Brasil', 'BB'],
+                ['Banco Itau', 'BI'],
+                ['Banco Santander', 'BS'],
+                ['UniBanco', 'UB'],
+                ['Caixa Economica Federal', 'CE'],
+                ['Banco Real', 'BR'],
+                ['Banco HSBC', 'HS'],
+                ]
+            });
+
+            var storeCamisetas = new Ext.data.JsonStore({
+                root: 'images',
+                totalProperty: 'totalCount',
+                idProperty: 'sq_produto',
+                remoteSort: true,
+                autoDestroy: true,
+                baseParams:{
+                    query: '',
+                    tamanho: '',
+                    cor: '',
+                    preco_max: '9.99',
+                    preco_min: '99.99',
+                    start:0,
+                    limit:20
+                },
+                fields: ['sq_produto','nm_produto','co_produto','ds_produto','tm_produto','hs_produto',{
+                    name:'vl_produto',
+                    type: 'float'
+                }],
+                proxy: new Ext.data.HttpProxy({
+                    method: 'post',
+                    url: urlGaleriaCamisetas
+                })
+            });
+
+            storeCamisetas.setDefaultSort('sq_produto', 'desc');
+            storeCamisetas.load();
+
+            var storeCarrinho = new Ext.data.JsonStore({
+                root: 'images',
+                totalProperty: 'totalCount',
+                idProperty: 'id',
+                remoteSort: true,
+                autoDestroy: true,
+                fields: ['id','nome','cor','descricao','tamanho','quantidade', {
+                    name:'valor',
+                    type: 'float'
+                }],
+                proxy: new Ext.data.HttpProxy({
+                    method: 'post',
+                    url: controllerCarrinho + 'carregar'
+                })
+            });
+
+            storeCarrinho.load({
+                params:{
+                    // acao: 'carregar',
+                    start:0,
+                    limit:20
+                }
+            });
+
+            storeCarrinho.on('load',function(store){
+                if(parseInt(store.reader.jsonData.totalCount)>0){
+                    Ext.getCmp('btnCarrinho').enable();
+                    if(parseFloat(store.reader.jsonData.totalCarrinho)>0){
+                        Ext.getCmp('txTotalCarrinho').setText('Total: R$'+parseFloat(store.reader.jsonData.totalCarrinho));
+                        Ext.getCmp('btnFinalizarCarrinho').enable();
+                    }else{
+                        Ext.getCmp('txTotalCarrinho').setText('Total: R$0.00');
+                        Ext.getCmp('btnFinalizarCarrinho').disable();
+                        Ext.getCmp('btnRemoverCarrinho').disable();
+                        Ext.getCmp('QtdCarrinho').disable();
+                        Ext.getCmp('btnQtdCarrinho').disable();
+                    }
+                }else{
+                    Ext.getCmp('btnCarrinho').disable();
+                    Ext.getCmp('txTotalCarrinho').setText('Total: R$0.00');
+                    Ext.getCmp('btnFinalizarCarrinho').disable();
+                }
+            });
+
+            var storeFavoritos = new Ext.data.JsonStore({
+                root: 'images',
+                totalProperty: 'totalCount',
+                idProperty: 'id',
+                remoteSort: true,
+                autoDestroy: true,
+                baseParams:{
+                    query: '',
+                    tamanho: '',
+                    cor: '',
+                    preco_max: '9.99',
+                    preco_min: '99.99',
+                    start:0,
+                    limit:20
+                },
+                fields: ['sq_produto','nm_produto','co_produto','ds_produto','tm_produto','hs_produto',{
+                    name:'vl_produto',
+                    type: 'float'
+                }],
+                proxy: new Ext.data.HttpProxy({
+                    method: 'post',
+                    url: controllerFavoritos + 'carregar'
+                })
+            });
+
+            storeFavoritos.setDefaultSort('sq_produto', 'desc');
+
+            storeFavoritos.on('load',function(store){
+                if(store.reader.jsonData.success===true){
+                    if(parseInt(store.reader.jsonData.totalCount)>0){
+                        Ext.getCmp('btnFavoritos').enable();
+                    }else{
+                        Ext.getCmp('btnFavoritos').disable();
+                    }
+                }
+            });
+
+            storeFavoritos.on('loadexception',function(a,b,c){
+                var data = eval(c.responseText);
+                if(data.success===false){
+                    alert('[Error]\n[storeFavoritos]\n['+data.error+']');
+                }else{
+                    if(parseInt(c.reader.jsonData.totalCount)>0){
+                        Ext.getCmp('btnFavoritos').enable();
+                    }else{
+                        Ext.getCmp('btnFavoritos').disable();
+                    }
+                }
+            });
+
+            storeFavoritos.load();
+
+            /*DataStores - Fim*/
 
             function Logoff(btn){
                 if(btn=='yes'){
@@ -119,16 +295,6 @@ try{
                             var i = v/count;
                             pbar.updateProgress(i, Math.round(100*i)+'% Carregados...');
                             if(Math.round(100*i)==100){
-                                //                             //   windowAutenticacao.hide();
-                                //                                //                                Ext.getCmp('btnAutenticacao').hide();
-                                //                                //                                Ext.getCmp('btnCadastro').hide();
-                                //                                //                                Ext.getCmp('btnFavoritos').show();
-                                //                                //                                Ext.getCmp('btnBoletos').show();
-                                //                                //                                Ext.getCmp('btnCarrinho').show();
-                                //                                //                                Ext.getCmp('btnPerfil').show();
-                                //                                //                                Ext.getCmp('btnSair').show();
-                                //                                pbar.destroy();
-                                //                                btn.disabled = false;
                                 window.location = url;
                             }
                         }
@@ -234,11 +400,8 @@ try{
                                     try{
                                         data = eval(responseObject.responseText);
                                         if(data[0].success===true){
-                                        //var t = new Date().getTime();
-                                        //Ext.example.msg('Security', data[0].code);
-                                        // codeCaptcha = data[0].code;
-                                        // Ext.example.msg('codeCaptcha', codeCaptcha);
-                                        }else{
+                                        }
+                                        else{
                                             Ext.example.msg('Erro', 'Falha na autenticação');
                                         }
                                     }catch(e){
@@ -282,7 +445,6 @@ try{
                                     Ext.getCmp('acEndereco').setValue(data.cliente.endereco);
                                     Ext.getCmp('acEmail').setValue(data.cliente.email);
                                     Ext.getCmp('acSenha').setValue(data.cliente.senha);
-              
                                 }else{
                                     Ext.example.msg('Erro', 'Falha na autenticação');
                                 }
@@ -1205,45 +1367,6 @@ try{
                 bbar: bbarRemoverFavoritos
             });
 
-            var storeTamanhosCamisetas = new Ext.data.ArrayStore({
-                fields: ['mValor', 'vValor'],
-                data : [
-                ['Todos', ''],
-                ['Pequena', 'P'],
-                ['Media', 'M'],
-                ['Grande', 'G']
-                ]
-            });
-
-            var storeValoresCamisetas = new Ext.data.ArrayStore({
-                fields: ['mValor', 'vValor'],
-                data : [
-                ['R$ 9.99', '9.99'],
-                ['R$ 19.99', '19.99'],
-                ['R$ 29.99', '29.99'],
-                ['R$ 39.99', '39.99'],
-                ['R$ 49.99', '49.99'],
-                ['R$ 59.99', '59.99'],
-                ['R$ 69.99', '69.99'],
-                ['R$ 79.99', '79.99'],
-                ['R$ 89.99', '89.99'],
-                ['R$ 99.99', '99.99']
-                ]
-            });
-
-            var storeBancos = new Ext.data.ArrayStore({
-                fields: ['mValor', 'vValor'],
-                data : [
-                ['Banco do Brasil', 'BB'],
-                ['Banco Itau', 'BI'],
-                ['Banco Santander', 'BS'],
-                ['UniBanco', 'UB'],
-                ['Caixa Economica Federal', 'CE'],
-                ['Banco Real', 'BR'],
-                ['Banco HSBC', 'HS'],
-                ]
-            });
-
             var tplCamisetas = new Ext.XTemplate(
                 '<ul>',
                 '<tpl for=".">',
@@ -1254,123 +1377,6 @@ try{
                 '</li>',
                 '</tpl>',
                 '</ul>');
-
-            var storeCamisetas = new Ext.data.JsonStore({
-                root: 'images',
-                totalProperty: 'totalCount',
-                idProperty: 'sq_produto',
-                remoteSort: true,
-                autoDestroy: true,
-                baseParams:{
-                    query: '',
-                    tamanho: '',
-                    cor: '',
-                    preco_max: '9.99',
-                    preco_min: '99.99',
-                    start:0,
-                    limit:20
-                },
-                fields: ['sq_produto','nm_produto','co_produto','ds_produto','tm_produto','hs_produto',{
-                    name:'vl_produto',
-                    type: 'float'
-                }],
-                proxy: new Ext.data.HttpProxy({
-                    method: 'post',
-                    url: urlGaleriaCamisetas
-                })
-            });
-            
-            storeCamisetas.setDefaultSort('sq_produto', 'desc');
-            storeCamisetas.load();
-
-            var storeCarrinho = new Ext.data.JsonStore({
-                root: 'images',
-                totalProperty: 'totalCount',
-                idProperty: 'id',
-                remoteSort: true,
-                //                baseParams:{
-                //                    acao: 'carregar'
-                //                },
-                autoDestroy: true,
-                fields: ['id','nome','cor','descricao','tamanho','quantidade', {
-                    name:'valor',
-                    type: 'float'
-                }],
-                proxy: new Ext.data.HttpProxy({
-                    method: 'post',
-                    url: controllerCarrinho + 'carregar'
-                })
-            });
-
-            storeCarrinho.load({
-                params:{
-                    // acao: 'carregar',
-                    start:0,
-                    limit:20
-                }
-            });
-
-            storeCarrinho.on('load',function(store){
-                if(parseInt(store.reader.jsonData.totalCount)>0){
-                    Ext.getCmp('btnCarrinho').enable();
-                    if(parseFloat(store.reader.jsonData.totalCarrinho)>0){
-                        Ext.getCmp('txTotalCarrinho').setText('Total: R$'+parseFloat(store.reader.jsonData.totalCarrinho));
-                        Ext.getCmp('btnFinalizarCarrinho').enable();
-                    }else{
-                        Ext.getCmp('txTotalCarrinho').setText('Total: R$0.00');
-                        Ext.getCmp('btnFinalizarCarrinho').disable();
-                        Ext.getCmp('btnRemoverCarrinho').disable();
-                        Ext.getCmp('QtdCarrinho').disable();
-                        Ext.getCmp('btnQtdCarrinho').disable();
-                    }
-                }else{
-                    Ext.getCmp('btnCarrinho').disable();
-                    Ext.getCmp('txTotalCarrinho').setText('Total: R$0.00');
-                    Ext.getCmp('btnFinalizarCarrinho').disable();
-                }
-            });
-
-            var storeFavoritos = new Ext.data.JsonStore({
-                root: 'images',
-                totalProperty: 'totalCount',
-                idProperty: 'id',
-                remoteSort: true,
-                autoDestroy: true,
-                baseParams:{
-                    query: '',
-                    tamanho: '',
-                    cor: '',
-                    preco_max: '9.99',
-                    preco_min: '99.99',
-                    start:0,
-                    limit:20
-                },
-                fields: ['sq_produto','nm_produto','co_produto','ds_produto','tm_produto','hs_produto',{
-                    name:'vl_produto',
-                    type: 'float'
-                }],
-                proxy: new Ext.data.HttpProxy({
-                    method: 'post',
-                    url: controllerFavoritos + 'carregar'
-                })
-            });
-        
-            storeFavoritos.setDefaultSort('sq_produto', 'desc');
-            storeFavoritos.load({
-                params:{
-                    start:0,
-                    limit:20
-                }
-            });
-
-            storeFavoritos.on('load',function(store){
-                if(parseInt(store.reader.jsonData.totalCount)>0){
-                    Ext.getCmp('btnFavoritos').enable();
-                }else{
-                    Ext.getCmp('btnFavoritos').disable();
-                }
-            });
-    
 
             var AtualizarDataViewCamisetas = function(){
                 storeCamisetas.load({
@@ -2280,9 +2286,6 @@ try{
                             conn.request({
                                 url: controllerCarrinho + 'finalizar',
                                 method: 'POST',
-                                //                                params: {
-                                //                                    acao: 'finalizar'
-                                //                                },
                                 success: function(responseObject) {
                                     if(responseObject.responseText){
                                         try{

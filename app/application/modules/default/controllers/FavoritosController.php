@@ -60,11 +60,12 @@ class FavoritosController extends Base_Controller_Action {
         if ($this->getRequest()->isPost()) {
             if ($this->_getParam('sq_produto') && $this->_autenticacao->usuario->sq_usuario) {
                 try {
-                    $favorito = new TbFavoritos();
-                    $favorito->sq_produto = $this->_getParam('sq_produto');
-                    $favorito->sq_usuario = $this->_autenticacao->usuario->sq_usuario;
-                    $favorito->save();
-                    $out = array(success => true, id => $this->_getParam('sq_produto'));
+                    $rows = Doctrine_Core::getTable('TbFavoritos')->adicionar($this->_autenticacao->usuario->sq_usuario, $this->_getParam('sq_produto'));
+                    if ($rows > 0) {
+                        $out = array(success => true, id => $this->_getParam('sq_produto'));
+                    } else {
+                        $out = array(success => false);
+                    }
                 } catch (Doctrine_Exception $e) {
                     $out = array(success => false, error => $e);
                 }
@@ -76,23 +77,23 @@ class FavoritosController extends Base_Controller_Action {
     }
 
     public function removerAction() {
-        //if (!$this->getRequest()->isPost()) {
-        if ($this->_getParam('sq_produto') && $this->_autenticacao->usuario->sq_usuario) {
-            try {
-                $rows = Doctrine_Core::getTable('TbFavoritos')->remover($this->_autenticacao->usuario->sq_usuario, $this->_getParam('sq_produto'));
-                if ($rows > 0) {
-                    $out = array(success => true, id => $this->_getParam('sq_produto'));
-                } else {
-                    $out = array(success => false);
+        if ($this->getRequest()->isPost()) {
+            if ($this->_getParam('sq_produto') && $this->_autenticacao->usuario->sq_usuario) {
+                try {
+                    $rows = Doctrine_Core::getTable('TbFavoritos')->remover($this->_autenticacao->usuario->sq_usuario, $this->_getParam('sq_produto'));
+                    if ($rows > 0) {
+                        $out = array(success => true, id => $this->_getParam('sq_produto'));
+                    } else {
+                        $out = array(success => false);
+                    }
+                } catch (Doctrine_Exception $e) {
+                    $out = array(success => false, error => $e);
                 }
-            } catch (Doctrine_Exception $e) {
-                $out = array(success => false, error => $e);
+            } else {
+                $out = array(success => false, error => 'Erro nos parametros.');
             }
-        } else {
-            $out = array(success => false, error => 'Erro nos parametros.');
+            $this->_prepareJson($out);
         }
-        $this->_prepareJson($out);
-        //  }
     }
 
 }
