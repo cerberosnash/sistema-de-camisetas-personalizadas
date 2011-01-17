@@ -1,4 +1,4 @@
-//Ext.state.Manager.setProvider(new Ext.state.CookieProvider());
+﻿//Ext.state.Manager.setProvider(new Ext.state.CookieProvider());
 Ext.form.Field.prototype.msgTarget = 'side';
 Ext.namespace('App.Default.Layout.Cliente');
 Ext.QuickTips.init();

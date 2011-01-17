@@ -8,6 +8,8 @@ class CarrinhoController extends Base_Controller_Action {
         $this->_helper->layout->disableLayout();
         $this->_helper->viewRenderer->setNoRender();
         $this->startCarrinho();
+        /* debuggar */
+        $this->_autenticacao->usuario->sq_usuario = 1;
     }
 
     private function startCarrinho() {
@@ -15,70 +17,38 @@ class CarrinhoController extends Base_Controller_Action {
     }
 
     public function carregarAction() {
-
-        $path = "../outros/png-1.0/uploads/";
-        $d = dir($path);
-
-        $tamanho[0] = 'Pequena';
-        $tamanho[1] = 'Media';
-        $tamanho[2] = 'Grande';
-
-        $camisetas = array(
-            '000000', //preto
-            '1bbc81', //verde-limao
-            '34a4c4', //verde-claro
-            '171c46', //azul-escuro
-            '344ca3', //azul-claro
-            '520b0b', //marron
-            '174621', //verde-escuro
-            '717171', //cinza
-            'a7bc1b', //amarelo-limao
-            'a3346b', //rosa
-            'a33434', //vermelho-suave
-            'd83200', //laranja
-            'f6d600', //amarelo
-            'f60000', //vermelho
-            'ffffff', //branco
-        );
-
-        $cont = 0;
-        // $images = null;
-        while ($name = $d->read()) {
-            if (!preg_match('/\.(jpg|gif|png)$/', $name)) {
-                continue;
+        try {
+            $images = array(); //corrige o bug que ExtJs que processa uma chave do json nula
+            $cont = 0; //corrige o bug que ExtJs que processa uma chave do json nula
+            $find = array();
+            if (count($this->carrinho->camiseta) > 0) {
+                foreach ($this->carrinho->camiseta as $key => $value) {
+                    $current = Doctrine_Core::getTable('TbProdutos')->findBy('sq_produto', $this->carrinho->camiseta[$key]->sq_produto)->toArray();
+                    $current[0]['qt_produto'] = $this->carrinho->camiseta[$key]->nu_quantidade;
+                    $this->carrinho->camiseta[$key]->vl_produto = $current[0]['vl_produto'];
+                    $temp = array(
+                        sq_produto => $current[0]['sq_produto'],
+                        ds_produto => $current[0]['ds_produto'],
+                        nm_produto => $current[0]['nm_produto'],
+                        vl_produto => $current[0]['vl_produto'],
+                        tm_produto => $current[0]['tm_produto'],
+                        co_produto => $current[0]['co_produto'],
+                        hs_produto => $current[0]['hs_produto'],
+                        qt_produto => $current[0]['qt_produto']
+                    );
+                    $images[$cont] = array_merge($find, $temp);
+                    $cont++;
+                }
             }
-            $id = substr($name, 0, 32);
-
-            $size = filesize($path . $name);
-            $lastmod = filemtime($path . $name) * 1000;
-            if ($cont <= $this->_getParam('limit') && $this->carrinho->camiseta[$id]->id) {
-                $cont++;
-                $q = $this->carrinho->camiseta[$id]->quantidade ? $this->carrinho->camiseta[$id]->quantidade : 1;
-                $images[] = array(
-                    'id' => $id,
-                    'nome' => $id,
-                    'tamanho' => $tamanho[rand(0, 2)],
-                    'cor' => $camisetas[rand(0, 13)],
-                    'valor' => rand(24, 49) . '.99',
-                    'quantidade' => $q,
-                    'descricao' => md5(rand())
-                );
-            }
+            $out = array(totalCount => $cont, totalCarrinho => $this->valorTotal(), images => $images);
+        } catch (Doctrine_Exception $e) {
+            $out = array(success => false, error => $e);
         }
-
-        if ($cont == 0) {
-            $images = '';
-        }
-
-        $d->close();
-        $out = array('totalCount' => $cont, 'totalCarrinho' => $this->valorTotal(), 'images' => $images);
         $this->_prepareJson($out);
     }
 
     public function adicionarAction() {
-
         if ($this->getRequest()->isPost() && $this->_getParam('sq_produto')) {
-
             if ($this->carrinho->camiseta[$this->_getParam('sq_produto')]->sq_produto) {
                 $this->carrinho->camiseta[$this->_getParam('sq_produto')]->sq_produto = $this->_getParam('sq_produto');
                 $this->carrinho->camiseta[$this->_getParam('sq_produto')]->nu_quantidade++;
@@ -86,9 +56,8 @@ class CarrinhoController extends Base_Controller_Action {
                 $this->carrinho->camiseta[$this->_getParam('sq_produto')]->sq_produto = $this->_getParam('sq_produto');
                 $this->carrinho->camiseta[$this->_getParam('sq_produto')]->nu_quantidade = 1;
             }
-
-            $out = array('success' => true, 'id' => $this->carrinho->camiseta[$this->_getParam('sq_produto')]->sq_produto,
-                'quantidade' => $this->carrinho->camiseta[$this->_getParam('sq_produto')]->nu_quantidade);
+            $out = array(success => true, id => $this->carrinho->camiseta[$this->_getParam('sq_produto')]->sq_produto,
+                quantidade => $this->carrinho->camiseta[$this->_getParam('sq_produto')]->nu_quantidade);
         } else {
             $out = array(
                 success => false,
@@ -99,61 +68,67 @@ class CarrinhoController extends Base_Controller_Action {
     }
 
     public function removerAction() {
-        if ($this->_getParam('id')) {
+        if ($this->_getParam('sq_produto')) {
             unset($this->carrinho->camiseta[$this->_getParam('sq_produto')]);
-            $out = array('success' => true, 'id' => $this->_getParam('sq_produto'));
+            $out = array(success => true, id => $this->_getParam('sq_produto'));
         } else {
-            $out = array('success' => false);
+            $out = array(success => false);
         }
         $this->_prepareJson($out);
     }
 
     public function finalizarAction() {
-        //implementar metodo que persiste o carrinho
+        $error = false;
+        try {
+            if (count($this->carrinho->camiseta) > 0) {
 
-        $pedido = new TbProdutoPedido();
-        $pedido->sq_pedido = 1;
-        $pedido->sq_produto = 1;
-        //$pedido->sq_produto_pedido = 1;
-        $pedido->nu_quantidade = 1;
-        $pedido->save();
+                $conn = Doctrine_Manager::connection();
+                $conn->beginTransaction();
 
-//        foreach ($this->carrinho->camiseta as $pedidos) {
-//
-//$temp = (array)$pedidos;
-//$temp[nu_quantidade] = 1;
-////$pedidos[nu_quantidade] = 1;
-//            $pedido = new TbProdutoPedido();
-//           // $pedido->nu_quantidade = 1;
-//            $pedido->fromArray($temp);
-//            $pedido->save();
-//        }
+                $pedido = new TbPedidos();
+                $pedido->sq_status = 1;
+                $pedido->sq_usuario = $this->_autenticacao->usuario->sq_usuario;
+                $pedido->vl_pedido = $this->valorTotal();
+                $pedido->save();
 
-        if (true) {
+                foreach ($this->carrinho->camiseta as $key => $value) {
+                    $produto = new TbProdutoPedido();
+                    $produto->sq_pedido = $pedido->sq_pedido;
+                    $produto->sq_produto = $this->carrinho->camiseta[$key]->sq_produto;
+                    $produto->nu_quantidade = $this->carrinho->camiseta[$key]->nu_quantidade;
+                    $produto->save();
+                }
+                $conn->commit();
+            }
+        } catch (Doctrine_Exception $e) {
+            $conn->rollback();
+            $error = false;
+        }
+
+        if (!$error) {
             unset($this->carrinho->camiseta);
-            $out = array('success' => true);
+            $out = array(success => true);
         } else {
-            $out = array('success' => false);
+            $out = array(success => false);
         }
         $this->_prepareJson($out);
     }
 
     public function quantidadeAction() {
-        if ($this->_getParam('id') && $this->_getParam('quantidade')) {
-            $this->carrinho->camiseta[$this->_getParam('id')]->quantidade = $this->_getParam('quantidade');
-            $out = array('success' => true, 'id' => $this->_getParam('id'), 'quantidade' => $this->carrinho->camiseta[$this->_getParam('id')]->quantidade);
+        if ($this->_getParam('sq_produto') && $this->_getParam('qt_produto')) {
+            $this->carrinho->camiseta[$this->_getParam('sq_produto')]->nu_quantidade = $this->_getParam('qt_produto');
+            $out = array(success => true, id => $this->_getParam('sq_produto'), quantidade => $this->carrinho->camiseta[$this->_getParam('sq_produto')]->nu_quantidade);
         } else {
-            $out = array('success' => false);
+            $out = array(success => false);
         }
         $this->_prepareJson($out);
     }
 
     private function valorTotal() {
         $total = 0;
-        $base = 24.99;
         if (isset($this->carrinho->camiseta)) {
             foreach ($this->carrinho->camiseta as $key => $value) {
-                $aux = ($this->carrinho->camiseta[$key]->quantidade * $base);
+                $aux = ($this->carrinho->camiseta[$key]->nu_quantidade * $this->carrinho->camiseta[$key]->vl_produto);
                 $total = ($total + $aux);
             }
         }
