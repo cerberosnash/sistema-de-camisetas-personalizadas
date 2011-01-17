@@ -9,15 +9,15 @@ try{
 
         constructor: function(){
 
-            var controlerAutenticacao = '/camisetas/autenticacao/autenticar';
+            var controllerAutenticacao = '/camisetas/autenticacao/autenticar';
             var urlRecuperarSenha = '/camisetas/autenticacao/recuperar';
             var urlGeradorCamisetas = "/camisetas/outros/png-1.0/camiseta.php?imagem=";
             var urlEstados = "/camisetas/outros/png-1.0/estados.php";
             var urlMunicipios = "/camisetas/outros/png-1.0/municipios.php";
             var urlCaptcha = "/camisetas/outros/png-1.0/captcha/CaptchaSecurityImages.php?width=72&height=25&characters=4&t=";
             var urlSecurityCode = "/camisetas/outros/png-1.0/captcha.php";
-            var urlPedidos = "/camisetas/outros/png-1.0/pedidos.php";
-            var urlGaleriaCamisetas = '/camisetas/galeria/carregar';
+            var controllerPedidos = "/camisetas/pedidos/";
+            var controllerGaleria = '/camisetas/galeria/';
             var controllerCarrinho = '/camisetas/carrinho/';
             var urlFavoritos = '/camisetas/outros/png-1.0/favoritos.php';
             var urlProcessarBoleto = '/camisetas/outros/png-1.0/processar_boleto.php';
@@ -92,7 +92,7 @@ try{
                 ],
                 proxy: new Ext.data.HttpProxy({
                     method: 'post',
-                    url: urlPedidos
+                    url: controllerPedidos + 'carregar'
                 })
             });
 
@@ -175,8 +175,17 @@ try{
                 }],
                 proxy: new Ext.data.HttpProxy({
                     method: 'post',
-                    url: urlGaleriaCamisetas
+                    url: controllerGaleria + 'carregar'
                 })
+            });
+
+            storeCamisetas.on('loadexception',function(a,b,c){
+                var data = eval(c.responseText);
+                if(data.success===false){
+                    alert('[Error]\n[storeCamisetas]\n['+data.error+']');
+                }else{
+                    alert('[Error]\n[storeCamisetas]\n[Erro desconhecido.]');
+                }
             });
 
             storeCamisetas.setDefaultSort('sq_produto', 'desc');
@@ -185,25 +194,21 @@ try{
             var storeCarrinho = new Ext.data.JsonStore({
                 root: 'images',
                 totalProperty: 'totalCount',
-                idProperty: 'id',
-                remoteSort: true,
+                idProperty: 'sq_produto',
+                remoteSort: false,
                 autoDestroy: true,
-                fields: ['id','nome','cor','descricao','tamanho','quantidade', {
-                    name:'valor',
+                baseParams:{
+                    start:0,
+                    limit:20
+                },
+                fields: ['sq_produto','nm_produto','co_produto','ds_produto','tm_produto','qt_produto', 'hs_produto',{
+                    name:'vl_produto',
                     type: 'float'
                 }],
                 proxy: new Ext.data.HttpProxy({
                     method: 'post',
                     url: controllerCarrinho + 'carregar'
                 })
-            });
-
-            storeCarrinho.load({
-                params:{
-                    // acao: 'carregar',
-                    start:0,
-                    limit:20
-                }
             });
 
             storeCarrinho.on('load',function(store){
@@ -225,6 +230,9 @@ try{
                     Ext.getCmp('btnFinalizarCarrinho').disable();
                 }
             });
+
+            storeCarrinho.setDefaultSort('nm_produto', 'asc');
+            storeCarrinho.load();
 
             var storeFavoritos = new Ext.data.JsonStore({
                 root: 'images',
@@ -1152,7 +1160,7 @@ try{
                     var conn = new Ext.data.Connection();
                     var data = null;
                     conn.request({
-                        url: controlerAutenticacao,
+                        url: controllerAutenticacao,
                         method: 'POST',
                         params: {
                             email : Ext.getCmp('aEmail').getValue(),
@@ -1291,7 +1299,7 @@ try{
                 '</tpl>',
                 '</div>'
                 );
-                    
+
             var bbarAdicionar = new Ext.Panel({
                 id: 'bbarAdicionar',
                 layout: 'hbox',
@@ -2280,7 +2288,6 @@ try{
                     icon: Ext.Msg.QUESTION,
                     fn: function(btn) {
                         if(btn == 'yes') {
-
                             var conn = new Ext.data.Connection();
                             var data = null;
                             conn.request({
@@ -2293,24 +2300,14 @@ try{
                                             if(data.success===true){
                                                 Ext.example.msg('Acao', 'Carrinho finalizado com sucesso');
                                                 DataGridCarrinho.store.removeAll();
-                                                storeCarrinho.load({
-                                                    params:{
-                                                        //acao: 'carregar',
-                                                        start:0,
-                                                        limit:0
-                                                    }
-                                                });
-
+                                                storeCarrinho.load();
                                                 storePedidos.load();
-
                                                 try{
                                                     Ext.get('iBoleto').dom.src = '';
                                                     Ext.example.msg('Noticia', 'O boleto para o pagamento esta disponivel');
                                                 }catch(e){
                                                     Ext.example.msg('Noticia', 'O boleto para o pagamento esta disponivel');
-                                                }
-                                               
-                                               
+                                                }                                          
                                             }else{
                                                 Ext.example.msg('Erro', 'Falha ao finalizar o carrinho');
                                             }
@@ -2336,8 +2333,7 @@ try{
                     url: controllerCarrinho + 'remover',
                     method: 'POST',
                     params: {
-                        // acao: 'remover',
-                        id: id
+                        sq_produto: id
                     },
                     success: function(responseObject) {
                         if(responseObject.responseText){
@@ -2350,13 +2346,7 @@ try{
                                     Ext.getCmp('QtdCarrinho').disable();
                                     Ext.getCmp('btnQtdCarrinho').disable();
                                     Ext.getCmp('btnRemoverCarrinho').disable();
-                                    storeCarrinho.load({
-                                        params:{
-                                            // acao: 'carregar',
-                                            start:0,
-                                            limit:20
-                                        }
-                                    });
+                                    storeCarrinho.load();
                                 }else{
                                     Ext.example.msg('Erro', 'Falha ao remover a camiseta do carrinho');
                                 }
@@ -2387,13 +2377,7 @@ try{
                                 data = eval(responseObject.responseText);
                                 if(data.success===true){
                                     Ext.example.msg('Acao', 'Camiseta adicionada no carrinho com sucesso');
-                                    storeCarrinho.load({
-                                        params:{
-                                            //acao: 'carregar',
-                                            start:0,
-                                            limit:20
-                                        }
-                                    });
+                                    storeCarrinho.load();
                                 }else{
                                     Ext.example.msg('Erro', 'Falha ao adicionar a camiseta ao carrinho');
                                 }
@@ -2417,9 +2401,8 @@ try{
                         url: controllerCarrinho + 'quantidade',
                         method: 'POST',
                         params: {
-                            //   acao: 'quantidade',
-                            id: rec.get('id'),
-                            quantidade: Ext.getCmp('QtdCarrinho').getValue()
+                            sq_produto: rec.get('sq_produto'),
+                            qt_produto: Ext.getCmp('QtdCarrinho').getValue()
                         },
                         success: function(responseObject) {
                             if(responseObject.responseText){
@@ -2429,14 +2412,7 @@ try{
                                         Ext.example.msg('Acao', 'Quantidade alterada com sucesso');
                                         var rec = DataGridCarrinho.getSelectionModel().getSelected();
                                         rec.set('quantidade',Ext.getCmp('QtdCarrinho').getValue());
-                                        storeCarrinho.load({
-                                            params:{
-                                                // acao: 'carregar',
-                                                start:0,
-                                                limit: 20
-                                            }
-                                        }
-                                        );
+                                        storeCarrinho.load();
                                     }else{
                                         Ext.example.msg('Erro', 'Falha ao alterar a quantidade');
                                     }
@@ -2477,7 +2453,7 @@ try{
                     handler: function(){
                         var rec = DataGridCarrinho.getSelectionModel().getSelected();
                         if (rec) {
-                            removerCarrinho(rec.get('id'));
+                            removerCarrinho(rec.get('sq_produto'));
                         }
                     }
                 }, '-',{
@@ -2499,45 +2475,45 @@ try{
 
             var fieldsGridCarrinho =  [
             {
-                header: "Codigo",
+                header: "#",
                 width: 15,
                 sortable: true,
-                dataIndex: 'id'
+                dataIndex: 'sq_produto'
             },
 
             {
                 header: "Nome",
                 width: 50,
                 sortable: true,
-                dataIndex: 'nome'
+                dataIndex: 'nm_produto'
             },
             {
                 header: "Cor",
                 width: 15,
                 sortable: true,
-                dataIndex: 'cor'
+                dataIndex: 'co_produto'
             },
             {
                 header: "Descricao",
                 width: 90,
                 sortable: true,
-                dataIndex: 'descricao'
+                dataIndex: 'ds_produto'
             },
             {
                 header: "Tamanho",
                 width: 30,
                 sortable: true,
-                dataIndex: 'tamanho'
+                dataIndex: 'tm_produto'
             },{
                 header: "Valor",
                 width: 30,
                 sortable: true,
-                dataIndex: 'valor'
+                dataIndex: 'vl_produto'
             },
             {
-                header: "Unidades",
+                header: "Quantidade",
                 width: 10,
-                dataIndex: 'quantidade',
+                dataIndex: 'qt_produto',
                 sortable: true,
                 editable: true
             }
@@ -2559,7 +2535,7 @@ try{
                             resizable: false,
                             iconCls: 'silk-add',
                             layout:'fit',
-                            title: rec.get('nome'),
+                            title: rec.get('nm_produto'),
                             width:650,
                             height:650,
                             modal: true,
@@ -2568,7 +2544,7 @@ try{
                             items: new Ext.Panel({
                                 deferredRender:false,
                                 border:false,
-                                html: '<img alt="carregando..." width="650" height="604" src="/camisetas/outros/png-1.0/camiseta.php?imagem='+rec.get('nome')+'&cor='+rec.get('cor')+'&tamanho=650"/>'
+                                html: '<img alt="carregando..." width="650" height="604" src="/camisetas/outros/png-1.0/camiseta.php?imagem='+rec.get('hs_produto')+'&cor='+rec.get('co_produto')+'&tamanho=650"/>'
                             }),
                             buttons: []
                         });
@@ -2581,11 +2557,10 @@ try{
                         selectionchange: function(sel){
                             var rec = sel.getSelected();
                             if(rec){
-                                Ext.getCmp('QtdCarrinho').setValue(rec.get('quantidade'));
+                                Ext.getCmp('QtdCarrinho').setValue(rec.get('qt_produto'));
                                 Ext.getCmp('QtdCarrinho').enable();
                                 Ext.getCmp('btnQtdCarrinho').enable();
                                 Ext.getCmp('btnRemoverCarrinho').enable();
-                            //       Ext.getCmp('txTotalCarrinho').setText('Total: R$'+parseFloat((rec.get('quantidade')*rec.get('valor'))));
                             }
                         }
                     }
