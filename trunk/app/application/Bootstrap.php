@@ -23,6 +23,7 @@ class Bootstrap/* extends Zend_Application_Bootstrap_Bootstrap */ {
                 . PATH_SEPARATOR . ROOT_DIR . '/application/exceptions'
                 . PATH_SEPARATOR . ROOT_DIR . '/library/Base'
                 . PATH_SEPARATOR . ROOT_DIR . '/library/Doctrine'
+                . PATH_SEPARATOR . ROOT_DIR . '/library/Util/Boletos'
                 . PATH_SEPARATOR . get_include_path()
         );
 
@@ -115,19 +116,19 @@ class Bootstrap/* extends Zend_Application_Bootstrap_Bootstrap */ {
 
     protected function _initDoctrine() {
 
-      //  $doctrineConfig = Zend_Registry::get('config');
+        //  $doctrineConfig = Zend_Registry::get('config');
         $configSelection = $this->_configSection;
 
-        $banco = Zend_Registry::get('config');//->$configSelection;
+        $banco = Zend_Registry::get('config'); //->$configSelection;
 
         $manager = Doctrine_Manager::getInstance();
         $manager->setAttribute(Doctrine::ATTR_AUTO_ACCESSOR_OVERRIDE, true);
         $manager->setAttribute(Doctrine::ATTR_AUTOLOAD_TABLE_CLASSES, true);
-      //  $manager->setAttribute(Doctrine::ATTR_COLLECTION_CLASS, false);
+        //  $manager->setAttribute(Doctrine::ATTR_COLLECTION_CLASS, false);
         $manager->setAttribute(
                 Doctrine::ATTR_MODEL_LOADING,
-          Doctrine::MODEL_LOADING_AGGRESSIVE//MODEL_LOADING_CONSERVATIVE
-              //  $banco->prod->doctrine->model_autoloading
+                Doctrine::MODEL_LOADING_AGGRESSIVE//MODEL_LOADING_CONSERVATIVE
+        //  $banco->prod->doctrine->model_autoloading
         );
 
         $_SESSION['conf'] = $banco->prod->doctrine->model_autoloading . "teste";
