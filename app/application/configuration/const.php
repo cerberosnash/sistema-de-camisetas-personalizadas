@@ -12,3 +12,6 @@ define("K_INSTALL", "S");
 define("K_LANGUAGE", "pt_br");
 // Constante para o endereço de rodapé
 define('SYSTEM_NAME', str_replace('/', '', $systemName));
+
+// Constante Diretorio Boletos
+define('BOLETO_PATH', "http://{$_SERVER['HTTP_HOST']}{$systemName}/library/Util/Boletos/");

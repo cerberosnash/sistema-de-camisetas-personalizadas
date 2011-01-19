@@ -40,7 +40,7 @@ class CarrinhoController extends Base_Controller_Action {
                     $cont++;
                 }
             }
-            $out = array(totalCount => $cont, totalCarrinho => $this->valorTotal(), images => $images);
+            $out = array(success => true, totalCount => $cont, totalCarrinho => $this->valorTotal(), images => $images);
         } catch (Doctrine_Exception $e) {
             $out = array(success => false, error => $e);
         }
@@ -59,9 +59,7 @@ class CarrinhoController extends Base_Controller_Action {
             $out = array(success => true, id => $this->carrinho->camiseta[$this->_getParam('sq_produto')]->sq_produto,
                 quantidade => $this->carrinho->camiseta[$this->_getParam('sq_produto')]->nu_quantidade);
         } else {
-            $out = array(
-                success => false,
-                error => 'Parametros passados de forma inválida!'
+            $out = array(success => false, error => 'Parametros passados de forma inválida!'
             );
         }
         $this->_prepareJson($out);

@@ -20,7 +20,7 @@ try{
             var controllerGaleria = '/camisetas/galeria/';
             var controllerCarrinho = '/camisetas/carrinho/';
             var urlFavoritos = '/camisetas/outros/png-1.0/favoritos.php';
-            var urlProcessarBoleto = '/camisetas/outros/png-1.0/processar_boleto.php';
+            var urlProcessarBoleto = '/camisetas/library/Util/boletos/BB.php';
             var urlUploadCamisetas = '/camisetas/outros/png-1.0/upload.php';
             var urlMinhaCamiseta = '/camisetas/outros/png-1.0/minha_camiseta.php';
             var urlLogoff = '/camisetas/logoff';
@@ -237,7 +237,7 @@ try{
             var storeFavoritos = new Ext.data.JsonStore({
                 root: 'images',
                 totalProperty: 'totalCount',
-                idProperty: 'id',
+                idProperty: 'sq_produto',
                 remoteSort: true,
                 autoDestroy: true,
                 baseParams:{
@@ -1964,18 +1964,18 @@ try{
                     var data = null;
 
                     conn.request({
-                        url: urlProcessarBoleto,
+                        url: controllerPedidos + 'processar',
                         method: 'POST',
                         params: {
-                            cd_pedido: Ext.getCmp('cd_pedido').getValue()
+                            sq_pedido: Ext.getCmp('cd_pedido').getValue(),
+                            nm_banco:  Ext.getCmp('nm_banco').getValue()
                         },
                         success: function(responseObject) {
                             if(responseObject.responseText){
                                 try{
                                     data = eval(responseObject.responseText);
-                                    if(data[0].success===true){
-                                        Ext.example.msg('Processamento', '{0}',data[0].proccess);
-                                        Ext.get('iBoleto').dom.src = '/camisetas/outros/png-1.0/boletos/'+Ext.getCmp('nm_banco').getValue()+'.php';
+                                    if(data.success===true){
+                                        Ext.get('iBoleto').dom.src = controllerPedidos + 'boleto';
                                         setTimeout(function(){
                                             Ext.MessageBox.hide();
                                         }, 1000);

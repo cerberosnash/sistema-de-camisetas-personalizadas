@@ -36,31 +36,37 @@ class TbProdutosTable extends Doctrine_Table {
             $sPreco = 'p.vl_produto >= 9.99 AND p.vl_produto <= 99.99';
         }
 
-        $query = new Doctrine_Pager(
-                        $subquery = Doctrine_Query::create()
-                                ->select('p.ds_produto, p.nm_produto, p.vl_produto, p.tm_produto, p.sq_produto, p.co_produto, p.hs_produto')
-                                ->from('TbProdutos p')
-                                ->where('p.nm_produto ILIKE ? OR p.ds_produto ILIKE ?', array('%' . $aParams['query'] . '%', '%' . $aParams['query'] . '%'))
-                                ->andWhere($sTamanho, $aParams['tamanho'])
-                                ->andWhere($sCor, $aParams['cor'])
-                                ->andWhere($sPreco)
-                                ->andWhere('p.st_ativo = ?', true)
-                                ->andWhere('p.st_privado = ?', false)
-                                ->orderBy($aParams['sort'] . ' ' . $aParams['dir']), ++$page, $aParams['limit']);
+        try {
 
-        $out['images'] = $query->execute(array(), Doctrine::HYDRATE_ARRAY);
+            $out['success'] = true;
 
-        $out['totalCount'] = Doctrine_Query::create()
-                        ->select()
-                        ->from('TbProdutos p')
-                        ->where('p.nm_produto ILIKE ? OR p.ds_produto ILIKE ?', array('%' . $aParams['query'] . '%', '%' . $aParams['query'] . '%'))
-                        ->andWhere($sTamanho, $aParams['tamanho'])
-                        ->andWhere($sCor, $aParams['cor'])
-                        ->andWhere($sPreco)
-                        ->andWhere('p.st_ativo = ?', true)
-                        ->andWhere('p.st_privado = ?', false)
-                        ->count();
+            $query = new Doctrine_Pager(
+                            $subquery = Doctrine_Query::create()
+                                    ->select('p.ds_produto, p.nm_produto, p.vl_produto, p.tm_produto, p.sq_produto, p.co_produto, p.hs_produto')
+                                    ->from('TbProdutos p')
+                                    ->where('p.nm_produto ILIKE ? OR p.ds_produto ILIKE ?', array('%' . $aParams['query'] . '%', '%' . $aParams['query'] . '%'))
+                                    ->andWhere($sTamanho, $aParams['tamanho'])
+                                    ->andWhere($sCor, $aParams['cor'])
+                                    ->andWhere($sPreco)
+                                    ->andWhere('p.st_ativo = ?', true)
+                                    ->andWhere('p.st_privado = ?', false)
+                                    ->orderBy($aParams['sort'] . ' ' . $aParams['dir']), ++$page, $aParams['limit']);
 
+            $out['images'] = $query->execute(array(), Doctrine::HYDRATE_ARRAY);
+
+            $out['totalCount'] = Doctrine_Query::create()
+                            ->select()
+                            ->from('TbProdutos p')
+                            ->where('p.nm_produto ILIKE ? OR p.ds_produto ILIKE ?', array('%' . $aParams['query'] . '%', '%' . $aParams['query'] . '%'))
+                            ->andWhere($sTamanho, $aParams['tamanho'])
+                            ->andWhere($sCor, $aParams['cor'])
+                            ->andWhere($sPreco)
+                            ->andWhere('p.st_ativo = ?', true)
+                            ->andWhere('p.st_privado = ?', false)
+                            ->count();
+        } catch (Doctrine_Exception $e) {
+            $out = array(success => false, error => $e);
+        }
         return $out;
     }
 
@@ -96,12 +102,13 @@ class TbProdutosTable extends Doctrine_Table {
             $sPreco = 'p.vl_produto >= 9.99 AND p.vl_produto <= 99.99';
         }
 
-
         try {
+
+            $out['success'] = true;
+
             $query = new Doctrine_Pager(
                             $subquery = Doctrine_Query::create()
                                     ->select('p.ds_produto, p.nm_produto, p.vl_produto, p.tm_produto, p.sq_produto, p.co_produto, p.hs_produto , f.sq_produto')
-                                    //->addSelect('COUNT(*) as num_phonenumbers')
                                     ->from('TbFavoritos f')
                                     ->innerJoin('f.TbProdutos p ON p.sq_produto = f.sq_produto')
                                     ->where('p.nm_produto ILIKE ? OR p.ds_produto ILIKE ?', array('%' . $aParams['query'] . '%', '%' . $aParams['query'] . '%'))
@@ -110,83 +117,51 @@ class TbProdutosTable extends Doctrine_Table {
                                     ->andWhere($sPreco)
                                     ->andWhere('p.st_ativo = ?', true)
                                     ->andWhere('f.st_ativo = ?', true)
-                                    //->andWhere('p.st_privado = ?', true)
-                                   // ->groupBy('p.sq_produto')
                                     ->orderBy($aParams['sort'] . ' ' . $aParams['dir'])
                             , ++$page, $aParams['limit']);
-            //echo $subquery->getSqlQuery();
             $res = $query->execute(array(), Doctrine::HYDRATE_ARRAY);
+
+            $iterator = new ArrayIterator($res);
+            $data = array();
+            $cont = 0;
+
+            while ($iterator->valid()) {
+                $current = $iterator->current();
+                $temp = array(
+                    'sq_produto' => $current['TbProdutos']['sq_produto'],
+                    'ds_produto' => $current['TbProdutos']['ds_produto'],
+                    'nm_produto' => $current['TbProdutos']['nm_produto'],
+                    'vl_produto' => $current['TbProdutos']['vl_produto'],
+                    'tm_produto' => $current['TbProdutos']['tm_produto'],
+                    'co_produto' => $current['TbProdutos']['co_produto'],
+                    'hs_produto' => $current['TbProdutos']['hs_produto']
+                );
+                unset($current['TbProdutos']);
+                $data[$cont] = array_merge($current, $temp);
+                $iterator->next();
+                $cont++;
+            }
+
+            $out['images'] = $data;
+
+            $out['totalCount'] = Doctrine_Query::create()
+                            ->select('p.ds_produto, p.nm_produto, p.vl_produto, p.tm_produto, p.sq_produto, p.co_produto, p.hs_produto , f.sq_produto')
+                            ->from('TbFavoritos f')
+                            ->innerJoin('f.TbProdutos p ON p.sq_produto = f.sq_produto')
+                            ->where('p.nm_produto ILIKE ?', '%' . $aParams['query'] . '%')
+                            ->where('p.nm_produto ILIKE ? OR p.ds_produto ILIKE ?', array('%' . $aParams['query'] . '%', '%' . $aParams['query'] . '%'))
+                            ->andWhere($sTamanho, $aParams['tamanho'])
+                            ->andWhere($sCor, $aParams['cor'])
+                            ->andWhere($sPreco)
+                            ->andWhere('p.st_ativo = ?', true)
+                            ->andWhere('f.st_ativo = ?', true)
+                            ->count();
         } catch (Doctrine_Exception $e) {
-            //echo $e;
+            $out = array(success => false, error => $e);
         }
-
-
-        $iterator = new ArrayIterator($res);
-        $data = array();
-        $cont = 0;
-
-        while ($iterator->valid()) {
-            $current = $iterator->current();
-            $temp = array(
-                'sq_produto' => $current['TbProdutos']['sq_produto'],
-                'ds_produto' => $current['TbProdutos']['ds_produto'],
-                'nm_produto' => $current['TbProdutos']['nm_produto'],
-                'vl_produto' => $current['TbProdutos']['vl_produto'],
-                'tm_produto' => $current['TbProdutos']['tm_produto'],
-                'co_produto' => $current['TbProdutos']['co_produto'],
-                'hs_produto' => $current['TbProdutos']['hs_produto']
-            );
-            unset($current['TbProdutos']);
-            $data[$cont] = array_merge($current, $temp);
-            $iterator->next();
-            $cont++;
-        }
-
-        $out['images'] = $data;
-
-        $out['totalCount'] = Doctrine_Query::create()
-                        ->select('p.ds_produto, p.nm_produto, p.vl_produto, p.tm_produto, p.sq_produto, p.co_produto, p.hs_produto , f.sq_produto')
-                        //->addSelect('count(f.sq_produto) as total')
-                        ->from('TbFavoritos f')
-                        ->innerJoin('f.TbProdutos p ON p.sq_produto = f.sq_produto')
-                        ->where('p.nm_produto ILIKE ?', '%' . $aParams['query'] . '%')
-                        ->where('p.nm_produto ILIKE ? OR p.ds_produto ILIKE ?', array('%' . $aParams['query'] . '%', '%' . $aParams['query'] . '%'))
-                        ->andWhere($sTamanho, $aParams['tamanho'])
-                        ->andWhere($sCor, $aParams['cor'])
-                        ->andWhere($sPreco)
-                        ->andWhere('p.st_ativo = ?', true)
-                        ->andWhere('f.st_ativo = ?', true)
-                        //->andWhere('p.st_privado = ?', true)
-                        ->count();
-
         return $out;
     }
 
-    // public function getComboUnidOrganiz($search, $page) {
-//        if ($page != 0) {
-//            $page = $page / 10;
-//        }
-//
-//        $query = new Doctrine_Pager(
-//                                Doctrine_Query::create()
-//                                ->select('u.sq_unid_organiz, u.nm_unid_organiz')
-//                                ->from('InsUnidOrganiz u')
-//                                ->where('LOWER(u.nm_unid_organiz) LIKE ?', '%' . $search . '%')
-//                                ->andWhere('u.st_ativo = true')
-//                                ->orderBy('u.nm_unid_organiz ASC'), ++$page, self::$limit);
-//        $resul['unidades'] = $query->execute(array(), Doctrine::HYDRATE_ARRAY);
-//
-//        if (empty($search)) {
-//            $count = Doctrine_Core::getTable('InsUnidOrganiz')
-//                            ->findByDql('where st_ativo = true')
-//                            ->count();
-//        } else {
-//            $count = count($resul['unidades']);
-//        }
-//
-//        $resul['totalCount'] = $count;
-    //    return $resul;
-    // }
 }
 
 /* SQLs */
