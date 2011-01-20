@@ -9,7 +9,7 @@ class CarrinhoController extends Base_Controller_Action {
         $this->_helper->viewRenderer->setNoRender();
         $this->startCarrinho();
         /* debuggar */
-        $this->_autenticacao->usuario->sq_usuario = 1;
+        $this->_session->usuario->sq_usuario = 1;
     }
 
     private function startCarrinho() {
@@ -85,7 +85,7 @@ class CarrinhoController extends Base_Controller_Action {
 
                 $pedido = new TbPedidos();
                 $pedido->sq_status = 1;
-                $pedido->sq_usuario = $this->_autenticacao->usuario->sq_usuario;
+                $pedido->sq_usuario = $this->_session->usuario->sq_usuario;
                 $pedido->vl_pedido = $this->valorTotal();
                 $pedido->save();
 

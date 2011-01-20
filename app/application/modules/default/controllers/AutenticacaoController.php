@@ -13,10 +13,10 @@ class AutenticacaoController extends Base_Controller_Action {
             try {
                 // $session = new Zend_Session_Namespace('autenticacao');
                 /* implementar */
-                $this->_autenticacao->usuario->tx_perfil = strtolower('cliente');
-                $this->_autenticacao->usuario->sq_usuario = 1;
+                $this->_session->usuario->tx_perfil = strtolower('cliente');
+                $this->_session->usuario->sq_usuario = 1;
 
-                $out = array('success' => true, 'url' => '/camisetas/' . $this->_autenticacao->perfil, perfil => $this->_autenticacao->perfil);
+                $out = array('success' => true, 'url' => '/camisetas/' . $this->_session->perfil, perfil => $this->_session->perfil);
             } catch (Exception $e) {
                 $out = array(
                     success => false,
