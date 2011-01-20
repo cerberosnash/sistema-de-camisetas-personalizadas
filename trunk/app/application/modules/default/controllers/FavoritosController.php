@@ -9,13 +9,13 @@ class FavoritosController extends Base_Controller_Action {
         $this->_helper->viewRenderer->setNoRender();
         $this->upload = new Zend_Session_Namespace('upload');
         /* debugger */
-        $this->_autenticacao->usuario->sq_usuario = 1;
+        $this->_session->usuario->sq_usuario = 1;
         /* Habilitar isso para assegurar a passagem de parametros somente por POST */
         /* if ($this->getRequest()->isPost()) {} else {} */
     }
 
     public function carregarAction() {
-        $this->_prepareJson(Doctrine_Core::getTable('TbProdutos')->listarFavoritos($this->_autenticacao->usuario->sq_usuario, $this->_getAllParams()));
+        $this->_prepareJson(Doctrine_Core::getTable('TbProdutos')->listarFavoritos($this->_session->usuario->sq_usuario, $this->_getAllParams()));
     }
 
     public function criarAction() {
@@ -36,7 +36,7 @@ class FavoritosController extends Base_Controller_Action {
 
                         $favorito = new TbFavoritos();
                         $favorito->sq_produto = $produto->sq_produto;
-                        $favorito->sq_usuario = $this->_autenticacao->usuario->sq_usuario;
+                        $favorito->sq_usuario = $this->_session->usuario->sq_usuario;
                         $favorito->save();
 
                         $out = array(success => true, crop => true, id => substr($produto->hs_produto, 0, 32));
@@ -58,9 +58,9 @@ class FavoritosController extends Base_Controller_Action {
 
     public function adicionarAction() {
         if ($this->getRequest()->isPost()) {
-            if ($this->_getParam('sq_produto') && $this->_autenticacao->usuario->sq_usuario) {
+            if ($this->_getParam('sq_produto') && $this->_session->usuario->sq_usuario) {
                 try {
-                    $rows = Doctrine_Core::getTable('TbFavoritos')->adicionar($this->_autenticacao->usuario->sq_usuario, $this->_getParam('sq_produto'));
+                    $rows = Doctrine_Core::getTable('TbFavoritos')->adicionar($this->_session->usuario->sq_usuario, $this->_getParam('sq_produto'));
                     if ($rows > 0) {
                         $out = array(success => true, id => $this->_getParam('sq_produto'));
                     } else {
@@ -78,9 +78,9 @@ class FavoritosController extends Base_Controller_Action {
 
     public function removerAction() {
         if ($this->getRequest()->isPost()) {
-            if ($this->_getParam('sq_produto') && $this->_autenticacao->usuario->sq_usuario) {
+            if ($this->_getParam('sq_produto') && $this->_session->usuario->sq_usuario) {
                 try {
-                    $rows = Doctrine_Core::getTable('TbFavoritos')->remover($this->_autenticacao->usuario->sq_usuario, $this->_getParam('sq_produto'));
+                    $rows = Doctrine_Core::getTable('TbFavoritos')->remover($this->_session->usuario->sq_usuario, $this->_getParam('sq_produto'));
                     if ($rows > 0) {
                         $out = array(success => true, id => $this->_getParam('sq_produto'));
                     } else {

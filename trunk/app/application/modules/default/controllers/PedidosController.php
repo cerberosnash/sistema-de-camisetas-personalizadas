@@ -6,15 +6,15 @@ class PedidosController extends Base_Controller_Action {
         $this->_helper->layout->disableLayout();
         $this->_helper->viewRenderer->setNoRender();
         /* debuggar */
-        $this->_autenticacao->usuario->sq_usuario = 1;
+        $this->_session->usuario->sq_usuario = 1;
     }
 
     public function carregarAction() {
         $pedidos = array();
         if ($this->getRequest()->isPost()) {
-            if ($this->_autenticacao->usuario->sq_usuario) {
+            if ($this->_session->usuario->sq_usuario) {
                 try {
-                    $pedidos = Doctrine_Core::getTable('TbPedidos')->findByDql('sq_usuario = ' . $this->_autenticacao->usuario->sq_usuario . ' AND sq_status = 1 AND st_ativo = true')->toArray();
+                    $pedidos = Doctrine_Core::getTable('TbPedidos')->findByDql('sq_usuario = ' . $this->_session->usuario->sq_usuario . ' AND sq_status = 1 AND st_ativo = true')->toArray();
 
                     foreach ($pedidos as $key => $value) {
                         $pedidos[$key]['cd_pedido'] = $pedidos[$key]['sq_pedido'] . '-' . str_replace('-', '', $pedidos[$key]['dt_pedido']) . '-' . str_replace('.', '-', $pedidos[$key]['vl_pedido']);
@@ -36,9 +36,9 @@ class PedidosController extends Base_Controller_Action {
     public function processarAction() {
         $pedidos = array();
         if ($this->getRequest()->isPost()) {
-            if ($this->_autenticacao->usuario->sq_usuario && $this->_getParam('nm_banco') && $this->_getParam('sq_pedido')) {
+            if ($this->_session->usuario->sq_usuario && $this->_getParam('nm_banco') && $this->_getParam('sq_pedido')) {
                 try {
-                    $pedidos = Doctrine_Core::getTable('TbPedidos')->findByDql('sq_pedido = ' . $this->_getParam('sq_pedido') . ' AND sq_usuario = ' . $this->_autenticacao->usuario->sq_usuario . ' AND sq_status = 1 AND st_ativo = true limit 1')->toArray();
+                    $pedidos = Doctrine_Core::getTable('TbPedidos')->findByDql('sq_pedido = ' . $this->_getParam('sq_pedido') . ' AND sq_usuario = ' . $this->_session->usuario->sq_usuario . ' AND sq_status = 1 AND st_ativo = true limit 1')->toArray();
 
 //                    foreach ($pedidos as $key => $value) {
 //                        $pedidos[$key]['cd_pedido'] = $pedidos[$key]['sq_pedido'] . '-' . str_replace('-', '', $pedidos[$key]['dt_pedido']) . '-' . str_replace('.', '-', $pedidos[$key]['vl_pedido']);

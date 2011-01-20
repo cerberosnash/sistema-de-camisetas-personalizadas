@@ -3,14 +3,14 @@
 class Base_Controller_Action extends Zend_Controller_Action {
 
     protected $MCA = array();
-    protected $_autenticacao;
+    protected $_session;
 
     public function startAutenticacao() {
         session_start();
         if (!isset($_SESSION['Zend_Session_Namespace'])) {
-            $this->_autenticacao = $_SESSION['Zend_Session_Namespace'] = new Zend_Session_Namespace('autenticacao');
+            $this->_session = $_SESSION['Zend_Session_Namespace'] = new Zend_Session_Namespace('autenticacao');
         } else {
-            $this->_autenticacao = $_SESSION['Zend_Session_Namespace'];
+            $this->_session = $_SESSION['Zend_Session_Namespace'];
         }
     }
 
