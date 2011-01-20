@@ -49,7 +49,6 @@ class BoletoBB {
             $convenio = $this->formata_numero($_SESSION["dadosboleto"]["convenio"], 6, 0, "convenio");
 
             if ($_SESSION["dadosboleto"]["formatacao_nosso_numero"] == "1") {
-
                 // Nosso n�mero de at� 5 d�gitos
                 $nossonumero = $this->formata_numero($_SESSION["dadosboleto"]["nosso_numero"], 5, 0);
                 $dv = $this->modulo_11("$codigobanco$nummoeda$fator_vencimento$valor$convenio$nossonumero$agencia$conta$carteira");
@@ -59,7 +58,6 @@ class BoletoBB {
             }
 
             if ($_SESSION["dadosboleto"]["formatacao_nosso_numero"] == "2") {
-
                 // Nosso n�mero de at� 17 d�gitos
                 $nservico = "21";
                 $nossonumero = $this->formata_numero($_SESSION["dadosboleto"]["nosso_numero"], 17, 0);
@@ -74,9 +72,6 @@ class BoletoBB {
         $_SESSION["dadosboleto"]["nosso_numero"] = $nossonumero;
         $_SESSION["dadosboleto"]["codigo_banco_com_dv"] = $codigo_banco_com_dv;
 
-// FUN��ES
-// Algumas foram retiradas do Projeto PhpBoleto e modificadas para atender as particularidades de cada banco
-        $this->$_SESSION["dadosboleto"] = $_SESSION["dadosboleto"];
         $this->output();
     }
 
@@ -394,7 +389,3 @@ class BoletoBB {
 
 }
     ?>
-
-
-
-

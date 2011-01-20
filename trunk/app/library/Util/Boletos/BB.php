@@ -95,5 +95,5 @@ class BoletoBB extends Boletos {
 
 }
 
-new Boleto_BB();
+//new Boleto_BB();
 ?>
