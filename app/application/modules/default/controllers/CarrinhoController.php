@@ -5,11 +5,12 @@ class CarrinhoController extends Base_Controller_Action {
     private $carrinho;
 
     public function init() {
+        parent::init();
         $this->_helper->layout->disableLayout();
         $this->_helper->viewRenderer->setNoRender();
         $this->startCarrinho();
         /* debuggar */
-        $this->_session->usuario->sq_usuario = 1;
+        //$this->_session->usuario->sq_usuario = 1;
     }
 
     private function startCarrinho() {
@@ -42,7 +43,7 @@ class CarrinhoController extends Base_Controller_Action {
             }
             $out = array(success => true, totalCount => $cont, totalCarrinho => $this->valorTotal(), images => $images);
         } catch (Doctrine_Exception $e) {
-            $out = array(success => false, error => $e);
+            $out = array(success => false, error => $e->getMessage());
         }
         $this->_prepareJson($out);
     }

@@ -16,13 +16,13 @@ class Bootstrap/* extends Zend_Application_Bootstrap_Bootstrap */ {
         set_include_path(
                 PATH_SEPARATOR . ROOT_DIR . '/application/modules/default/models'
                 . PATH_SEPARATOR . ROOT_DIR . '/application/modules/default/models/Base'
-                . PATH_SEPARATOR . ROOT_DIR . '/application/modules/default/business'
                 . PATH_SEPARATOR . ROOT_DIR . '/application/configuration/i18n'
                 . PATH_SEPARATOR . ROOT_DIR . '/application/configuration'
                 . PATH_SEPARATOR . ROOT_DIR . '/library'
                 . PATH_SEPARATOR . ROOT_DIR . '/application/exceptions'
                 . PATH_SEPARATOR . ROOT_DIR . '/library/Base'
                 . PATH_SEPARATOR . ROOT_DIR . '/library/Doctrine'
+                . PATH_SEPARATOR . ROOT_DIR . '/library/Util'
                 . PATH_SEPARATOR . ROOT_DIR . '/library/Util/Boletos'
                 . PATH_SEPARATOR . get_include_path()
         );
@@ -41,7 +41,6 @@ class Bootstrap/* extends Zend_Application_Bootstrap_Bootstrap */ {
             $config = new Zend_Config_Ini(ROOT_DIR . '/application/configuration/config.ini');
             $registry->set('config', $config);
             date_default_timezone_set($config->configuration->date_default_timezone);
-
             $this->_initDoctrine();
         } catch (Exception $e) {
             $this->_exception($e);
@@ -124,11 +123,9 @@ class Bootstrap/* extends Zend_Application_Bootstrap_Bootstrap */ {
         $manager = Doctrine_Manager::getInstance();
         $manager->setAttribute(Doctrine::ATTR_AUTO_ACCESSOR_OVERRIDE, true);
         $manager->setAttribute(Doctrine::ATTR_AUTOLOAD_TABLE_CLASSES, true);
-        //  $manager->setAttribute(Doctrine::ATTR_COLLECTION_CLASS, false);
         $manager->setAttribute(
                 Doctrine::ATTR_MODEL_LOADING,
                 Doctrine::MODEL_LOADING_AGGRESSIVE//MODEL_LOADING_CONSERVATIVE
-        //  $banco->prod->doctrine->model_autoloading
         );
 
         $_SESSION['conf'] = $banco->prod->doctrine->model_autoloading . "teste";

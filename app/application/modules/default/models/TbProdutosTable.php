@@ -65,7 +65,7 @@ class TbProdutosTable extends Doctrine_Table {
                             ->andWhere('p.st_privado = ?', false)
                             ->count();
         } catch (Doctrine_Exception $e) {
-            $out = array(success => false, error => $e);
+            $out = array(success => false, error => $e->getMessage());
         }
         return $out;
     }
@@ -157,7 +157,7 @@ class TbProdutosTable extends Doctrine_Table {
                             ->andWhere('f.st_ativo = ?', true)
                             ->count();
         } catch (Doctrine_Exception $e) {
-            $out = array(success => false, error => $e);
+            $out = array(success => false, error => $e->getMessage());
         }
         return $out;
     }
