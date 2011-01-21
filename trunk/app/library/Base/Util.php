@@ -239,4 +239,22 @@ class Base_Util {
         return $var;
     }
 
+    /* Camisetas Personalizadas */
+
+    public static function onlyNumbers($string) {
+        return preg_replace("/[^0-9]/i", "", $string);
+    }
+
+    public static function onlyText($string) {
+        return preg_replace("/[^A-Za-z]/d", "", $string);
+    }
+
+    public static function toLower($string) {
+        return strtolower($string);
+    }
+
+    public static function toUpper($string) {
+        return strtoupper($string);
+    }
+
 }

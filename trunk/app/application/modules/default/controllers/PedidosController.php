@@ -22,7 +22,7 @@ class PedidosController extends Base_Controller_Action {
 
                     $out = array(success => true, totalCount => count($pedidos), pedidos => $pedidos);
                 } catch (Doctrine_Exception $e) {
-                    $out = array(success => false, error => $e);
+                    $out = array(success => false, error => $e->getMessage());
                 }
             } else {
                 $out = array(success => false, error => 'Nao foi possivel recuperar as informacoes do usuario!');

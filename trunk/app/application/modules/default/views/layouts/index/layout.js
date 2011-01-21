@@ -9,7 +9,8 @@ try{
 
         constructor: function(){
 
-            var controllerAutenticacao = '/camisetas/autenticacao/autenticar';
+            var controllerCliente = '/camisetas/cliente/';
+            var controllerAutenticacao = '/camisetas/autenticacao/';
             var urlRecuperarSenha = '/camisetas/autenticacao/recuperar';
             var urlGeradorCamisetas = "/camisetas/outros/png-1.0/camiseta.php?imagem=";
             var urlEstados = "/camisetas/outros/png-1.0/estados.php";
@@ -431,28 +432,25 @@ try{
                 var conn = new Ext.data.Connection();
                 var data = null;
                 conn.request({
-                    url: urlAlteracaoCliente,
+                    url: controllerCliente + 'carregar',
                     method: 'POST',
-                    params: {
-                        acao: 'carregar'
-                    },
                     success: function(responseObject) {
                         if(responseObject.responseText){
                             try{
                                 data = eval(responseObject.responseText);
-                                if(data.cliente.success===true){
-                                    Ext.getCmp('acNome').setValue(data.cliente.nome);
-                                    Ext.getCmp('acCPF').setValue(data.cliente.cpf);
-                                    Ext.getCmp('acDDResidencial').setValue(data.cliente.ddd_residencial);
-                                    Ext.getCmp('acNUResidencial').setValue(data.cliente.tel_residencial);
-                                    Ext.getCmp('acDDCelular').setValue(data.cliente.ddd_celular);
-                                    Ext.getCmp('acNUCelular').setValue(data.cliente.tel_celular);
-                                    Ext.getCmp('acUF').setValue(data.cliente.uf);
-                                    Ext.getCmp('acMunicipio').setValue(data.cliente.municipio);
-                                    Ext.getCmp('acCEP').setValue(data.cliente.cep);
-                                    Ext.getCmp('acEndereco').setValue(data.cliente.endereco);
-                                    Ext.getCmp('acEmail').setValue(data.cliente.email);
-                                    Ext.getCmp('acSenha').setValue(data.cliente.senha);
+                                if(data.success===true){
+                                    Ext.getCmp('acNome').setValue(data.cliente.nm_usuario);
+                                    Ext.getCmp('acCPF').setValue(data.cliente.nu_cpf);
+                                    Ext.getCmp('acDDResidencial').setValue(data.cliente.dd_residencial);
+                                    Ext.getCmp('acNUResidencial').setValue(data.cliente.nu_residencial);
+                                    Ext.getCmp('acDDCelular').setValue(data.cliente.dd_celular);
+                                    Ext.getCmp('acNUCelular').setValue(data.cliente.nu_celular);
+                                    Ext.getCmp('acUF').setValue(data.cliente.sq_uf);
+                                    Ext.getCmp('acMunicipio').setValue(data.cliente.sq_municipio);
+                                    Ext.getCmp('acCEP').setValue(data.cliente.nu_cep);
+                                    Ext.getCmp('acEndereco').setValue(data.cliente.tx_endereco);
+                                    Ext.getCmp('acEmail').setValue(data.cliente.tx_email);
+                                    Ext.getCmp('acSenha').setValue(data.cliente.tx_senha);
                                 }else{
                                     Ext.example.msg('Erro', 'Falha na autenticação');
                                 }
@@ -1160,12 +1158,12 @@ try{
                     var conn = new Ext.data.Connection();
                     var data = null;
                     conn.request({
-                        url: controllerAutenticacao,
+                        url: controllerAutenticacao + 'autenticar',
                         method: 'POST',
                         params: {
-                            email : Ext.getCmp('aEmail').getValue(),
-                            senha : Ext.getCmp('aSenha').getValue(),
-                            captcha : Ext.getCmp('aCaptcha').getValue()
+                            tx_email : Ext.getCmp('aEmail').getValue(),
+                            tx_senha : Ext.getCmp('aSenha').getValue(),
+                            tx_captcha : Ext.getCmp('aCaptcha').getValue()
                         },
                         success: function(responseObject) {
                             if(responseObject.responseText){
@@ -1207,6 +1205,62 @@ try{
 
             function onSubmitCadastro(){
                 alert('submit cadastro'+ Ext.getCmp('formCadastro').form.isValid());
+                if(formCadastro.form.isValid()===true){
+                    var conn = new Ext.data.Connection();
+                    var data = null;
+                    conn.request({
+                        url: controllerCliente + 'adicionar',
+                        method: 'POST',
+                        params: {
+                            nm_usuario : Ext.getCmp('nm_usuario').getValue(),
+                            nu_cpf : Ext.getCmp('nu_cpf').getValue(),
+                            dd_residencial : Ext.getCmp('dd_residencial').getValue(),
+                            nu_residencial : Ext.getCmp('nu_residencial').getValue(),
+                            dd_celular : Ext.getCmp('dd_celular').getValue(),
+                            nu_celular : Ext.getCmp('nu_celular').getValue(),
+                            sq_uf : Ext.getCmp('sq_uf').getValue(),
+                            sq_municipio : Ext.getCmp('sq_municipio').getValue(),
+                            nu_cep : Ext.getCmp('nu_cep').getValue(),
+                            tx_endereco : Ext.getCmp('tx_endereco').getValue(),
+                            tx_email : Ext.getCmp('tx_email').getValue(),
+                            tx_senha : Ext.getCmp('tx_senha').getValue()
+                        },
+                        success: function(responseObject) {
+                            if(responseObject.responseText){
+                                try{
+                                    data = eval(responseObject.responseText);
+                                    if(data.success===true){
+
+                                    //tbarPrincipal.setText('Olá, '+data[0].nome+' - '+data[0].perfil+'.');
+                                    //
+                                    //                                        var pbarAutenticacao = new Ext.ProgressBar({
+                                    //                                            text:'Carregando...',
+                                    //                                            id:'pbarAutenticacao',
+                                    //                                            cls:'custom',
+                                    //                                            width: 250,
+                                    //                                            margins: '5px 5px 5px 5px',
+                                    //                                            doLayout: false,
+                                    //                                            renderTo: 'boxLoadingAutenticacao'
+                                    //                                        });
+                                    //                                        RunnerAutenticacao.run(pbarAutenticacao, Ext.getCmp('aEntrar'), 19, data.url);
+
+                                    }
+                                    else{
+                                        Ext.example.msg('Erro', data.error);
+                                    //                                        pbarAutenticacao.updateText('Tente novamente!');
+                                    }
+                                }catch(e){
+                                    Ext.example.msg('Erro', '{0}',e);
+                                }
+                            }
+                        },
+                        failure: function(e) {
+                            Ext.example.msg('Erro', '{0}',e);
+                        }
+                    });
+                }else{
+                    Ext.example.msg('Erro', 'Falha no Cadastro');
+                }
             }
 
             function onSubmitSalvarAlteracaoCliente(){

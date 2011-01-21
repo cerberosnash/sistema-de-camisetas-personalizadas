@@ -43,7 +43,7 @@ class FavoritosController extends Base_Controller_Action {
                         unset($this->upload->imagem);
                     } catch (Doctrine_Exception $e) {
                         $error = true;
-                        $out = array(success => false, error => $e);
+                        $out = array(success => false, error => $e->getMessage());
                     }
                 } else {
                     $out = array(success => false, crop => true);
@@ -67,7 +67,7 @@ class FavoritosController extends Base_Controller_Action {
                         $out = array(success => false);
                     }
                 } catch (Doctrine_Exception $e) {
-                    $out = array(success => false, error => $e);
+                    $out = array(success => false, error => $e->getMessage());
                 }
             } else {
                 $out = array(success => false, error => 'Erro nos parametros.');
@@ -87,7 +87,7 @@ class FavoritosController extends Base_Controller_Action {
                         $out = array(success => false);
                     }
                 } catch (Doctrine_Exception $e) {
-                    $out = array(success => false, error => $e);
+                    $out = array(success => false, error => $e->getMessage());
                 }
             } else {
                 $out = array(success => false, error => 'Erro nos parametros.');

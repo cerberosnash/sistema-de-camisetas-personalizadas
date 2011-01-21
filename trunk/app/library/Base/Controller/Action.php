@@ -6,7 +6,6 @@ class Base_Controller_Action extends Zend_Controller_Action {
     protected $_session;
 
     public function startAutenticacao() {
-        session_start();
         if (!isset($_SESSION['Zend_Session_Namespace'])) {
             $this->_session = $_SESSION['Zend_Session_Namespace'] = new Zend_Session_Namespace('autenticacao');
         } else {
@@ -32,6 +31,7 @@ class Base_Controller_Action extends Zend_Controller_Action {
     }
 
     public function init() {
+        session_start();
         $this->startAutenticacao();
         $this->setMCA();
     }
