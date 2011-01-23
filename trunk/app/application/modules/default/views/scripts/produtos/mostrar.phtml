@@ -1,0 +1,28 @@
+<?php echo $this->doctype(); ?>
+<html>
+    <head>
+        <?php
+        echo $this->headMeta();
+        echo $this->headTitle();
+        echo $this->headLink();
+        echo $this->headScript();
+        ?>
+    </head>
+    <body>
+
+    </body>
+</html>
+
+<?php
+        session_start();
+        if (!$_SESSION['upload']['crop']) {
+            header('Location: ' . SYSTEM_PATH . '/produtos/');
+        }
+?>
+
+        <style type="text/css">
+            *{
+                text-align: center;
+            }
+        </style>
+        <img alt="carregando..." src="<?php echo SYSTEM_PATH; ?>/produtos/gerar/?t=<?php echo microtime(); ?>" height="100%" />

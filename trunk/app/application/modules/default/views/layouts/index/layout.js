@@ -10,26 +10,28 @@ try{
         constructor: function(){
 
             var controllerCliente = '/camisetas/cliente/';
+            var controllerIndex = '/camisetas/';
             var controllerAutenticacao = '/camisetas/autenticacao/';
-            var urlRecuperarSenha = '/camisetas/autenticacao/recuperar';
-            var urlGeradorCamisetas = "/camisetas/outros/png-1.0/camiseta.php?imagem=";
-            var urlEstados = "/camisetas/outros/png-1.0/estados.php";
-            var urlMunicipios = "/camisetas/outros/png-1.0/municipios.php";
-            var urlCaptcha = "/camisetas/outros/png-1.0/captcha/CaptchaSecurityImages.php?width=72&height=25&characters=4&t=";
-            var urlSecurityCode = "/camisetas/outros/png-1.0/captcha.php";
+            //var urlRecuperarSenha = '/camisetas/autenticacao/recuperar';
+            //var urlGeradorCamisetas = "/camisetas/outros/png-1.0/camiseta.php?imagem=";
+            var controllerUtil = "/camisetas/util/";
+            //var urlMunicipios = "/camisetas/outros/png-1.0/municipios.php";
+            //            var urlCaptcha = "/camisetas/outros/png-1.0/captcha/CaptchaSecurityImages.php?width=72&height=25&characters=4&t=";
+            // var urlSecurityCode = "/camisetas/outros/png-1.0/captcha.php";
             var controllerPedidos = "/camisetas/pedidos/";
             var controllerGaleria = '/camisetas/galeria/';
             var controllerCarrinho = '/camisetas/carrinho/';
-            var urlFavoritos = '/camisetas/outros/png-1.0/favoritos.php';
-            var urlProcessarBoleto = '/camisetas/library/Util/boletos/BB.php';
-            var urlUploadCamisetas = '/camisetas/outros/png-1.0/upload.php';
-            var urlMinhaCamiseta = '/camisetas/outros/png-1.0/minha_camiseta.php';
-            var urlLogoff = '/camisetas/logoff';
-            var urlCorMinhaCamiseta = '/camisetas/outros/png-1.0/cor.php';
+            //var urlFavoritos = '/camisetas/outros/png-1.0/favoritos.php';
+            //var urlProcessarBoleto = '/camisetas/library/Util/boletos/BB.php';
+            //var urlUploadCamisetas = '/camisetas/outros/png-1.0/upload.php';
+            var controllerProdutos = '/camisetas/produtos/';
+            //var urlMinhaCamiseta = '/camisetas/outros/png-1.0/minha_camiseta.php';
+            var controllerLogoff = '/camisetas/logoff/';
+            //var urlCorMinhaCamiseta = '/camisetas/outros/png-1.0/cor.php';
             var controllerFavoritos = '/camisetas/favoritos/';
-            var urlMostrarMinhaCamiseta = '/camisetas/outros/png-1.0/mostrar_camiseta.php';
-            var urlAguarde = '/camisetas/outros/png-1.0/aguarde.php';
-            var urlValidarRecorte = '/camisetas/outros/png-1.0/validar_recorte.php';
+            //var urlMostrarMinhaCamiseta = '/camisetas/outros/png-1.0/mostrar_camiseta.php';
+            //var urlAguarde = '/camisetas/outros/png-1.0/aguarde.php';
+            //var urlValidarRecorte = '/camisetas/outros/png-1.0/validar_recorte.php';
             var urlAlteracaoCliente = '/camisetas/outros/png-1.0/alteracao_cliente.php';
 
             /*DataStores - Inicio*/
@@ -40,6 +42,9 @@ try{
                 idProperty: 'sq_uf',
                 remoteSort: false,
                 autoDestroy: true,
+                baseParams:{
+                    combo: 'ufs'
+                },
                 fields: [
                 {
                     name: 'sq_uf',
@@ -51,16 +56,30 @@ try{
                 ],
                 proxy: new Ext.data.HttpProxy({
                     method: 'post',
-                    url: urlEstados
+                    url: controllerUtil + 'combos'
                 })
+            });
+
+            storeEstados.setDefaultSort('nm_uf', 'asc');
+
+            storeEstados.on('loadexception',function(a,b,c){
+                var data = eval(c.responseText);
+                if(data.success===false){
+                    alert('[Error]\n[storeEstados]\n['+data.error+']');
+                }else{
+                    alert('[Error]\n[storeEstados]\n[Erro desconhecido.]');
+                }
             });
 
             var storeMunicipios = new Ext.data.JsonStore({
                 root: 'municipios',
                 totalProperty: 'totalCount',
                 idProperty: 'sq_municipio',
-                remoteSort: true,
+                remoteSort: false,
                 autoDestroy: true,
+                baseParams:{
+                    combo: 'municipios'
+                },
                 fields: [
                 {
                     name: 'sq_municipio',
@@ -72,8 +91,19 @@ try{
                 ],
                 proxy: new Ext.data.HttpProxy({
                     method: 'post',
-                    url: urlMunicipios
+                    url: controllerUtil + 'combos'
                 })
+            });
+
+            storeMunicipios.setDefaultSort('nm_municipio', 'asc');
+
+            storeMunicipios.on('loadexception',function(a,b,c){
+                var data = eval(c.responseText);
+                if(data.success===false){
+                    alert('[Error]\n[storeMunicipios]\n['+data.error+']');
+                }else{
+                    alert('[Error]\n[storeMunicipios]\n[Erro desconhecido.]');
+                }
             });
 
             var storePedidos = new Ext.data.JsonStore({
@@ -291,7 +321,13 @@ try{
 
             function Logoff(btn){
                 if(btn=='yes'){
-                    window.location = urlLogoff;
+                    window.location = controllerLogoff;
+                }
+            }
+
+            function PaginaInicial(btn){
+                if(btn=='ok'){
+                    window.location = controllerIndex;
                 }
             }
 
@@ -362,7 +398,7 @@ try{
                     tag:'img',
                     id: 'imgCaptchaAutenticacao',
                     title : 'Clique para recarregar',
-                    src: urlCaptcha + new Date().getTime()
+                    src: controllerUtil +'captcha/?t='+ new Date().getTime()
                 }
             });
 
@@ -381,7 +417,7 @@ try{
                     tag:'img',
                     id: 'imgCaptchaCadastro',
                     title : 'Clique para recarregar',
-                    src: urlCaptcha + new Date().getTime()
+                    src: controllerUtil +'captcha/?t='+ new Date().getTime()
                 }
             });
 
@@ -397,18 +433,17 @@ try{
                 Ext.getCmp(box).disable();
                 curr.slideOut('b', {
                     callback: function(){
-                        Ext.get(img).dom.src = urlCaptcha+new Date().getTime()+Math.random(0,9999);
+                        Ext.get(img).dom.src = controllerUtil +'captcha/?t='+ new Date().getTime();
                         var conn = new Ext.data.Connection();
                         var data = null;
                         conn.request({
-                            url: urlSecurityCode,
+                            url: controllerUtil + 'codigo',
                             method: 'POST',
-                            params: {},
                             success: function(responseObject) {
                                 if(responseObject.responseText){
                                     try{
                                         data = eval(responseObject.responseText);
-                                        if(data[0].success===true){
+                                        if(data.success===true){
                                         }
                                         else{
                                             Ext.example.msg('Erro', 'Falha na autenticação');
@@ -446,7 +481,9 @@ try{
                                     Ext.getCmp('acDDCelular').setValue(data.cliente.dd_celular);
                                     Ext.getCmp('acNUCelular').setValue(data.cliente.nu_celular);
                                     Ext.getCmp('acUF').setValue(data.cliente.sq_uf);
+                                    Ext.getCmp('acUF').setRawValue(data.cliente.nm_uf);
                                     Ext.getCmp('acMunicipio').setValue(data.cliente.sq_municipio);
+                                    Ext.getCmp('acMunicipio').setRawValue(data.cliente.nm_municipio);
                                     Ext.getCmp('acCEP').setValue(data.cliente.nu_cep);
                                     Ext.getCmp('acEndereco').setValue(data.cliente.tx_endereco);
                                     Ext.getCmp('acEmail').setValue(data.cliente.tx_email);
@@ -614,7 +651,7 @@ try{
                             height: 25
                         },
                         fieldLabel: 'Nome',
-                        //name: 'Nome',
+                        name: 'Nome',
                         id: 'acNome',
                         maxLength: 100,
                         vtype: 'onlytext',
@@ -626,11 +663,13 @@ try{
                     },{
                         xtype: 'cpffield',
                         fieldLabel: 'CPF',
+                        name: 'CPF',
                         id: 'acCPF',
                         vtype: 'cpf'
                     },{
                         xtype: 'compositefield',
                         fieldLabel: 'Tel. Residencial',
+                        name: 'Tel. Residencial',
                         defaults:{
                             msgTarget: 'side',
                             allowBlank: false,
@@ -638,7 +677,7 @@ try{
                         },
                         items: [{
                             xtype: 'textfield',
-                            //name: 'DDD Residencial',
+                            name: 'DDD Residencial',
                             id: 'acDDResidencial',
                             width: 30,
                             maxLengthText: 'O Código DDD deve conter {0} digitos',
@@ -653,7 +692,7 @@ try{
                             }
                         },{
                             xtype: 'textfield',
-                            //name: 'Tel. Residencial',
+                            name: 'Tel. Residencial',
                             id: 'acNUResidencial',
                             width: 285,
                             vtype: 'telefone',
@@ -674,7 +713,7 @@ try{
                         },
                         items: [{
                             xtype: 'textfield',
-                            //name: 'DDD Celular',
+                            name: 'DDD Celular',
                             id: 'acDDCelular',
                             width: 30,
                             maxLengthText: 'O Código DDD deve conter {0} digitos',
@@ -689,7 +728,7 @@ try{
                             }
                         },{
                             xtype: 'textfield',
-                            //name: 'Tel. Celular',
+                            name: 'Tel. Celular',
                             id: 'acNUCelular',
                             width: 285,
                             vtype: 'telefone',
@@ -702,7 +741,7 @@ try{
                     },{
                         fieldLabel: 'Estado',
                         xtype: 'combo',
-                        //name: 'Estado',
+                        name: 'Estado',
                         id: 'acUF',
                         store: storeEstados,
                         listeners:{
@@ -730,7 +769,7 @@ try{
                     },{
                         fieldLabel: 'Município',
                         xtype: 'combo',
-                        //name: 'Municipio',
+                        name: 'Municipio',
                         id: 'acMunicipio',
                         store: storeMunicipios,
                         displayField: 'nm_municipio',
@@ -747,7 +786,7 @@ try{
                         xtype: 'textfield',
                         fieldLabel: 'CEP',
                         id: 'acCEP',
-                        //name: 'CEP',
+                        name: 'CEP',
                         vtype: 'cep',
                         autoCreate: {
                             tag: 'input',
@@ -756,6 +795,7 @@ try{
                         }
                     },{
                         fieldLabel: 'Endereço',
+                        name: 'Endereço',
                         id: 'acEndereco',
                         xtype: 'textarea',
                         maxLength: 100,
@@ -779,13 +819,13 @@ try{
                     items: [{
                         xtype: 'textfield',
                         fieldLabel: 'Email',
-                        //name: 'Email',
+                        name: 'Email',
                         id: 'acEmail',
                         vtype: 'email'
                     },{
                         xtype: 'textfield',
                         fieldLabel: 'Senha',
-                        //name: 'Senha',
+                        name: 'Senha',
                         id: 'acSenha',
                         inputType: 'password',
                         initialPasswordField: 'password',
@@ -804,6 +844,7 @@ try{
                     items: [{
                         xtype: 'textfield',
                         fieldLabel: 'Email',
+                        name: 'Email Configuração',
                         id: 'acVDEmail',
                         vtype: 'comparefield',
                         idFieldCompare: 'acEmail',
@@ -815,6 +856,7 @@ try{
                     },{
                         xtype: 'textfield',
                         fieldLabel: 'Senha',
+                        name: 'Senha Configuração',
                         id: 'acVDSenha',
                         inputType: 'password',
                         idFieldCompare:  'acSenha',
@@ -829,7 +871,7 @@ try{
                         fieldLabel: 'Código',
                         items:[{
                             xtype: 'textfield',
-                            //name: 'Captcha',
+                            name: 'Código',
                             id: 'acCaptcha',
                             vtype: 'captcha',
                             width: 245
@@ -845,7 +887,9 @@ try{
                     id: 'acSalvarAlteracaoCliente',
                     type: 'submit',
                     iconCls: 'silk-add',
-                    handler: onSubmitSalvarAlteracaoCliente
+                    handler: function(){
+                        onSubmitSalvarAlteracaoCliente();
+                    }
                 }
                 ]
             });
@@ -874,7 +918,7 @@ try{
                             height: 25
                         },
                         fieldLabel: 'Nome',
-                        //name: 'Nome',
+                        name: 'Nome',
                         id: 'nm_usuario',
                         maxLength: 100,
                         vtype: 'onlytext',
@@ -898,7 +942,7 @@ try{
                         },
                         items: [{
                             xtype: 'textfield',
-                            //name: 'DDD Residencial',
+                            name: 'DDD Residencial',
                             id: 'dd_residencial',
                             width: 30,
                             maxLengthText: 'O Código DDD deve conter {0} digitos',
@@ -913,7 +957,7 @@ try{
                             }
                         },{
                             xtype: 'textfield',
-                            //name: 'Tel. Residencial',
+                            name: 'Tel. Residencial',
                             id: 'nu_residencial',
                             width: 285,
                             vtype: 'telefone',
@@ -934,7 +978,7 @@ try{
                         },
                         items: [{
                             xtype: 'textfield',
-                            //name: 'DDD Celular',
+                            name: 'DDD Celular',
                             id: 'dd_celular',
                             width: 30,
                             maxLengthText: 'O Código DDD deve conter {0} digitos',
@@ -949,7 +993,7 @@ try{
                             }
                         },{
                             xtype: 'textfield',
-                            //name: 'Tel. Celular',
+                            name: 'Tel. Celular',
                             id: 'nu_celular',
                             width: 285,
                             vtype: 'telefone',
@@ -962,7 +1006,7 @@ try{
                     },{
                         fieldLabel: 'Estado',
                         xtype: 'combo',
-                        //name: 'Estado',
+                        name: 'Estado',
                         id: 'sq_uf',
                         store: storeEstados,
                         listeners:{
@@ -990,7 +1034,7 @@ try{
                     },{
                         fieldLabel: 'Município',
                         xtype: 'combo',
-                        //name: 'Municipio',
+                        name: 'Municipio',
                         id: 'sq_municipio',
                         store: storeMunicipios,
                         displayField: 'nm_municipio',
@@ -1007,7 +1051,7 @@ try{
                         xtype: 'textfield',
                         fieldLabel: 'CEP',
                         id: 'nu_cep',
-                        //name: 'CEP',
+                        name: 'CEP',
                         vtype: 'cep',
                         autoCreate: {
                             tag: 'input',
@@ -1039,13 +1083,13 @@ try{
                     items: [{
                         xtype: 'textfield',
                         fieldLabel: 'Email',
-                        //name: 'Email',
+                        name: 'Email',
                         id: 'tx_email',
                         vtype: 'email'
                     },{
                         xtype: 'textfield',
                         fieldLabel: 'Senha',
-                        //name: 'Senha',
+                        name: 'Senha',
                         id: 'tx_senha',
                         inputType: 'password',
                         initialPasswordField: 'password',
@@ -1089,7 +1133,7 @@ try{
                         fieldLabel: 'Código',
                         items:[{
                             xtype: 'textfield',
-                            //name: 'Captcha',
+                            name: 'Código',
                             id: 'cCaptcha',
                             vtype: 'captcha',
                             width: 245
@@ -1110,7 +1154,7 @@ try{
                     var conn = new Ext.data.Connection();
                     var data = null;
                     conn.request({
-                        url: urlRecuperarSenha,
+                        url: controllerAutenticacao + 'recuperar',
                         method: 'POST',
                         params: {
                             email : Ext.getCmp('rEmail').getValue(),
@@ -1170,9 +1214,7 @@ try{
                                 try{
                                     data = eval(responseObject.responseText);
                                     if(data.success===true){
-                                      
-                                        //tbarPrincipal.setText('Olá, '+data[0].nome+' - '+data[0].perfil+'.');
-
+             
                                         var pbarAutenticacao = new Ext.ProgressBar({
                                             text:'Carregando...',
                                             id:'pbarAutenticacao',
@@ -1182,12 +1224,11 @@ try{
                                             doLayout: false,
                                             renderTo: 'boxLoadingAutenticacao'
                                         });
+
                                         RunnerAutenticacao.run(pbarAutenticacao, Ext.getCmp('aEntrar'), 19, data.url);
                                    
-                                    }
-                                    else{
+                                    }else{
                                         Ext.example.msg('Erro', data.error);
-                                        pbarAutenticacao.updateText('Tente novamente!');
                                     }
                                 }catch(e){
                                     Ext.example.msg('Erro', '{0}',e);
@@ -1204,7 +1245,6 @@ try{
             }
 
             function onSubmitCadastro(){
-                alert('submit cadastro'+ Ext.getCmp('formCadastro').form.isValid());
                 if(formCadastro.form.isValid()===true){
                     var conn = new Ext.data.Connection();
                     var data = null;
@@ -1230,24 +1270,22 @@ try{
                                 try{
                                     data = eval(responseObject.responseText);
                                     if(data.success===true){
-
-                                    //tbarPrincipal.setText('Olá, '+data[0].nome+' - '+data[0].perfil+'.');
-                                    //
-                                    //                                        var pbarAutenticacao = new Ext.ProgressBar({
-                                    //                                            text:'Carregando...',
-                                    //                                            id:'pbarAutenticacao',
-                                    //                                            cls:'custom',
-                                    //                                            width: 250,
-                                    //                                            margins: '5px 5px 5px 5px',
-                                    //                                            doLayout: false,
-                                    //                                            renderTo: 'boxLoadingAutenticacao'
-                                    //                                        });
-                                    //                                        RunnerAutenticacao.run(pbarAutenticacao, Ext.getCmp('aEntrar'), 19, data.url);
-
-                                    }
-                                    else{
+                                        windowCadastro.hide();
+                                        Ext.MessageBox.show({
+                                            title: 'Seja bem vindo!',
+                                            msg: 'Cliente cadastro com sucesso!',
+                                            buttons: Ext.MessageBox.OK,
+                                            fn: PaginaInicial,
+                                            icon: Ext.MessageBox.INFO
+                                        });
+                                    }else{
                                         Ext.example.msg('Erro', data.error);
-                                    //                                        pbarAutenticacao.updateText('Tente novamente!');
+                                        Ext.MessageBox.show({
+                                            title: 'Erro!',
+                                            msg: data.error,
+                                            buttons: Ext.MessageBox.OK,
+                                            icon: Ext.MessageBox.ERROR
+                                        });
                                     }
                                 }catch(e){
                                     Ext.example.msg('Erro', '{0}',e);
@@ -1264,8 +1302,61 @@ try{
             }
 
             function onSubmitSalvarAlteracaoCliente(){
-                if(Ext.getCmp('formAlteracaoCliente').form.isValid()){
-                    Ext.getCmp('formAlteracaoCliente').form.submit();
+                if(formAlteracaoCliente.form.isValid()===true){
+                    alert('ok');
+                
+                    var conn = new Ext.data.Connection();
+                    var data = null;
+                    conn.request({
+                        url: controllerCliente + 'alterar',
+                        method: 'POST',
+                        params: {
+                            nm_usuario : Ext.getCmp('nm_usuario').getValue(),
+                            nu_cpf : Ext.getCmp('nu_cpf').getValue(),
+                            dd_residencial : Ext.getCmp('dd_residencial').getValue(),
+                            nu_residencial : Ext.getCmp('nu_residencial').getValue(),
+                            dd_celular : Ext.getCmp('dd_celular').getValue(),
+                            nu_celular : Ext.getCmp('nu_celular').getValue(),
+                            sq_uf : Ext.getCmp('sq_uf').getValue(),
+                            sq_municipio : Ext.getCmp('sq_municipio').getValue(),
+                            nu_cep : Ext.getCmp('nu_cep').getValue(),
+                            tx_endereco : Ext.getCmp('tx_endereco').getValue(),
+                            tx_email : Ext.getCmp('tx_email').getValue(),
+                            tx_senha : Ext.getCmp('tx_senha').getValue()
+                        },
+                        success: function(responseObject) {
+                            if(responseObject.responseText){
+                                try{
+                                    data = eval(responseObject.responseText);
+                                    if(data.success===true){
+                                        windowAlteracaoCliente.hide();
+                                        Ext.MessageBox.show({
+                                            title: 'Perfil',
+                                            msg: 'Alterações salvas com sucesso!\nObs: As alterações entraram em vigor após o Logoff!',
+                                            buttons: Ext.MessageBox.OK,
+                                            fn: Logoff,
+                                            icon: Ext.MessageBox.INFO
+                                        });
+                                    }else{
+                                        Ext.example.msg('Erro', data.error);
+                                        Ext.MessageBox.show({
+                                            title: 'Erro!',
+                                            msg: data.error,
+                                            buttons: Ext.MessageBox.OK,
+                                            icon: Ext.MessageBox.ERROR
+                                        });
+                                    }
+                                }catch(e){
+                                    Ext.example.msg('Erro', '{0}',e);
+                                }
+                            }
+                        },
+                        failure: function(e) {
+                            Ext.example.msg('Erro', '{0}dd',e);
+                        }
+                    });
+                }else{
+                    Ext.example.msg('Erro', 'Falha na Alteração do Perfil!');
                 }
             }
 
@@ -1334,7 +1425,7 @@ try{
             var tplVisualizacao = new Ext.XTemplate(
                 '<div class="details">',
                 '<tpl for=".">',
-                '<img alt="carregando..." width="300" height="279" src="/camisetas/outros/png-1.0/camiseta.php?imagem={hs_produto}&cor={co_produto}&tamanho=300"/>',
+                '<img alt="carregando..." width="300" height="279" src="'+controllerProdutos+'renderizar/?imagem={hs_produto}&cor={co_produto}&tamanho=300"/>',
                 '<b>Codigo: </b>',
                 '<span>{sq_produto}</span>',
                 '<b>Nome: </b>',
@@ -1345,10 +1436,10 @@ try{
                 '<span>R${vl_produto}</span>',
                 '<b>Descricao: </b>',
                 '<span>{ds_produto}</span>',
-                '<b>Data Criacao: </b>',
-                '<span>{dt_produto}</span>',
-                '<b>Vendidas: </b>',
-                '<span>{nu_vendidos} Unidades</span>',
+                //                '<b>Data Criacao: </b>',
+                //                '<span>{dt_produto}</span>',
+                //                '<b>Vendidas: </b>',
+                //                '<span>{nu_vendidos} Unidades</span>',
                 '</div>',
                 '</tpl>',
                 '</div>'
@@ -1407,7 +1498,7 @@ try{
                 title: 'Visualizacao',
                 frame: true,
                 width: 350,
-                html: '<img alt="carregando..." width="300" height="279" src="/camisetas/outros/png-1.0/imagens/default.png"/>\n\
+                html: '<img alt="carregando..." width="300" height="279" src="/camisetas/public/img/default.png"/>\n\
     <span>[Selecione uma camisetas da galeria para adiciona-la no carrinho, nos seus favoritos ou somente para visualizar os detalhes]</span>',
                 autoScroll: true,
                 margins: '0 0 0 10',
@@ -1420,7 +1511,7 @@ try{
                 title: 'Visualizacao',
                 frame: true,
                 width: 350,
-                html: '<img alt="carregando..." width="300" height="279" src="/camisetas/outros/png-1.0/imagens/default.png"/>\n\
+                html: '<img alt="carregando..." width="300" height="279" src="/camisetas/public/img/default.png"/>\n\
     <span>[Selecione uma camisetas dos favoritos para adiciona-la no carrinho, nos seus favoritos ou somente para visualizar os detalhes]</span>',
                 autoScroll: true,
                 margins: '0 0 0 10',
@@ -1433,7 +1524,7 @@ try{
                 '<ul>',
                 '<tpl for=".">',
                 '<li class="camiseta">',
-                '<img src="'+urlGeradorCamisetas+'{hs_produto}&cor={co_produto}&tamanho=200" />',
+                '<img src="'+controllerProdutos+'renderizar/?imagem={hs_produto}&cor={co_produto}&tamanho=200" />',
                 '<strong>{nm_produto}</strong>',
                 '<span>{vl_produto:brMoney}</span>',
                 '</li>',
@@ -1784,7 +1875,7 @@ try{
                 var conn = new Ext.data.Connection();
                 var data = null;
                 conn.request({
-                    url: urlValidarRecorte,
+                    url: controllerProdutos + 'validar',
                     method: 'POST',
                     success: function(responseObject) {
                         if(responseObject.responseText){
@@ -1858,7 +1949,7 @@ try{
                             var conn = new Ext.data.Connection();
                             var data = null;
                             conn.request({
-                                url: urlCorMinhaCamiseta,
+                                url: controllerProdutos + 'colorir',
                                 method: 'POST',
                                 params: {
                                     cor: Ext.getCmp('cor_mc').getValue()
@@ -1868,9 +1959,8 @@ try{
                                         try{
                                             data = eval(responseObject.responseText);
                                             if(data.success===true){
-                                                Ext.example.msg('Processamento', 'Sucess {0} Cor {1}' ,data.success, data.cor );
-                                                Ext.get('iMinhaCamiseta').dom.src = urlMostrarMinhaCamiseta + '?t=' + new Date().getTime()+Math.random(0,9999);
-
+                                                Ext.example.msg('Processamento', 'Success {0} Cor {1}' ,data.success, data.cor );
+                                                Ext.get('iMinhaCamiseta').dom.src = controllerProdutos + 'mostrar/?t=' + new Date().getTime();
                                             }else{
                                                 Ext.example.msg('Erro', 'Falha ao processar o cor da camiseta!');
                                             }
@@ -2090,7 +2180,7 @@ try{
                             items: new Ext.Panel({
                                 deferredRender:false,
                                 border:false,
-                                html: '<img alt="carregando..." width="650" height="604" src="/camisetas/outros/png-1.0/camiseta.php?imagem='+selNode[0].data.hs_produto+'&cor='+selNode[0].data.co_produto+'&tamanho=650"/>'
+                                html: '<img alt="carregando..." width="650" height="604" src="'+controllerProdutos+'renderizar/?imagem='+selNode[0].data.hs_produto+'&cor='+selNode[0].data.co_produto+'&tamanho=650"/>'
                             }),
                             buttons: []
                         });
@@ -2121,12 +2211,12 @@ try{
                     handler: function(){
                         if(formUpload.getForm().isValid()){
                             formUpload.getForm().submit({
-                                url: urlUploadCamisetas,
+                                url: controllerProdutos + 'upload',
                                 waitMsg: 'Enviando imagem...',
                                 titleMsg: 'Aguarde',
                                 textMsg: 'Aguarde',
                                 success: function(){
-                                    Ext.get('iMinhaCamiseta').dom.src = urlMinhaCamiseta;
+                                    Ext.get('iMinhaCamiseta').dom.src = controllerProdutos;
                                     //   formUpload.getForm().reset();
                                     Ext.getCmp('recortar_mc').enable();
                                     Ext.getCmp('tamanho_mc').enable();
@@ -2165,7 +2255,7 @@ try{
                         document.getElementById("iMinhaCamiseta").contentWindow.recortar();
                         setTimeout(function(){
                             validarRecorte();
-                            Ext.get('iMinhaCamiseta').dom.src = urlAguarde;
+                            Ext.get('iMinhaCamiseta').dom.src = controllerProdutos + 'aguarde';
                         }, 2000);
 
                         setTimeout(function(){
@@ -2173,7 +2263,7 @@ try{
                             Ext.MessageBox.hide();
                             Ext.getCmp('recortar_mc').disable();
                             Ext.getCmp('restaurar_mc').enable();
-                            Ext.get('iMinhaCamiseta').dom.src = urlMostrarMinhaCamiseta + '?t=' + new Date().getTime()+Math.random(0,9999);
+                            Ext.get('iMinhaCamiseta').dom.src = controllerProdutos + 'mostrar/?t=' + new Date().getTime()+Math.random(0,9999);
                         }, 5000);
 
                         
@@ -2187,7 +2277,7 @@ try{
                     iconCls: 'image-edit',
                     handler:  function(){
                         Ext.example.msg('Acao', 'Restaurando...');
-                        Ext.get('iMinhaCamiseta').dom.src = urlMinhaCamiseta;
+                        Ext.get('iMinhaCamiseta').dom.src = controllerProdutos;
                         Ext.getCmp('recortar_mc').enable();
                         Ext.getCmp('restaurar_mc').disable();
                         Ext.getCmp('recorte').setValue('');
@@ -2220,7 +2310,7 @@ try{
                                             Ext.example.msg('Salvando', 'Camiseta {0} salva com sucesso',data.id);
                                             Ext.example.msg('Noticia', 'A Camiseta {0} agora estara nos seus favoritos',data.id);
                                             AtualizarDataViewFavoritos();
-                                            Ext.get('iMinhaCamiseta').dom.src = urlMinhaCamiseta + '?t=' + new Date().getTime()+Math.random(0,9999);
+                                            Ext.get('iMinhaCamiseta').dom.src = controllerProdutos + '?t=' + new Date().getTime()+Math.random(0,9999);
 
                                             Ext.getCmp('salvar_mc').disable();
                                             Ext.getCmp('restaurar_mc').disable();
@@ -2361,7 +2451,7 @@ try{
                                                     Ext.example.msg('Noticia', 'O boleto para o pagamento esta disponivel');
                                                 }catch(e){
                                                     Ext.example.msg('Noticia', 'O boleto para o pagamento esta disponivel');
-                                                }                                          
+                                                }
                                             }else{
                                                 Ext.example.msg('Erro', 'Falha ao finalizar o carrinho');
                                             }
@@ -2598,7 +2688,7 @@ try{
                             items: new Ext.Panel({
                                 deferredRender:false,
                                 border:false,
-                                html: '<img alt="carregando..." width="650" height="604" src="/camisetas/outros/png-1.0/camiseta.php?imagem='+rec.get('hs_produto')+'&cor='+rec.get('co_produto')+'&tamanho=650"/>'
+                                html: '<img alt="carregando..." width="650" height="604" src="'+controllerProdutos+'renderizar/?imagem='+rec.get('hs_produto')+'&cor='+rec.get('co_produto')+'&tamanho=650"/>'
                             }),
                             buttons: []
                         });
@@ -2673,7 +2763,7 @@ try{
                             items: new Ext.Panel({
                                 deferredRender:false,
                                 border:false,
-                                html: '<img alt="carregando..." width="650" height="604" src="/camisetas/outros/png-1.0/camiseta.php?imagem='+selNode[0].data.hs_produto+'&cor='+selNode[0].data.co_produto+'&tamanho=650"/>'
+                                html: '<img alt="carregando..." width="650" height="604" src="'+controllerProdutos+'renderizar/?imagem='+selNode[0].data.hs_produto+'&cor='+selNode[0].data.co_produto+'&tamanho=650"/>'
                             }),
                             buttons: []
                         });
@@ -2816,7 +2906,7 @@ try{
                                             name: 'iMinhaCamiseta',
                                             id: 'iMinhaCamiseta',
                                             frameborder : 0,
-                                            src: urlMinhaCamiseta + '?cor=ffffff'
+                                            src: controllerProdutos + '?cor=ffffff'
                                         }
                                     })],
                                     closable:true,
@@ -3031,6 +3121,9 @@ try{
             //Ext.getCmp('btnSair').hide();
             Ext.getCmp('btnAddCarrinho').disable();
             Ext.getCmp('btnAddFavoritos').disable();
+
+            Ext.getCmp('btnAddFavCarrinho').disable();
+            Ext.getCmp('btnDelFavorito').disable();
 
             Ext.getCmp('salvar_mc').disable();
             Ext.getCmp('recortar_mc').disable();

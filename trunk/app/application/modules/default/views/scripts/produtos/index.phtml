@@ -1,0 +1,74 @@
+<?php echo $this->doctype(); ?>
+<html>
+    <head>
+        <?php
+        echo $this->headMeta();
+        echo $this->headTitle();
+        echo $this->headLink();
+        echo $this->headScript();
+        ?>
+    </head>
+    <body>
+
+    </body>
+</html>
+
+
+
+
+<?php
+        session_start();
+        $_SESSION['upload']['crop'] = false;
+        if ($_SESSION['upload']['imagem']) {
+            $imagem = '<img alt="carregando..."  src="' . SYSTEM_PATH . '/public/temp/' . $_SESSION['upload']['imagem'] . '" id="jcrop"  />';
+        }
+?>
+        <html>
+            <head>
+                <meta http-equiv="Content-type" content="text/html; charset=utf-8">
+                <script type="text/javascript" src="<?php echo SYSTEM_PATH; ?>/public/js/crop/jquery.min.js"></script>
+                <script type="text/javascript" src="<?php echo SYSTEM_PATH; ?>/public/js/crop/jquery.Jcrop.js"></script>
+                <link rel="stylesheet" href="<?php echo SYSTEM_PATH; ?>/public/css/crop/jquery.Jcrop.css" type="text/css" />
+                <style type="text/css">
+                    *{
+                        text-align: center;
+                    }
+                </style>
+            </head>
+            <body>
+                <div id="div-jcrop">
+            <?php echo $imagem; ?>
+        </div>
+
+        <script type="text/javascript">
+
+            var img = '<?php echo $_SESSION['upload']['imagem']; ?>';
+            var x,y,w,h;
+            var auxs = '';
+            var t = 'sss';
+            $('#jcrop').Jcrop({
+                onChange: preview,
+                setSelect:   [ 0, 0, 420, 525 ],
+                aspectRatio: 4 / 5,
+                allowResize	: true
+            });
+
+            function recortar(){
+                $.post( '<?php echo SYSTEM_PATH; ?>/produtos/recortar', {'x':x,'y':y,'w':w,'h':h});
+            }
+
+            $('#teste').click(function(){
+                recortar();
+            });
+
+            function preview(c)
+            {
+                x = (c.x);
+                y = (c.y);
+                w = (c.w);
+                h = (c.h);
+            }
+
+        </script>
+    </body>
+</html>

@@ -117,6 +117,7 @@ class TbProdutosTable extends Doctrine_Table {
                                     ->andWhere($sPreco)
                                     ->andWhere('p.st_ativo = ?', true)
                                     ->andWhere('f.st_ativo = ?', true)
+                                    ->andWhere('f.sq_usuario = ?', $sq_usuario)
                                     ->orderBy($aParams['sort'] . ' ' . $aParams['dir'])
                             , ++$page, $aParams['limit']);
             $res = $query->execute(array(), Doctrine::HYDRATE_ARRAY);
@@ -155,6 +156,7 @@ class TbProdutosTable extends Doctrine_Table {
                             ->andWhere($sPreco)
                             ->andWhere('p.st_ativo = ?', true)
                             ->andWhere('f.st_ativo = ?', true)
+                            ->andWhere('f.sq_usuario = ?', $sq_usuario)
                             ->count();
         } catch (Doctrine_Exception $e) {
             $out = array(success => false, error => $e->getMessage());
