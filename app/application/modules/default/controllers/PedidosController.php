@@ -3,16 +3,17 @@
 class PedidosController extends Base_Controller_Action {
 
     public function init() {
+        parent::init();
         $this->_helper->layout->disableLayout();
         $this->_helper->viewRenderer->setNoRender();
         /* debuggar */
-        $this->_session->usuario->sq_usuario = 1;
+        //$this->_session->usuario->sq_usuario = 1;
     }
 
     public function carregarAction() {
         $pedidos = array();
         if ($this->getRequest()->isPost()) {
-            if ($this->_session->usuario->sq_usuario) {
+            if (isset($this->_session->usuario)) {
                 try {
                     $pedidos = Doctrine_Core::getTable('TbPedidos')->findByDql('sq_usuario = ' . $this->_session->usuario->sq_usuario . ' AND sq_status = 1 AND st_ativo = true')->toArray();
 
@@ -139,12 +140,6 @@ class PedidosController extends Base_Controller_Action {
 // N�O ALTERAR!
 //require ("include/funcoes_bb.php");
 //require ("include/dump_bb.php");
-
-
-
-
-
-
 
 
         $boleto = new BoletoBB($config);

@@ -101,15 +101,15 @@ class CarrinhoController extends Base_Controller_Action {
             }
         } catch (Doctrine_Exception $e) {
             $conn->rollback();
-            $error = false;
+            $error = true;
+            $out = array(success => false, error => $e->getMessage());
         }
 
         if (!$error) {
             unset($this->carrinho->camiseta);
             $out = array(success => true);
-        } else {
-            $out = array(success => false);
         }
+
         $this->_prepareJson($out);
     }
 

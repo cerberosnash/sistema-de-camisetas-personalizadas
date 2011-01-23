@@ -257,4 +257,12 @@ class Base_Util {
         return strtoupper($string);
     }
 
+    public static function md6_encode($string) {
+        return base64_encode(base64_encode(base64_encode($string)));
+    }
+
+    public static function md6_decode($string) {
+        return base64_decode(base64_decode(base64_decode($string)));
+    }
+
 }
