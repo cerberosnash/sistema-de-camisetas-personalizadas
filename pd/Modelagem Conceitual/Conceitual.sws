@@ -10,7 +10,8 @@
 			<Model Expanded="Yes" ID="{FBE66DE8-C631-412D-B5B8-B3B31453AC38}" Loaded="No" Name="Modelo Fisico" Type="{CDE44E21-9669-11D1-9914-006097355D9B}" URL="../Modelagem Fisica/Fisico-antigo.pdm"/>
 		</Folder>
 		<Model Expanded="Yes" ID="{21B48384-C96C-468C-A449-63DBE94E0792}" Loaded="No" Name="Modelo Fisico Correto" Type="{CDE44E21-9669-11D1-9914-006097355D9B}" URL="../Modelagem Fisica/Fisico.pdm"/>
-		<Model Expanded="Yes" ID="{21B48384-C96C-468C-A449-63DBE94E0792}" Name="Modelo Fisico Correto" Selected="Yes" Type="{CDE44E21-9669-11D1-9914-006097355D9B}" URL="../Modelagem Fisica/Fisico.pdm"/>
+		<Model Expanded="Yes" ID="{21B48384-C96C-468C-A449-63DBE94E0792}" Loaded="No" Name="Modelo Fisico Correto" Type="{CDE44E21-9669-11D1-9914-006097355D9B}" URL="../Modelagem Fisica/Fisico.pdm"/>
+		<Model Expanded="Yes" ID="{21B48384-C96C-468C-A449-63DBE94E0792}" Name="Modelo Fisico Correto" Type="{CDE44E21-9669-11D1-9914-006097355D9B}" URL="../Modelagem Fisica/Fisico.pdm"/>
 	</Local>
 	<BrowserModule Name="Repository"/>
 </Workspace>
