@@ -12,28 +12,14 @@ try{
             var controllerCliente = '/camisetas/cliente/';
             var controllerIndex = '/camisetas/';
             var controllerAutenticacao = '/camisetas/autenticacao/';
-            //var urlRecuperarSenha = '/camisetas/autenticacao/recuperar';
-            //var urlGeradorCamisetas = "/camisetas/outros/png-1.0/camiseta.php?imagem=";
             var controllerUtil = "/camisetas/util/";
-            //var urlMunicipios = "/camisetas/outros/png-1.0/municipios.php";
-            //            var urlCaptcha = "/camisetas/outros/png-1.0/captcha/CaptchaSecurityImages.php?width=72&height=25&characters=4&t=";
-            // var urlSecurityCode = "/camisetas/outros/png-1.0/captcha.php";
             var controllerPedidos = "/camisetas/pedidos/";
             var controllerGaleria = '/camisetas/galeria/';
             var controllerCarrinho = '/camisetas/carrinho/';
-            //var urlFavoritos = '/camisetas/outros/png-1.0/favoritos.php';
-            //var urlProcessarBoleto = '/camisetas/library/Util/boletos/BB.php';
-            //var urlUploadCamisetas = '/camisetas/outros/png-1.0/upload.php';
             var controllerProdutos = '/camisetas/produtos/';
-            //var urlMinhaCamiseta = '/camisetas/outros/png-1.0/minha_camiseta.php';
             var controllerLogoff = '/camisetas/logoff/';
-            //var urlCorMinhaCamiseta = '/camisetas/outros/png-1.0/cor.php';
             var controllerFavoritos = '/camisetas/favoritos/';
-            //var urlMostrarMinhaCamiseta = '/camisetas/outros/png-1.0/mostrar_camiseta.php';
-            //var urlAguarde = '/camisetas/outros/png-1.0/aguarde.php';
-            //var urlValidarRecorte = '/camisetas/outros/png-1.0/validar_recorte.php';
-            var urlAlteracaoCliente = '/camisetas/outros/png-1.0/alteracao_cliente.php';
-
+                  
             /*DataStores - Inicio*/
 
             var storeEstados = new Ext.data.JsonStore({
@@ -323,6 +309,9 @@ try{
                 if(btn=='yes'){
                     window.location = controllerLogoff;
                 }
+                if(btn=='ok'){
+                    window.location = controllerLogoff;
+                }
             }
 
             function PaginaInicial(btn){
@@ -481,13 +470,14 @@ try{
                                     Ext.getCmp('acDDCelular').setValue(data.cliente.dd_celular);
                                     Ext.getCmp('acNUCelular').setValue(data.cliente.nu_celular);
                                     Ext.getCmp('acUF').setValue(data.cliente.sq_uf);
-                                    Ext.getCmp('acUF').setRawValue(data.cliente.nm_uf);
                                     Ext.getCmp('acMunicipio').setValue(data.cliente.sq_municipio);
-                                    Ext.getCmp('acMunicipio').setRawValue(data.cliente.nm_municipio);
                                     Ext.getCmp('acCEP').setValue(data.cliente.nu_cep);
                                     Ext.getCmp('acEndereco').setValue(data.cliente.tx_endereco);
                                     Ext.getCmp('acEmail').setValue(data.cliente.tx_email);
                                     Ext.getCmp('acSenha').setValue(data.cliente.tx_senha);
+
+                                    Ext.getCmp('acUF').setRawValue(data.cliente.nm_uf);
+                                    Ext.getCmp('acMunicipio').setRawValue(data.cliente.nm_municipio);
                                 }else{
                                     Ext.example.msg('Erro', 'Falha na autenticação');
                                 }
@@ -541,7 +531,9 @@ try{
                     width: 110,
                     type: 'submit',
                     iconCls: 'silk-delete',
-                    handler: onSubmitRecuperarSenha
+                    handler: function(){
+                        onSubmitRecuperarSenha();
+                    }
                 }]
             });
 
@@ -621,16 +613,6 @@ try{
                 id: 'formAlteracaoCliente',
                 frame:false,
                 border: true,
-                success: function(e){
-                    alert(e);
-                },
-                failure: function(e){
-                    alert(e);
-                },
-                url: urlAlteracaoCliente,
-                baseParams:{
-                    acao: 'salvar'
-                },
                 title: '',
                 width: 500,
                 bodyStyle:'padding:10px 10px 10px 10px',
@@ -1145,7 +1127,9 @@ try{
                     id: 'cEntrar',
                     type: 'submit',
                     iconCls: 'silk-add',
-                    handler: onSubmitCadastro
+                    handler: function(){
+                        onSubmitCadastro();
+                    }
                 }]
             });
 
@@ -1157,8 +1141,7 @@ try{
                         url: controllerAutenticacao + 'recuperar',
                         method: 'POST',
                         params: {
-                            email : Ext.getCmp('rEmail').getValue(),
-                            captcha : Ext.getCmp('rCaptcha').getValue()
+                            tx_email : Ext.getCmp('rEmail').getValue()
                         },
                         success: function(responseObject) {
                             if(responseObject.responseText){
@@ -1181,7 +1164,13 @@ try{
                                         });
 
                                     }else{
-                                        Ext.example.msg('Erro', 'Falha ao recuperar a senha');
+                                        Ext.example.msg('Erro', data.error);
+                                        Ext.MessageBox.show({
+                                            title: 'Erro!',
+                                            msg: data.error,
+                                            buttons: Ext.MessageBox.OK,
+                                            icon: Ext.MessageBox.ERROR
+                                        });
                                     }
                                 }catch(e){
                                     Ext.example.msg('Erro', '{0}',e);
@@ -1246,56 +1235,60 @@ try{
 
             function onSubmitCadastro(){
                 if(formCadastro.form.isValid()===true){
-                    var conn = new Ext.data.Connection();
-                    var data = null;
-                    conn.request({
-                        url: controllerCliente + 'adicionar',
-                        method: 'POST',
-                        params: {
-                            nm_usuario : Ext.getCmp('nm_usuario').getValue(),
-                            nu_cpf : Ext.getCmp('nu_cpf').getValue(),
-                            dd_residencial : Ext.getCmp('dd_residencial').getValue(),
-                            nu_residencial : Ext.getCmp('nu_residencial').getValue(),
-                            dd_celular : Ext.getCmp('dd_celular').getValue(),
-                            nu_celular : Ext.getCmp('nu_celular').getValue(),
-                            sq_uf : Ext.getCmp('sq_uf').getValue(),
-                            sq_municipio : Ext.getCmp('sq_municipio').getValue(),
-                            nu_cep : Ext.getCmp('nu_cep').getValue(),
-                            tx_endereco : Ext.getCmp('tx_endereco').getValue(),
-                            tx_email : Ext.getCmp('tx_email').getValue(),
-                            tx_senha : Ext.getCmp('tx_senha').getValue()
-                        },
-                        success: function(responseObject) {
-                            if(responseObject.responseText){
-                                try{
-                                    data = eval(responseObject.responseText);
-                                    if(data.success===true){
-                                        windowCadastro.hide();
-                                        Ext.MessageBox.show({
-                                            title: 'Seja bem vindo!',
-                                            msg: 'Cliente cadastro com sucesso!',
-                                            buttons: Ext.MessageBox.OK,
-                                            fn: PaginaInicial,
-                                            icon: Ext.MessageBox.INFO
-                                        });
-                                    }else{
-                                        Ext.example.msg('Erro', data.error);
-                                        Ext.MessageBox.show({
-                                            title: 'Erro!',
-                                            msg: data.error,
-                                            buttons: Ext.MessageBox.OK,
-                                            icon: Ext.MessageBox.ERROR
-                                        });
+                    try{
+                        var conn = new Ext.data.Connection();
+                        var data = null;
+                        conn.request({
+                            url: controllerCliente + 'adicionar',
+                            method: 'POST',
+                            params: {
+                                nm_usuario : Ext.getCmp('nm_usuario').getValue(),
+                                nu_cpf : Ext.getCmp('nu_cpf').getValue(),
+                                dd_residencial : Ext.getCmp('dd_residencial').getValue(),
+                                nu_residencial : Ext.getCmp('nu_residencial').getValue(),
+                                dd_celular : Ext.getCmp('dd_celular').getValue(),
+                                nu_celular : Ext.getCmp('nu_celular').getValue(),
+                                sq_uf : Ext.getCmp('sq_uf').getValue(),
+                                sq_municipio : Ext.getCmp('sq_municipio').getValue(),
+                                nu_cep : Ext.getCmp('nu_cep').getValue(),
+                                tx_endereco : Ext.getCmp('tx_endereco').getValue(),
+                                tx_email : Ext.getCmp('tx_email').getValue(),
+                                tx_senha : Ext.getCmp('tx_senha').getValue()
+                            },
+                            success: function(responseObject) {
+                                if(responseObject.responseText){
+                                    try{
+                                        data = eval(responseObject.responseText);
+                                        if(data.success===true){
+                                            windowCadastro.hide();
+                                            Ext.MessageBox.show({
+                                                title: 'Seja bem vindo!',
+                                                msg: 'Cliente cadastro com sucesso!',
+                                                buttons: Ext.MessageBox.OK,
+                                                fn: PaginaInicial,
+                                                icon: Ext.MessageBox.INFO
+                                            });
+                                        }else{
+                                            Ext.example.msg('Erro', data.error);
+                                            Ext.MessageBox.show({
+                                                title: 'Erro!',
+                                                msg: data.error,
+                                                buttons: Ext.MessageBox.OK,
+                                                icon: Ext.MessageBox.ERROR
+                                            });
+                                        }
+                                    }catch(e){
+                                        Ext.example.msg('Erro', '{0}',e);
                                     }
-                                }catch(e){
-                                    Ext.example.msg('Erro', '{0}',e);
                                 }
+                            },
+                            failure: function(e) {
+                                Ext.example.msg('Erro', '{0}',e);
                             }
-                        },
-                        failure: function(e) {
-                            Ext.example.msg('Erro', '{0}',e);
-                        }
-                    });
+                        });
+                    }catch(e){
+                        Ext.example.msg('Erro', '{0}',e);
+                    }
                 }else{
                     Ext.example.msg('Erro', 'Falha no Cadastro');
                 }
@@ -1303,58 +1296,60 @@ try{
 
             function onSubmitSalvarAlteracaoCliente(){
                 if(formAlteracaoCliente.form.isValid()===true){
-                    alert('ok');
-                
-                    var conn = new Ext.data.Connection();
-                    var data = null;
-                    conn.request({
-                        url: controllerCliente + 'alterar',
-                        method: 'POST',
-                        params: {
-                            nm_usuario : Ext.getCmp('nm_usuario').getValue(),
-                            nu_cpf : Ext.getCmp('nu_cpf').getValue(),
-                            dd_residencial : Ext.getCmp('dd_residencial').getValue(),
-                            nu_residencial : Ext.getCmp('nu_residencial').getValue(),
-                            dd_celular : Ext.getCmp('dd_celular').getValue(),
-                            nu_celular : Ext.getCmp('nu_celular').getValue(),
-                            sq_uf : Ext.getCmp('sq_uf').getValue(),
-                            sq_municipio : Ext.getCmp('sq_municipio').getValue(),
-                            nu_cep : Ext.getCmp('nu_cep').getValue(),
-                            tx_endereco : Ext.getCmp('tx_endereco').getValue(),
-                            tx_email : Ext.getCmp('tx_email').getValue(),
-                            tx_senha : Ext.getCmp('tx_senha').getValue()
-                        },
-                        success: function(responseObject) {
-                            if(responseObject.responseText){
-                                try{
-                                    data = eval(responseObject.responseText);
-                                    if(data.success===true){
-                                        windowAlteracaoCliente.hide();
-                                        Ext.MessageBox.show({
-                                            title: 'Perfil',
-                                            msg: 'Alterações salvas com sucesso!\nObs: As alterações entraram em vigor após o Logoff!',
-                                            buttons: Ext.MessageBox.OK,
-                                            fn: Logoff,
-                                            icon: Ext.MessageBox.INFO
-                                        });
-                                    }else{
-                                        Ext.example.msg('Erro', data.error);
-                                        Ext.MessageBox.show({
-                                            title: 'Erro!',
-                                            msg: data.error,
-                                            buttons: Ext.MessageBox.OK,
-                                            icon: Ext.MessageBox.ERROR
-                                        });
+                    try{
+                        var conn = new Ext.data.Connection();
+                        var data = null;
+                        conn.request({
+                            url: controllerCliente + 'alterar',
+                            method: 'POST',
+                            params: {
+                                nm_usuario : Ext.getCmp('acNome').getValue(),
+                                nu_cpf : Ext.getCmp('acCPF').getValue(),
+                                dd_residencial : Ext.getCmp('acDDResidencial').getValue(),
+                                nu_residencial : Ext.getCmp('acNUResidencial').getValue(),
+                                dd_celular : Ext.getCmp('acDDCelular').getValue(),
+                                nu_celular : Ext.getCmp('acNUCelular').getValue(),
+                                sq_uf : Ext.getCmp('acUF').getValue(),
+                                sq_municipio : Ext.getCmp('acMunicipio').getValue(),
+                                nu_cep : Ext.getCmp('acCEP').getValue(),
+                                tx_endereco : Ext.getCmp('acEndereco').getValue(),
+                                tx_email : Ext.getCmp('acEmail').getValue(),
+                                tx_senha : Ext.getCmp('acSenha').getValue()
+                            },
+                            success: function(responseObject) {
+                                if(responseObject.responseText){
+                                    try{
+                                        data = eval(responseObject.responseText);
+                                        if(data.success===true){
+                                            windowAlteracaoCliente.hide();
+                                            Ext.MessageBox.show({
+                                                title: 'Perfil',
+                                                msg: 'Alterações salvas com sucesso!\n\rObs: As alterações entraram em vigor após o Logoff!',
+                                                buttons: Ext.MessageBox.OK,
+                                                fn: Logoff,
+                                                icon: Ext.MessageBox.INFO
+                                            });
+                                        }else{
+                                            Ext.example.msg('Erro', data.error);
+                                            Ext.MessageBox.show({
+                                                title: 'Erro!',
+                                                msg: data.error,
+                                                buttons: Ext.MessageBox.OK,
+                                                icon: Ext.MessageBox.ERROR
+                                            });
+                                        }
+                                    }catch(e){
+                                        Ext.example.msg('Erro', '{0}',e);
                                     }
-                                }catch(e){
-                                    Ext.example.msg('Erro', '{0}',e);
                                 }
+                            },
+                            failure: function(e) {
+                                Ext.example.msg('Erro', '{0}dd',e);
                             }
-                        },
-                        failure: function(e) {
-                            Ext.example.msg('Erro', '{0}dd',e);
-                        }
-                    });
+                        });
+                    }catch(e){
+                        Ext.example.msg('Erro', '{0}',e);
+                    }
                 }else{
                     Ext.example.msg('Erro', 'Falha na Alteração do Perfil!');
                 }
