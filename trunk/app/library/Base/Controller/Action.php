@@ -78,6 +78,14 @@ class Base_Controller_Action extends Zend_Controller_Action {
         $this->view->out = $file;
     }
 
+    public function templateRecuperarSenha($nm_usuario, $tx_senha) {
+        $file = (file_get_contents(SYSTEM_EMAIL_TEMPLATES . $this->view->originalAction . '.html'));
+        $search = array("{{NOME}}", "{{SENHA}}", "{{POSTIT}}");
+        $replace = array($nm_usuario, Base_Util::md6_decode($tx_senha), SYSTEM_PATH . "/public/img/templates/email/recuperar-senha/postit.png");
+        $file = str_replace($search, $replace, $file);
+        return $file;
+    }
+
     public function appendVariableExtJS() {
         if ($this->view->originalAction != 'help') {
             include $this->_directory . DIRECTORY_SEPARATOR . $_SESSION['language'] . '.php';

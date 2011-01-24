@@ -54,20 +54,33 @@ class AutenticacaoController extends Base_Controller_Action {
     }
 
     public function recuperarAction() {
-
-        $session = new Zend_Session_Namespace('autenticacao');
-
+        $this->_helper->layout->disableLayout();
+        $this->_helper->viewRenderer->setNoRender();
         if ($this->getRequest()->isPost()) {
-            if ($this->_getParam('email') && ($this->_getParam('captcha') == $session->security_code)) {
-                $out = array(success => true, code => $session->security_code);
+
+            $usuario = Doctrine_Core::getTable('TbUsuarios')->findByDql('tx_email = ?', $this->_getParam('tx_email'))->toArray();
+
+            if (count($usuario) > 0) {
+                if ($usuario[0]['st_ativo'] === true) {
+                    $mail = new Base_PHPMailer();
+                    $mail->IsHTML(true);
+                    $mail->AddAddress($this->_getParam('tx_email'), $usuario[0]['nm_usuario']);
+                    $mail->Subject = 'Recuperacao de Senha - Camisetas Personalizadas';
+                    $mail->MsgHTML($this->templateRecuperarSenha($usuario[0]['nm_usuario'], $usuario[0]['tx_senha']));
+
+                    if (!$mail->Send()) {
+                        $out = array(success => false, error => $mail->ErrorInfo);
+                    } else {
+                        $out = array(success => true);
+                    }
+                } else {
+                    $out = array(success => false, error => 'Este usuário está bloqueado!');
+                }
             } else {
-                $out = array(success => false, code => $session->security_code);
+                $out = array(success => false, error => 'Email não encontrado na base de dados!');
             }
         } else {
-            $out = array(
-                success => false,
-                error => 'Parametros passados de forma inválida!'
-            );
+            $out = array(success => false, error => 'Parametros passados de forma inválida!');
         }
         $this->_prepareJson($out);
     }

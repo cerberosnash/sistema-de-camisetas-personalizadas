@@ -20,6 +20,7 @@ class Bootstrap/* extends Zend_Application_Bootstrap_Bootstrap */ {
                 . PATH_SEPARATOR . ROOT_DIR . '/application/configuration'
                 . PATH_SEPARATOR . ROOT_DIR . '/library'
                 . PATH_SEPARATOR . ROOT_DIR . '/application/exceptions'
+                . PATH_SEPARATOR . ROOT_DIR . '/library/Base/Smtp'
                 . PATH_SEPARATOR . ROOT_DIR . '/library/Base'
                 . PATH_SEPARATOR . ROOT_DIR . '/library/Doctrine'
                 . PATH_SEPARATOR . ROOT_DIR . '/library/Util'
