@@ -1,0 +1,52 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+    <head></head>
+    <body>
+        <table
+            style='
+            padding: 10px;
+            padding-left: 20px;
+            padding-right: 30px;
+            border: 0px solid #ccc;
+            width: 350px;
+            height: 350px;
+            font-family: monospace;
+            '
+            background = "{{POSTIT}}"
+            >
+            <tr>
+                <td
+                    style='
+                    padding-top: 120px;
+                    padding-left: 30px;
+                    height: 150px;
+                    text-align: center;
+                    border: 0px solid #ccc;
+                    font-family: monospace;
+                    '
+                    >Olá, {{NOME}}.</td>
+            </tr>
+            <tr style='
+                position: relative;
+                bottom: 30px;'>
+                <td style='
+                    padding-left: 30px;
+                    padding-bottom: 30px;
+                    height: 200px;
+                    text-align: center;
+                    border: 0px solid #ccc;
+                    font-family: monospace;
+                    color: red;
+                    '>Sua senha é <span
+                        style='
+                        color: red;
+                        font-weight: bold;
+                        font-family: monospace;
+                        '
+                        >{{SENHA}}.
+                    </span>
+                </td>
+            </tr>
+        </table>
+    </body>
+</html>
