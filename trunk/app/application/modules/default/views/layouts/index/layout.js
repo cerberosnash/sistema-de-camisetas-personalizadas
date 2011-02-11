@@ -20,7 +20,7 @@ try{
             var controllerLogoff = '/camisetas/logoff/';
             var controllerFavoritos = '/camisetas/favoritos/';
                   
-            /*DataStores - Inicio*/
+            /* DataStores - Inicio */
 
             var storeEstados = new Ext.data.JsonStore({
                 root: 'estados',
@@ -161,13 +161,7 @@ try{
             var storeBancos = new Ext.data.ArrayStore({
                 fields: ['mValor', 'vValor'],
                 data : [
-                ['Banco do Brasil', 'BB'],
-                ['Banco Itau', 'BI'],
-                ['Banco Santander', 'BS'],
-                ['UniBanco', 'UB'],
-                ['Caixa Economica Federal', 'CE'],
-                ['Banco Real', 'BR'],
-                ['Banco HSBC', 'HS'],
+                ['Banco do Brasil', 'BB']
                 ]
             });
 
@@ -218,7 +212,7 @@ try{
                     start:0,
                     limit:20
                 },
-                fields: ['sq_produto','nm_produto','co_produto','ds_produto','tm_produto','qt_produto', 'hs_produto',{
+                fields: ['sq_produto','nm_produto',/*'co_produto',*/'ds_produto','tm_produto','qt_produto', 'hs_produto',{
                     name:'vl_produto',
                     type: 'float'
                 }],
@@ -231,20 +225,15 @@ try{
             storeCarrinho.on('load',function(store){
                 if(parseInt(store.reader.jsonData.totalCount)>0){
                     Ext.getCmp('btnCarrinho').enable();
-                    if(parseFloat(store.reader.jsonData.totalCarrinho)>0){
-                        Ext.getCmp('txTotalCarrinho').setText('Total: R$'+parseFloat(store.reader.jsonData.totalCarrinho));
-                        Ext.getCmp('btnFinalizarCarrinho').enable();
-                    }else{
-                        Ext.getCmp('txTotalCarrinho').setText('Total: R$0.00');
-                        Ext.getCmp('btnFinalizarCarrinho').disable();
-                        Ext.getCmp('btnRemoverCarrinho').disable();
-                        Ext.getCmp('QtdCarrinho').disable();
-                        Ext.getCmp('btnQtdCarrinho').disable();
-                    }
+                    Ext.getCmp('txTotalCarrinho').setText('Total: R$'+parseFloat(store.reader.jsonData.totalCarrinho));
+                    Ext.getCmp('btnFinalizarCarrinho').enable();
                 }else{
                     Ext.getCmp('btnCarrinho').disable();
-                    Ext.getCmp('txTotalCarrinho').setText('Total: R$0.00');
+                    Ext.getCmp('QtdCarrinho').disable();
+                    Ext.getCmp('btnQtdCarrinho').disable();
+                    Ext.getCmp('btnRemoverCarrinho').disable();
                     Ext.getCmp('btnFinalizarCarrinho').disable();
+                    Ext.getCmp('txTotalCarrinho').setText('Total: R$0.00');
                 }
             });
 
@@ -2625,13 +2614,13 @@ try{
                 width: 50,
                 sortable: true,
                 dataIndex: 'nm_produto'
-            },
+            },/*
             {
                 header: "Cor",
                 width: 15,
                 sortable: true,
                 dataIndex: 'co_produto'
-            },
+            },*/
             {
                 header: "Descricao",
                 width: 90,
@@ -2874,6 +2863,61 @@ try{
                 renderTo:Ext.getBody(),
                 defaultText: 'Olá, Visitante.',
                 items: [{
+                    xtype: 'button',
+                    text: 'Boletos',
+                    iconCls: 'silk-delete',
+                    action: 'view-boletos',
+                    controller: 'cliente',
+                    handler: function(){
+                      
+                        var controller = this.controller;
+                        var action = this.action;
+                        var titulo = this.text;
+                        var icon = this.iconCls;
+                        var conn = new Ext.data.Connection();
+                        var novaAba = PainelCentral.items.find(function(aba){
+                            return aba.action === action;
+                        });
+
+                        conn.request({
+                            url: controller+'/'+action,
+                            method: 'POST',
+                            params: {
+                            //start: 'start-callback',
+                            //limit: 'limit-callback'
+                            },
+                            success: function(responseObject) {
+                         
+                                if(responseObject.responseText){
+                                    // Ext.example.msg('Aguarde...', 'Controller:{0} Action: {1}:',controller,action);
+
+                                    if(!novaAba)
+                                    {
+                                        try{
+                                            var aba =  eval(responseObject.responseText);
+                                            aba.iconCls = icon;
+                                            aba.title = titulo;
+                                            aba.controller = controller;
+                                            aba.action = action;
+                                            aba.closable = true;
+                                            aba.closeAction = 'hide';
+                                         
+                                            novaAba = Ext.getCmp('PainelCentral').add(aba);
+                                            Ext.getCmp('PainelCentral').activate(novaAba);
+                                        }catch(e){
+                                            Ext.example.msg('Error', '{0}',e);
+                                        }
+                                    }
+                                }
+                            },
+                            failure: function() {
+                                Ext.example.msg('Error', 'MSG-TExt-Response-Error:');
+                            }
+                        });
+
+                        PainelCentral.activate(novaAba);
+                    }
+                },{
                     xtype:'button',
                     text: 'Minha Camiseta',
                     id: 'btnMinhaCamiseta',
@@ -2912,7 +2956,8 @@ try{
 
                                 novaAba = Ext.getCmp('PainelCentral').add(tabMinhaCamiseta);
                                 Ext.getCmp('PainelCentral').activate(novaAba);
-                            }catch(e){
+                            }
+                            catch(e){
                                 Ext.example.msg('Erro', '{0}',e);
                             }
                         }
