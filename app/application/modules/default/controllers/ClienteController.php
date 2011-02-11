@@ -7,6 +7,12 @@ class ClienteController extends Base_Controller_Action {
         $this->_helper->viewRenderer->setNoRender();
     }
 
+    public function viewBoletosAction() {
+        $this->_helper->layout->disableLayout();
+        $this->_helper->viewRenderer->setNoRender();
+        $this->startEXTJS();
+    }
+
     public function init() {
         parent::init();
         if ($this->_session->usuario->tx_perfil != $this->view->originalController) {

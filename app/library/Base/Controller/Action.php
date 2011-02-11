@@ -63,7 +63,7 @@ class Base_Controller_Action extends Zend_Controller_Action {
         $file = utf8_encode(file_get_contents($file));
 
         if ($default === true) {
-            $this->_response->appendBody($this->appendVariableExtJS() . $file);
+            $this->_response->appendBody($file);
         } else if ($default === false) {
             $this->view->out = $file;
         }
