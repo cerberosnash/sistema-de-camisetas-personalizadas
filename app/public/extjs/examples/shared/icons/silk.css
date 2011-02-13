@@ -3,7 +3,7 @@
  * Copyright(c) 2006-2010 Ext JS, Inc.
  * licensing@extjs.com
  * http://www.extjs.com/license
- */
+*/
 /**
 * this css is for the free "silk" icon library
 * http://www.fanfanfan.com
@@ -184,6 +184,6 @@
 .silk-world { background-image: url(fam/world.png) !important; background-repeat: no-repeat; }
 .silk-zoom { background-image: url(fam/zoom.png) !important; background-repeat: no-repeat; }
 
-/* css-sgdoc */
+
 .silk-page-white-put { background-image: url(fam/page_white_put.png) !important; background-repeat: no-repeat; }
 .silk-page-white-go { background-image: url(fam/page_white_go.png) !important; background-repeat: no-repeat; }

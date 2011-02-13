@@ -17,7 +17,7 @@
  * @subpackage Table
  * @copyright  Copyright (c) 2005-2010 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
- * @version    $Id: Abstract.php 21102 2010-02-19 21:13:37Z ralph $
+ * @version    $Id: Abstract.php 23484 2010-12-10 03:57:59Z mjh_ca $
  */
 
 /**
@@ -32,7 +32,7 @@ require_once 'Zend/Db.php';
  * @copyright  Copyright (c) 2005-2010 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  */
-abstract class Zend_Db_Table_Row_Abstract implements ArrayAccess
+abstract class Zend_Db_Table_Row_Abstract implements ArrayAccess, IteratorAggregate
 {
 
     /**
@@ -640,6 +640,11 @@ abstract class Zend_Db_Table_Row_Abstract implements ArrayAccess
         );
 
         return $result;
+    }
+
+    public function getIterator()
+    {
+        return new ArrayIterator((array) $this->_data);
     }
 
     /**
