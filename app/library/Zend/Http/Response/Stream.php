@@ -16,7 +16,7 @@
  * @category   Zend
  * @package    Zend_Http
  * @subpackage Response
- * @version    $Id: Response.php 17131 2009-07-26 10:03:39Z shahar $
+ * @version    $Id: Stream.php 23651 2011-01-21 21:51:00Z mikaelkael $
  * @copyright  Copyright (c) 2005-2010 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  */
@@ -90,7 +90,7 @@ class Zend_Http_Response_Stream extends Zend_Http_Response
     /**
      * Set the cleanup trigger
      *
-     * @param $cleanup Set cleanup trigger
+     * @param bool $cleanup Set cleanup trigger
      */
     public function setCleanup($cleanup = true) {
         $this->_cleanup = $cleanup;
