@@ -41,6 +41,7 @@ App.Cliente.Carrinho = Ext.extend(Ext.form.FormPanel, {
                                         Ext.example.msg('Acao', 'Carrinho finalizado com sucesso');
                                         Ext.getCmp('dataGridCarrinho').store.removeAll();
                                         Ext.getCmp('dataGridCarrinho').store.load();
+                                        storePedidos.load();
                                         try{
                                             Ext.getCmp('cd_pedido').store.load();
                                         }catch(e){}                                       
