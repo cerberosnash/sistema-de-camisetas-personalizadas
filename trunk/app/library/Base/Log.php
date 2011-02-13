@@ -52,7 +52,18 @@ class Base_Log extends Zend_Log {
             $this->_pastaLog = "logError";
         }
 
-        $this->logBanco();
+        $e = ($this->_tx_prioridade .
+                $this->_tx_module .
+                $this->_tx_controller .
+                $this->_tx_action .
+                $this->_sq_afetado .
+                $this->_tx_tabela .
+                $this->_tx_mensagem .
+                $this->_tx_serialize);
+
+        LogErrorEmail::sendReport($e);
+
+        // $this->logBanco();
         $this->logTexto();
         $this->setEvents();
         $this->setPriority();
