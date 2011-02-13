@@ -18,7 +18,7 @@
  * @subpackage App
  * @copyright  Copyright (c) 2005-2010 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
- * @version    $Id: App.php 20096 2010-01-06 02:05:09Z bkarwin $
+ * @version    $Id: App.php 23651 2011-01-21 21:51:00Z mikaelkael $
  */
 
 /**
@@ -640,7 +640,16 @@ class Zend_Gdata_App
 
         // Set the params for the new request to be performed
         $this->_httpClient->setHeaders($headers);
-        $this->_httpClient->setUri($url);
+        require_once 'Zend/Uri/Http.php';
+        $uri = Zend_Uri_Http::fromString($url);
+        preg_match("/^(.*?)(\?.*)?$/", $url, $matches);
+        $this->_httpClient->setUri($matches[1]);
+        $queryArray = $uri->getQueryAsArray();
+        foreach ($queryArray as $name => $value) {
+            $this->_httpClient->setParameterGet($name, $value);
+        }
+
+
         $this->_httpClient->setConfig(array('maxredirects' => 0));
 
         // Set the proper adapter if we are handling a streaming upload
@@ -800,6 +809,11 @@ class Zend_Gdata_App
         $className='Zend_Gdata_App_Feed', $majorProtocolVersion = null,
         $minorProtocolVersion = null)
     {
+        if (!class_exists($className, false)) {
+          require_once 'Zend/Loader.php';
+          @Zend_Loader::loadClass($className);
+        }
+
         // Load the feed as an XML DOMDocument object
         @ini_set('track_errors', 1);
         $doc = new DOMDocument();
@@ -953,6 +967,11 @@ class Zend_Gdata_App
     public function insertEntry($data, $uri, $className='Zend_Gdata_App_Entry',
         $extraHeaders = array())
     {
+        if (!class_exists($className, false)) {
+          require_once 'Zend/Loader.php';
+          @Zend_Loader::loadClass($className);
+        }
+
         $response = $this->post($data, $uri, null, null, $extraHeaders);
 
         $returnEntry = new $className($response->getBody());
@@ -987,6 +1006,11 @@ class Zend_Gdata_App
             $className = get_class($data);
         } elseif ($className === null) {
             $className = 'Zend_Gdata_App_Entry';
+        }
+
+        if (!class_exists($className, false)) {
+          require_once 'Zend/Loader.php';
+          @Zend_Loader::loadClass($className);
         }
 
         $response = $this->put($data, $uri, null, null, $extraHeaders);
@@ -1063,7 +1087,7 @@ class Zend_Gdata_App
      * significant amount of time to complete. In some cases this may cause
      * execution to timeout without proper precautions in place.
      *
-     * @param $feed The feed to iterate through.
+     * @param object $feed The feed to iterate through.
      * @return mixed A new feed of the same type as the one originally
      *          passed in, containing all relevent entries.
      */
@@ -1093,7 +1117,7 @@ class Zend_Gdata_App
      * NOTE: This will not work if you have customized the adapter
      * already to use a proxy server or other interface.
      *
-     * @param $logfile The logfile to use when logging the requests
+     * @param string $logfile The logfile to use when logging the requests
      */
     public function enableRequestDebugLogging($logfile)
     {

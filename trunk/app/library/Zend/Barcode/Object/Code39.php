@@ -17,7 +17,7 @@
  * @subpackage Object
  * @copyright  Copyright (c) 2005-2010 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
- * @version    $Id: Code39.php 20096 2010-01-06 02:05:09Z bkarwin $
+ * @version    $Id: Code39.php 23398 2010-11-19 17:17:05Z mikaelkael $
  */
 
 /**
@@ -44,7 +44,7 @@ class Zend_Barcode_Object_Code39 extends Zend_Barcode_Object_ObjectAbstract
      * Coding map
      * @var array
      */
-    private $_codingMap = array(
+    protected $_codingMap = array(
         '0' => '000110100',
         '1' => '100100001',
         '2' => '001100001',
@@ -110,6 +110,17 @@ class Zend_Barcode_Object_Code39 extends Zend_Barcode_Object_ObjectAbstract
         $characterLength = (6 * $this->_barThinWidth + 3 * $this->_barThickWidth + 1) * $this->_factor;
         $encodedData     = strlen($this->getText()) * $characterLength - $this->_factor;
         return $quietZone + $encodedData + $quietZone;
+    }
+
+    /**
+     * Set text to encode
+     * @param string $value
+     * @return Zend_Barcode_Object
+     */
+    public function setText($value)
+    {
+        $this->_text = $value;
+        return $this;
     }
 
     /**
