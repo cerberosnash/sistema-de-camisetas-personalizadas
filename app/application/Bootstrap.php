@@ -1,9 +1,8 @@
 <?php
 
-class Bootstrap/* extends Zend_Application_Bootstrap_Bootstrap */ {
+class Bootstrap {
 
     private $_configSection;
-    private $_configLanguage;
 
     public function __construct($configSection) {
         $this->_configSection = $configSection;
@@ -16,7 +15,6 @@ class Bootstrap/* extends Zend_Application_Bootstrap_Bootstrap */ {
         set_include_path(
                 PATH_SEPARATOR . ROOT_DIR . '/application/modules/default/models'
                 . PATH_SEPARATOR . ROOT_DIR . '/application/modules/default/models/Base'
-                . PATH_SEPARATOR . ROOT_DIR . '/application/configuration/i18n'
                 . PATH_SEPARATOR . ROOT_DIR . '/application/configuration'
                 . PATH_SEPARATOR . ROOT_DIR . '/library'
                 . PATH_SEPARATOR . ROOT_DIR . '/application/exceptions'
@@ -50,41 +48,14 @@ class Bootstrap/* extends Zend_Application_Bootstrap_Bootstrap */ {
 
     public function runApp() {
         Zend_Session::start();
-
         $this->_configureLayout();
-        $this->_configureBanco();
         $front = Zend_Controller_Front::getInstance();
         $front->setBaseUrl('/' . SYSTEM_NAME);
         $front->throwExceptions(false);
         $front->registerPlugin(new Base_Controller_Plugin_ViewSetup());
-        $front->registerPlugin(new Base_Controller_Plugin_ModelDirSetup());
-
-        $directory = ROOT_DIR . "/application/configuration/i18n";
-
-        $this->_configLanguage = Zend_Registry::get('config')->languages;
-        $languages = $this->_configLanguage->toArray();
-
-        $front->registerPlugin(new Base_Controller_Plugin_LanguageSetup($directory, $languages));
+        $front = Zend_Controller_Front::getInstance();
+        $front->addModuleDirectory(ROOT_DIR . '/application/modules');
         $front->dispatch();
-    }
-
-    private function _configureBanco() {
-        try {
-            $configSelection = $this->_configSection;
-            $banco = Zend_Registry::get('config')->$configSelection;
-            $registry = Zend_Registry::getInstance();
-            $registry->set('banco', $banco);
-            $db = Zend_Db::factory($banco->db->adapter, $banco->db->config->toArray());
-            Zend_Db_Table::setDefaultAdapter($db);
-            $registry->set('db', $db);
-            $profiler = new Zend_Db_Profiler_Firebug('All DB Queries');
-            $profiler->setEnabled($banco->firebug->profiler->enabled);
-            $db->setProfiler($profiler);
-            $front = Zend_Controller_Front::getInstance();
-            $front->addModuleDirectory(ROOT_DIR . '/application/modules');
-        } catch (Exception $e) {
-            $this->_exception($e);
-        }
     }
 
     private function _configureLayout() {
@@ -115,12 +86,8 @@ class Bootstrap/* extends Zend_Application_Bootstrap_Bootstrap */ {
     }
 
     protected function _initDoctrine() {
-
-        //  $doctrineConfig = Zend_Registry::get('config');
         $configSelection = $this->_configSection;
-
         $banco = Zend_Registry::get('config'); //->$configSelection;
-
         $manager = Doctrine_Manager::getInstance();
         $manager->setAttribute(Doctrine::ATTR_AUTO_ACCESSOR_OVERRIDE, true);
         $manager->setAttribute(Doctrine::ATTR_AUTOLOAD_TABLE_CLASSES, true);
@@ -128,8 +95,6 @@ class Bootstrap/* extends Zend_Application_Bootstrap_Bootstrap */ {
                 Doctrine::ATTR_MODEL_LOADING,
                 Doctrine::MODEL_LOADING_AGGRESSIVE//MODEL_LOADING_CONSERVATIVE
         );
-
-        $_SESSION['conf'] = $banco->prod->doctrine->model_autoloading . "teste";
 
         Doctrine::loadModels($banco->prod->doctrine->models_path);
         $conn = Doctrine_Manager::connection($banco->prod->doctrine->dsn, 'doctrine');

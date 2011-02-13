@@ -2,7 +2,7 @@
 
 class Base_Controller_Action extends Zend_Controller_Action {
 
-    protected $MCA = array();
+//    protected $MCA = array();
     protected $_session;
 
     public function startAutenticacao() {
@@ -18,55 +18,59 @@ class Base_Controller_Action extends Zend_Controller_Action {
         $this->_response->appendBody($callback);
     }
 
-    public function setMCA() {
-        $this->MCA = array(
-            'module' => $this->view->originalModule,
-            'controller' => $this->view->originalController,
-            'action' => $this->view->originalAction
-        );
-    }
-
-    public function getMCA() {
-        return $this->MCA;
-    }
+//    public function setMCA() {
+//        $this->MCA = array(
+//            'module' => $this->view->originalModule,
+//            'controller' => $this->view->originalController,
+//            'action' => $this->view->originalAction
+//        );
+//    }
+//
+//    public function getMCA() {
+//        return $this->MCA;
+//    }
 
     public function init() {
         session_start();
         $this->startAutenticacao();
-        $this->setMCA();
+//        $this->setMCA();
     }
 
-    protected function toUpper($value) {
-        $objFilter = new Zend_Filter();
-        $objStringToUpper = new Zend_Filter_StringToUpper();
-
-        $objStringToUpper->setEncoding('UTF-8');
-        $objFilter->addFilter($objStringToUpper);
-
-        return $objFilter->filter($value);
-    }
-
-    protected function toLower($value) {
-        $objFilter = new Zend_Filter();
-        $objStringToLower = new Zend_Filter_StringToLower();
-
-        $objStringToLower->setEncoding('UTF-8');
-        $objFilter->addFilter($objStringToLower);
-
-        return $objFilter->filter($value);
-    }
+//    protected function toUpper($value) {
+//        $objFilter = new Zend_Filter();
+//        $objStringToUpper = new Zend_Filter_StringToUpper();
+//
+//        $objStringToUpper->setEncoding('UTF-8');
+//        $objFilter->addFilter($objStringToUpper);
+//
+//        return $objFilter->filter($value);
+//    }
+//
+//    protected function toLower($value) {
+//        $objFilter = new Zend_Filter();
+//        $objStringToLower = new Zend_Filter_StringToLower();
+//
+//        $objStringToLower->setEncoding('UTF-8');
+//        $objFilter->addFilter($objStringToLower);
+//
+//        return $objFilter->filter($value);
+//    }
 
     public function startEXTJS($default=true) {
         $file = "../application/modules/" . $this->view->originalModule . "/views/scripts/"
                 . $this->view->originalController . "/" . $this->view->originalAction . ".js";
 
-        $file = utf8_encode(file_get_contents($file));
+        $file = (file_get_contents($file));
 
         if ($default === true) {
-            $this->_response->appendBody($file);
+            $this->_response->appendBody(($file));
         } else if ($default === false) {
             $this->view->out = $file;
         }
+    }
+
+    public function fixErrorString($string) {
+        return iconv("iso-8859-1", "utf-8", $string);
     }
 
     public function errorEXTJS($error) {
@@ -86,17 +90,17 @@ class Base_Controller_Action extends Zend_Controller_Action {
         return $file;
     }
 
-    public function appendVariableExtJS() {
-        if ($this->view->originalAction != 'help') {
-            include $this->_directory . DIRECTORY_SEPARATOR . $_SESSION['language'] . '.php';
-            $arrayVar = $translationStrings[$this->view->originalModule]
-                    [$this->view->originalController]
-                    [$this->view->originalAction];
-            $script = " var label = " . Zend_Json::encode($arrayVar) . ";";
-            return $script;
-        } else {
-            return;
-        }
-    }
+//    public function appendVariableExtJS() {
+//        if ($this->view->originalAction != 'help') {
+//            include $this->_directory . DIRECTORY_SEPARATOR . $_SESSION['language'] . '.php';
+//            $arrayVar = $translationStrings[$this->view->originalModule]
+//                    [$this->view->originalController]
+//                    [$this->view->originalAction];
+//            $script = " var label = " . Zend_Json::encode($arrayVar) . ";";
+//            return $script;
+//        } else {
+//            return;
+//        }
+//    }
 
 }
