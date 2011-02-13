@@ -87,22 +87,10 @@ Extreme.components.CountryCombo = Ext.extend(Ext.form.ComboBox, {
 });
 Ext.reg('countrycombo', Extreme.components.CountryCombo);
 
-
-
-
-
-
-
 Extreme.components.CountryCombo = Ext.extend(Ext.form.ComboBox, {
     constructor: function(config){
         var data;
-        //        if (config.phoneLabels) {
-        //            data = [['+49', '+49', 'ux-flag-de'], ['+43', '+43', 'ux-flag-at'], ['+41', '+41', 'ux-flag-ch'], ['+352', '+352', 'ux-flag-lu'], ['+432', '+432', 'ux-flag-li']];
-        //        }
-        //        else {
-        //            data = [['DE', 'Deutschland', 'ux-flag-de'], ['AT', 'Österreich', 'ux-flag-at'], ['CH', 'Schweiz', 'ux-flag-ch'], ['LU', 'Luxemburg', 'ux-flag-lu'], ['LI', 'Lichtenstein', 'ux-flag-li']];
-        //        }
-
+    
         data = [
         ['', 'Todas', 'todas-cores'],
         ['171c46','azul-escuro','c171c46'],
@@ -122,8 +110,6 @@ Extreme.components.CountryCombo = Ext.extend(Ext.form.ComboBox, {
         ['ffffff','branco','cffffff']
         ];
 
-
-
         Extreme.components.CountryCombo.superclass.constructor.call(this, Ext.apply({
             store: new Ext.data.SimpleStore({
                 fields: ['vValor', 'mValor', 'cValor'],
@@ -131,9 +117,6 @@ Extreme.components.CountryCombo = Ext.extend(Ext.form.ComboBox, {
                 sort: 'mValor'
             }),
             plugins: new Ext.ux.plugins.IconCombo(),
-            //valueField: 'countryCode',
-            //displayField: 'countryName',
-            //iconClsField: 'countryFlag',
             sort: 'mValor',
             triggerAction: 'all',
             mode: 'local'

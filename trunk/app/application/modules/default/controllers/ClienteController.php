@@ -4,7 +4,7 @@ class ClienteController extends Base_Controller_Action {
 
     public function indexAction() {
         $this->_helper->layout->disableLayout();
-        $this->_helper->viewRenderer->setNoRender();
+        //$this->_helper->viewRenderer->setNoRender();
     }
 
     public function viewBoletosAction() {
@@ -13,24 +13,47 @@ class ClienteController extends Base_Controller_Action {
         $this->startEXTJS();
     }
 
+    public function viewCarrinhoAction() {
+        $this->_helper->layout->disableLayout();
+        $this->_helper->viewRenderer->setNoRender();
+        $this->startEXTJS();
+    }
+
+    public function viewFavoritosAction() {
+        $this->_helper->layout->disableLayout();
+        $this->_helper->viewRenderer->setNoRender();
+        $this->startEXTJS();
+    }
+
     public function init() {
         parent::init();
-        if ($this->_session->usuario->tx_perfil != $this->view->originalController) {
-//  $this->_redirect('');
-            //echo 'Acesso Restrito' . $this->view->originalController . ' ed ' . $this->_session->usuario->tx_perfil;
-        } else {
-            //echo 'Restrito Permitido..' . $this->view->originalController . ' ed ' . $this->_session->usuario->tx_perfil;
+        if (($this->_session->usuario->tx_perfil != $this->view->originalController) && ($this->view->originalAction != 'adicionar')) {
+            $this->_redirect('');
         }
     }
 
     public function carregarAction() {
         $this->_helper->layout->disableLayout();
         $this->_helper->viewRenderer->setNoRender();
-        if (isset($this->_session->usuario->sq_usuario)) {
-            $cliente = $this->_session->usuario;
-            $cliente->tx_senha = Base_Util::md6_decode($cliente->tx_senha);
-            $out = array(success => true, cliente => $cliente);
-            unset($cliente);
+
+        if ($this->getRequest()->isPost()) {
+            if (!$this->_getParam('campo')) {
+                $cliente = $this->_session->usuario;
+                $cliente->tx_senha = Base_Util::md6_decode($cliente->tx_senha);
+                $out = array(success => true, cliente => $cliente);
+                unset($cliente);
+            } else {
+                if (isset($this->_session->usuario->{$this->_getParam('campo')})) {
+                    $out = array(success => true, campo => $this->_session->usuario->{$this->_getParam('campo')});
+                } else {
+                    $out = array(success => false);
+                }
+            }
+            if (isset($this->_session->usuario->sq_usuario)) {
+                
+            } else {
+                $out = array(success => false);
+            }
         } else {
             $out = array(success => false);
         }
@@ -92,7 +115,7 @@ class ClienteController extends Base_Controller_Action {
                     $out = array(success => true);
                 } catch (Doctrine_Exception $e) {
                     $conn->rollback();
-                    $out = array(success => false, error => $e->getMessage());
+                    $out = array(success => false, error => ExceptionMessage::toString($e));
                 }
             } else {
                 $out = array(success => false, error => 'Todos os campos sao obrigatorios!');
