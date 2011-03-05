@@ -31,7 +31,8 @@ class FavoritosController extends Base_Controller_Action {
                         $produto->tm_produto = $this->_getParam('tm_produto');
                         $produto->nm_produto = $this->_getParam('nm_produto');
                         $produto->ds_produto = $this->_getParam('ds_produto');
-                        $produto->st_privado = false; //mudar
+                        $produto->fg_verso = $this->_getParam('fg_verso');
+                        $produto->st_privado = true; //mudar
                         $produto->hs_produto = substr($this->upload->imagem, 0, 32);
                         $produto->save();
 

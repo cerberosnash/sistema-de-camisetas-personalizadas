@@ -330,7 +330,7 @@ App.Cliente.Favoritos = Ext.extend(Ext.form.FormPanel, {
                         items: new Ext.Panel({
                             deferredRender:false,
                             border:false,
-                            html: '<img alt="carregando..." width="650" height="604" src="'+controllerProdutos+'renderizar/?imagem='+selNode[0].data.hs_produto+'&cor='+selNode[0].data.co_produto+'&tamanho=650"/>'
+                            html: '<img alt="carregando..." width="650" height="604" src="'+controllerProdutos+'renderizar/?imagem='+selNode[0].data.hs_produto+'&cor='+selNode[0].data.co_produto+'&tamanho=650'+'&verso='+selNode[0].data.fg_verso+'"/>'
                         }),
                         buttons: []
                     });
@@ -367,7 +367,7 @@ App.Cliente.Favoritos = Ext.extend(Ext.form.FormPanel, {
                 start:0,
                 limit:20
             },
-            fields: ['sq_produto','nm_produto','co_produto','ds_produto','tm_produto','hs_produto',{
+            fields: ['sq_produto','nm_produto','co_produto','ds_produto','tm_produto','hs_produto','fg_verso',{
                 name:'vl_produto',
                 type: 'float'
             }],

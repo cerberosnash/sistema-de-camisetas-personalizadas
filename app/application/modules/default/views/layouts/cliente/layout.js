@@ -141,6 +141,14 @@ try{
                 ['Grande', 'G']
                 ]
             });
+            
+            var storePosicoesCamisetas = new Ext.data.ArrayStore({
+                fields: ['mValor', 'vValor'],
+                data : [
+                ['Frente', 'false'],
+                ['Atras', 'true']
+                ]
+            });
 
             var storeValoresCamisetas = new Ext.data.ArrayStore({
                 fields: ['mValor', 'vValor'],
@@ -180,7 +188,7 @@ try{
                     start:0,
                     limit:20
                 },
-                fields: ['sq_produto','nm_produto','co_produto','ds_produto','tm_produto','hs_produto',{
+                fields: ['sq_produto','nm_produto','co_produto','ds_produto','tm_produto','hs_produto','fg_verso',{
                     name:'vl_produto',
                     type: 'float'
                 }],
@@ -255,7 +263,7 @@ try{
                     start:0,
                     limit:20
                 },
-                fields: ['sq_produto','nm_produto','co_produto','ds_produto','tm_produto','hs_produto',{
+                fields: ['sq_produto','nm_produto','co_produto','ds_produto','tm_produto','hs_produto','fg_verso',{
                     name:'vl_produto',
                     type: 'float'
                 }],
@@ -309,64 +317,64 @@ try{
                 }
             }
 
-            var RunnerAutenticacao = function(){
-                var f = function(v, pbar, btn, count, url){
-                    return function(){
-                        if(v > count){
-                            btn.disabled = false;
-                        }else{
-                            var i = v/count;
-                            pbar.updateProgress(i, Math.round(100*i)+'% Carregados...');
-                            if(Math.round(100*i)==100){
-                                window.location = url;
-                            }
-                        }
-                    };
-                };
-                return {
-                    run : function(pbar, btn, count, cb,url){
-                        btn.disabled = true;
-                        var ms = 5000/count;
-                        for(var i = 1; i < (count+2); i++){
-                            setTimeout(f(i, pbar, btn, count, cb), i*ms);
-                        }
-                    }
-                }
-            }();
+            //            var RunnerAutenticacao = function(){
+            //                var f = function(v, pbar, btn, count, url){
+            //                    return function(){
+            //                        if(v > count){
+            //                            btn.disabled = false;
+            //                        }else{
+            //                            var i = v/count;
+            //                            pbar.updateProgress(i, Math.round(100*i)+'% Carregados...');
+            //                            if(Math.round(100*i)==100){
+            //                                window.location = url;
+            //                            }
+            //                        }
+            //                    };
+            //                };
+            //                return {
+            //                    run : function(pbar, btn, count, cb,url){
+            //                        btn.disabled = true;
+            //                        var ms = 5000/count;
+            //                        for(var i = 1; i < (count+2); i++){
+            //                            setTimeout(f(i, pbar, btn, count, cb), i*ms);
+            //                        }
+            //                    }
+            //                }
+            //            }();
 
-            var RunnerRecuperarSenha = function(){
-                var f = function(v, pbar, btn, count, cb){
-                    return function(){
-                        if(v > count){
-                            btn.disabled = false;
-                            cb();
-                        }else{
-                            var i = v/count;
-                            pbar.updateProgress(i,'Recuperando senha...');
-                            if(Math.round(100*i)==100){
-                                windowRecuperarSenha.hide();
-                                pbar.destroy();
-                                btn.disabled = false;
-                                Ext.MessageBox.show({
-                                    msg: 'Sua senha sera enviada para '+ Ext.getCmp('rEmail').getValue(),
-                                    icon:'silk-add',
-                                    animEl: 'btnRecuperarSenha'
-                                });
-                            }
-                        }
-                    };
-                };
-                return {
-                    run : function(pbar, btn, count, cb){
-                        btn.disabled = true;
-                        var ms = 5000/count;
-                        for(var i = 1; i < (count+2); i++){
-                            setTimeout(f(i, pbar, btn, count, cb), i*ms);
-                        }
-                    }
-                }
-            }();
-            
+            //            var RunnerRecuperarSenha = function(){
+            //                var f = function(v, pbar, btn, count, cb){
+            //                    return function(){
+            //                        if(v > count){
+            //                            btn.disabled = false;
+            //                            cb();
+            //                        }else{
+            //                            var i = v/count;
+            //                            pbar.updateProgress(i,'Recuperando senha...');
+            //                            if(Math.round(100*i)==100){
+            //                                windowRecuperarSenha.hide();
+            //                                pbar.destroy();
+            //                                btn.disabled = false;
+            //                                Ext.MessageBox.show({
+            //                                    msg: 'Sua senha sera enviada para '+ Ext.getCmp('rEmail').getValue(),
+            //                                    icon:'silk-add',
+            //                                    animEl: 'btnRecuperarSenha'
+            //                                });
+            //                            }
+            //                        }
+            //                    };
+            //                };
+            //                return {
+            //                    run : function(pbar, btn, count, cb){
+            //                        btn.disabled = true;
+            //                        var ms = 5000/count;
+            //                        for(var i = 1; i < (count+2); i++){
+            //                            setTimeout(f(i, pbar, btn, count, cb), i*ms);
+            //                        }
+            //                    }
+            //                }
+            //            }();
+            //            
             var boxCaptchaAutenticacao = new Ext.BoxComponent({
                 name: 'Captcha',
                 id: 'boxCaptchaAutenticacao',
@@ -379,32 +387,32 @@ try{
                     src: controllerUtil +'captcha/?t='+ new Date().getTime()
                 }
             });
-
+            
             boxCaptchaAutenticacao.on('render',function (){
                 Ext.get('imgCaptchaAutenticacao').on('click',function(){
                     onCapthaChange('boxCaptchaAutenticacao','imgCaptchaAutenticacao');
                 });
             });
-
-            var boxCaptchaCadastro = new Ext.BoxComponent({
-                name: 'Captcha',
-                id: 'boxCaptchaCadastro',
-                width: 70,
-                height: 25,
-                autoEl: {
-                    tag:'img',
-                    id: 'imgCaptchaCadastro',
-                    title : 'Clique para recarregar',
-                    src: controllerUtil +'captcha/?t='+ new Date().getTime()
-                }
-            });
-
-            boxCaptchaCadastro.on('render',function (){
-                var curr = Ext.get('imgCaptchaCadastro');
-                curr.on('click',function(){
-                    onCapthaChange('boxCaptchaCadastro','imgCaptchaCadastro');
-                },this);
-            },this);
+            //
+            //            var boxCaptchaCadastro = new Ext.BoxComponent({
+            //                name: 'Captcha',
+            //                id: 'boxCaptchaCadastro',
+            //                width: 70,
+            //                height: 25,
+            //                autoEl: {
+            //                    tag:'img',
+            //                    id: 'imgCaptchaCadastro',
+            //                    title : 'Clique para recarregar',
+            //                    src: controllerUtil +'captcha/?t='+ new Date().getTime()
+            //                }
+            //            });
+            //
+            //            boxCaptchaCadastro.on('render',function (){
+            //                var curr = Ext.get('imgCaptchaCadastro');
+            //                curr.on('click',function(){
+            //                    onCapthaChange('boxCaptchaCadastro','imgCaptchaCadastro');
+            //                },this);
+            //            },this);
 
             function onCapthaChange(box,img){
                 var curr = Ext.get(img);
@@ -1409,7 +1417,7 @@ try{
             var tplVisualizacao = new Ext.XTemplate(
                 '<div class="details">',
                 '<tpl for=".">',
-                '<img alt="carregando..." width="300" height="279" src="'+controllerProdutos+'renderizar/?imagem={hs_produto}&cor={co_produto}&tamanho=300"/>',
+                '<img alt="carregando..." width="300" height="279" src="'+controllerProdutos+'renderizar/?imagem={hs_produto}&cor={co_produto}&tamanho=300&verso={fg_verso}"/>',
                 '<b>Codigo: </b>',
                 '<span>{sq_produto}</span>',
                 '<b>Nome: </b>',
@@ -1508,7 +1516,7 @@ try{
                 '<ul>',
                 '<tpl for=".">',
                 '<li class="camiseta">',
-                '<img src="'+controllerProdutos+'renderizar/?imagem={hs_produto}&cor={co_produto}&tamanho=200" />',
+                '<img src="'+controllerProdutos+'renderizar/?imagem={hs_produto}&cor={co_produto}&tamanho=200&verso={fg_verso}" />',
                 '<strong>{nm_produto}</strong>',
                 '<span>{vl_produto:brMoney}</span>',
                 '</li>',
@@ -1808,196 +1816,197 @@ try{
             //                }]
             //            });
 
-
-            var formUpload = new Ext.FormPanel({
-                fileUpload: true,
-                id: 'formUpload',
-                border: true,
-                frame: true,
-                width: 250,
-                height: 35,
-                method: 'POST',
-                baseCls: 'x-plain',
-                bodyStyle: (Ext.isIE? 'padding-left: 3px;' : 'padding-left: 5px;'),
-                baseParams: {},
-                onSubmit: Ext.emptyFn,
-                waitMsgTarget: false,
-                scope: this,
-                labelWidth: 42,
-                defaults: {
-                    allowBlank: false,
-                    msgTarget: 'qtip'
-                },
-                items:[{
-                    xtype: 'fileuploadfield',
-                    id: 'imagem',
-                    width: 150,
-                    emptyText: '',
-                    buttonText: '',
-                    buttonCfg:{
-                        iconCls: 'folder-explore'
-                       
-                    },
-                    fieldLabel: 'Imagem'
-                   
-                    
-                }],
-                buttons: []
-            });
-
-            var validarRecorte = function(){
-                var conn = new Ext.data.Connection();
-                var data = null;
-                conn.request({
-                    url: controllerProdutos + 'validar',
-                    method: 'POST',
-                    success: function(responseObject) {
-                        if(responseObject.responseText){
-                            try{
-                                data = eval(responseObject.responseText);
-                                if(data){
-                                    Ext.getCmp('recorte').setValue(data.success);
-                                }
-                            }catch(e){
-                                Ext.example.msg('Erro', '{0}',e);
-                                Ext.getCmp('recorte').setValue('false');
-                            }
-                        }
-                    },
-                    failure: function(e) {
-                        Ext.example.msg('Erro', '{0}',e);
-                        Ext.getCmp('recorte').setValue('false');
-                    }
-                });
-
-                return false;
-            }
-
-            var tbarMinhaCamiseta = new Ext.Toolbar({
-                id: 'tbarMinhaCamiseta',
-                layout: 'hbox',
-                border: true,
-                frame: true,
-                height: 30,
-                bodyStyle: (Ext.isIE? 'padding-left: 3px;' : 'padding: 5px;'),
-                items  : ['Tamanho:',
-                {
-                    id: 'tamanho_mc',
-                    xtype: 'combo',
-                    fieldLabel:'Tamanho',
-                    store: storeTamanhosCamisetas,
-                    displayField:'mValor',
-                    valueField: 'vValor',
-                    typeAhead: true,
-                    mode: 'local',
-                    value: '',
-                    editable: false,
-                    forceSelection: true,
-                    triggerAction: 'all',
-                    width: 70,
-                    selectOnFocus:true,
-                    listeners: {
-                        select: function(a){
-                            Ext.example.msg('Tamanho Selecionada', 'Codigo {0}', a.getValue());
-                            validarSalvarMinhaCamiseta();
-                        }
-                    }
-                },'Cor:',
-                {
-                    xtype: 'comboCores',
-                    id: 'cor_mc',
-                    anchor: '100%',
-                    value: '',
-                    valueField: 'vValor',
-                    displayField: 'mValor',
-                    iconClsField: 'cValor',
-                    width: 120,
-                    editable: false,
-                    selectOnFocus:true,
-                    forceSelection: true,
-                    triggerAction: 'all',
-                    listeners: {
-                        select: function(a){
-                            validarSalvarMinhaCamiseta();
-                            Ext.example.msg('Cor Selecionada', 'Codigo {0}', a.getValue());
-                            var conn = new Ext.data.Connection();
-                            var data = null;
-                            conn.request({
-                                url: controllerProdutos + 'colorir',
-                                method: 'POST',
-                                params: {
-                                    cor: Ext.getCmp('cor_mc').getValue()
-                                },
-                                success: function(responseObject) {
-                                    if(responseObject.responseText){
-                                        try{
-                                            data = eval(responseObject.responseText);
-                                            if(data.success===true){
-                                                Ext.example.msg('Processamento', 'Success {0} Cor {1}' ,data.success, data.cor );
-                                                Ext.get('iMinhaCamiseta').dom.src = controllerProdutos + 'mostrar/?t=' + new Date().getTime();
-                                            }else{
-                                                Ext.example.msg('Erro', 'Falha ao processar o cor da camiseta!');
-                                            }
-                                        }catch(e){
-                                            Ext.example.msg('Erro', '{0}',e);
-                                        }
-                                    }
-                                },
-                                failure: function(e) {
-                                    Ext.example.msg('Erro', '{0}',e);
-                                }
-                            });
-                        }
-                    }
-                },'Nome:',
-                {
-                    xtype: 'textfield',
-                    name: 'nome_mc',
-                    id: 'nome_mc',
-                    width: 80,
-                    enableKeyEvents : true,
-                    autoCreate:{
-                        tag: 'input',
-                        type: 'text',
-                        maxLength: 25
-                    },
-                    listeners:{
-                        keyup:function(){
-                            validarSalvarMinhaCamiseta();
-                        }
-                    }
-                },'Descricao:',
-                {
-                    xtype: 'textfield',
-                    name: 'descricao_mc',
-                    id: 'descricao_mc',
-                    width: 80,
-                    enableKeyEvents : true,
-                    autoCreate:{
-                        tag: 'input',
-                        type: 'text',
-                        maxLength: 100
-                    },
-                    listeners:{
-                        keyup:function(){
-                            validarSalvarMinhaCamiseta();
-                        }
-                    }
-                },formUpload,{
-                    xtype: 'hidden',
-                    id: 'recorte',
-                    width: 60
-                }]
-            });
-            
-
-            function validarSalvarMinhaCamiseta(){
-                if(Ext.getCmp('recorte').getValue() && Ext.getCmp('tamanho_mc').getValue() && Ext.getCmp('cor_mc').getValue() && Ext.getCmp('nome_mc').getValue() && Ext.getCmp('descricao_mc').getValue()){
-                    Ext.getCmp('salvar_mc').enable();
-                }else{
-                    Ext.getCmp('salvar_mc').disable();
-                }
-            }
+            /*movido para view-minha-camista.js*/
+            //
+            //            var formUpload = new Ext.FormPanel({
+            //                fileUpload: true,
+            //                id: 'formUpload',
+            //                border: true,
+            //                frame: true,
+            //                width: 250,
+            //                height: 35,
+            //                method: 'POST',
+            //                baseCls: 'x-plain',
+            //                bodyStyle: (Ext.isIE? 'padding-left: 3px;' : 'padding-left: 5px;'),
+            //                baseParams: {},
+            //                onSubmit: Ext.emptyFn,
+            //                waitMsgTarget: false,
+            //                scope: this,
+            //                labelWidth: 42,
+            //                defaults: {
+            //                    allowBlank: false,
+            //                    msgTarget: 'qtip'
+            //                },
+            //                items:[{
+            //                    xtype: 'fileuploadfield',
+            //                    id: 'imagem',
+            //                    width: 150,
+            //                    emptyText: '',
+            //                    buttonText: '',
+            //                    buttonCfg:{
+            //                        iconCls: 'folder-explore'
+            //                       
+            //                    },
+            //                    fieldLabel: 'Imagem'
+            //                   
+            //                    
+            //                }],
+            //                buttons: []
+            //            });
+            //
+            //            var validarRecorte = function(){
+            //                var conn = new Ext.data.Connection();
+            //                var data = null;
+            //                conn.request({
+            //                    url: controllerProdutos + 'validar',
+            //                    method: 'POST',
+            //                    success: function(responseObject) {
+            //                        if(responseObject.responseText){
+            //                            try{
+            //                                data = eval(responseObject.responseText);
+            //                                if(data){
+            //                                    Ext.getCmp('recorte').setValue(data.success);
+            //                                }
+            //                            }catch(e){
+            //                                Ext.example.msg('Erro', '{0}',e);
+            //                                Ext.getCmp('recorte').setValue('false');
+            //                            }
+            //                        }
+            //                    },
+            //                    failure: function(e) {
+            //                        Ext.example.msg('Erro', '{0}',e);
+            //                        Ext.getCmp('recorte').setValue('false');
+            //                    }
+            //                });
+            //
+            //                return false;
+            //            }
+            //
+            //            var tbarMinhaCamiseta = new Ext.Toolbar({
+            //                id: 'tbarMinhaCamiseta',
+            //                layout: 'hbox',
+            //                border: true,
+            //                frame: true,
+            //                height: 30,
+            //                bodyStyle: (Ext.isIE? 'padding-left: 3px;' : 'padding: 5px;'),
+            //                items  : ['Tamanho:',
+            //                {
+            //                    id: 'tamanho_mc',
+            //                    xtype: 'combo',
+            //                    fieldLabel:'Tamanho',
+            //                    store: storeTamanhosCamisetas,
+            //                    displayField:'mValor',
+            //                    valueField: 'vValor',
+            //                    typeAhead: true,
+            //                    mode: 'local',
+            //                    value: '',
+            //                    editable: false,
+            //                    forceSelection: true,
+            //                    triggerAction: 'all',
+            //                    width: 70,
+            //                    selectOnFocus:true,
+            //                    listeners: {
+            //                        select: function(a){
+            //                            Ext.example.msg('Tamanho Selecionada', 'Codigo {0}', a.getValue());
+            //                            validarSalvarMinhaCamiseta();
+            //                        }
+            //                    }
+            //                },'Cor:',
+            //                {
+            //                    xtype: 'comboCores',
+            //                    id: 'cor_mc',
+            //                    anchor: '100%',
+            //                    value: '',
+            //                    valueField: 'vValor',
+            //                    displayField: 'mValor',
+            //                    iconClsField: 'cValor',
+            //                    width: 120,
+            //                    editable: false,
+            //                    selectOnFocus:true,
+            //                    forceSelection: true,
+            //                    triggerAction: 'all',
+            //                    listeners: {
+            //                        select: function(a){
+            //                            validarSalvarMinhaCamiseta();
+            //                            Ext.example.msg('Cor Selecionada', 'Codigo {0}', a.getValue());
+            //                            var conn = new Ext.data.Connection();
+            //                            var data = null;
+            //                            conn.request({
+            //                                url: controllerProdutos + 'colorir',
+            //                                method: 'POST',
+            //                                params: {
+            //                                    cor: Ext.getCmp('cor_mc').getValue()
+            //                                },
+            //                                success: function(responseObject) {
+            //                                    if(responseObject.responseText){
+            //                                        try{
+            //                                            data = eval(responseObject.responseText);
+            //                                            if(data.success===true){
+            //                                                Ext.example.msg('Processamento', 'Success {0} Cor {1}' ,data.success, data.cor );
+            //                                                Ext.get('iMinhaCamiseta').dom.src = controllerProdutos + 'mostrar/?t=' + new Date().getTime();
+            //                                            }else{
+            //                                                Ext.example.msg('Erro', 'Falha ao processar o cor da camiseta!');
+            //                                            }
+            //                                        }catch(e){
+            //                                            Ext.example.msg('Erro', '{0}',e);
+            //                                        }
+            //                                    }
+            //                                },
+            //                                failure: function(e) {
+            //                                    Ext.example.msg('Erro', '{0}',e);
+            //                                }
+            //                            });
+            //                        }
+            //                    }
+            //                },'Nome:',
+            //                {
+            //                    xtype: 'textfield',
+            //                    name: 'nome_mc',
+            //                    id: 'nome_mc',
+            //                    width: 80,
+            //                    enableKeyEvents : true,
+            //                    autoCreate:{
+            //                        tag: 'input',
+            //                        type: 'text',
+            //                        maxLength: 25
+            //                    },
+            //                    listeners:{
+            //                        keyup:function(){
+            //                            validarSalvarMinhaCamiseta();
+            //                        }
+            //                    }
+            //                },'Descricao:',
+            //                {
+            //                    xtype: 'textfield',
+            //                    name: 'descricao_mc',
+            //                    id: 'descricao_mc',
+            //                    width: 80,
+            //                    enableKeyEvents : true,
+            //                    autoCreate:{
+            //                        tag: 'input',
+            //                        type: 'text',
+            //                        maxLength: 100
+            //                    },
+            //                    listeners:{
+            //                        keyup:function(){
+            //                            validarSalvarMinhaCamiseta();
+            //                        }
+            //                    }
+            //                },formUpload,{
+            //                    xtype: 'hidden',
+            //                    id: 'recorte',
+            //                    width: 60
+            //                }]
+            //            });
+            //            
+            //
+            //            function validarSalvarMinhaCamiseta(){
+            //                if(Ext.getCmp('recorte').getValue() && Ext.getCmp('tamanho_mc').getValue() && Ext.getCmp('cor_mc').getValue() && Ext.getCmp('nome_mc').getValue() && Ext.getCmp('descricao_mc').getValue()){
+            //                    Ext.getCmp('salvar_mc').enable();
+            //                }else{
+            //                    Ext.getCmp('salvar_mc').disable();
+            //                }
+            //            }
 
             //            var tbarBoletos = new Ext.Toolbar({
             //                height: 30,
@@ -2176,152 +2185,154 @@ try{
             //                }
             //            });
 
-            var bbarMinhaCamiseta = new Ext.Toolbar({
-                height: 30,
-                items:['->',{
-                    xtype: 'button',
-                    text: 'Enviar',
-                    id: 'enviar_mc',
-                    iconCls: 'silk-add',
-                    handler: function(){
-                        if(formUpload.getForm().isValid()){
-                            formUpload.getForm().submit({
-                                url: controllerProdutos + 'upload',
-                                waitMsg: 'Enviando imagem...',
-                                titleMsg: 'Aguarde',
-                                textMsg: 'Aguarde',
-                                success: function(){
-                                    Ext.get('iMinhaCamiseta').dom.src = controllerProdutos;
-                                    //   formUpload.getForm().reset();
-                                    Ext.getCmp('recortar_mc').enable();
-                                    Ext.getCmp('tamanho_mc').enable();
-                                    Ext.getCmp('cor_mc').enable();
-                                    Ext.getCmp('nome_mc').enable();
-                                    Ext.getCmp('descricao_mc').enable();
-                                },
-                                failure: function(){
-                                    Ext.example.msg('Erro', 'O envio da imagem falhou!');
-                                }
-                            });
-                        }
-                    }
-                },{
-                    xtype:'button',
-                    text: 'Recortar',
-                    id: 'recortar_mc',
-                    title: 'Recortar',
-                    iconCls: 'cut',
-                    handler:  function(){
-                        Ext.MessageBox.show({
-                            msg: 'Processando Camiseta, Aguarde...',
-                            progressText: 'Processando...',
-                            width:300,
-                            wait:true,
-                            waitConfig: {
-                                interval:100
-                            },
-                            icon:'silk-add',
-                            animEl: 'iMinhaCamiseta'
-                        });
 
-                        Ext.example.msg('Acao', 'Recortando...');
-                        Ext.getCmp('recortar_mc').disable();
-
-                        document.getElementById("iMinhaCamiseta").contentWindow.recortar();
-                        setTimeout(function(){
-                            validarRecorte();
-                            Ext.get('iMinhaCamiseta').dom.src = controllerProdutos + 'aguarde';
-                        }, 2000);
-
-                        setTimeout(function(){
-                            validarSalvarMinhaCamiseta();
-                            Ext.MessageBox.hide();
-                            Ext.getCmp('recortar_mc').disable();
-                            Ext.getCmp('restaurar_mc').enable();
-                            Ext.get('iMinhaCamiseta').dom.src = controllerProdutos + 'mostrar/?t=' + new Date().getTime()+Math.random(0,9999);
-                        }, 5000);
-
-                        
-
-                    }
-                },{
-                    xtype:'button',
-                    text: 'Restaurar',
-                    id: 'restaurar_mc',
-                    title: 'Restaurar',
-                    iconCls: 'image-edit',
-                    handler:  function(){
-                        Ext.example.msg('Acao', 'Restaurando...');
-                        Ext.get('iMinhaCamiseta').dom.src = controllerProdutos;
-                        Ext.getCmp('recortar_mc').enable();
-                        Ext.getCmp('restaurar_mc').disable();
-                        Ext.getCmp('recorte').setValue('');
-                        validarSalvarMinhaCamiseta();
-                    }
-                },{
-                    xtype:'button',
-                    text: 'Salvar',
-                    id: 'salvar_mc',
-                    title: 'Salvar',
-                    iconCls: 'picture-save',
-                    handler:  function(){
-                        Ext.example.msg('Acao', 'Salvando...');
-                        var conn = new Ext.data.Connection();
-                        var data = null;
-                        conn.request({
-                            url: controllerFavoritos + 'criar',
-                            method: 'POST',
-                            params: {
-                                co_produto: Ext.getCmp('cor_mc').getValue(),
-                                tm_produto: Ext.getCmp('tamanho_mc').getValue(),
-                                nm_produto: Ext.getCmp('nome_mc').getValue(),
-                                ds_produto: Ext.getCmp('descricao_mc').getValue()
-                            },
-                            success: function(responseObject) {
-                                if(responseObject.responseText){
-                                    try{
-                                        data = eval(responseObject.responseText);
-                                        if(data.success===true && data.id){
-                                            Ext.example.msg('Salvando', 'Camiseta {0} salva com sucesso',data.id);
-                                            Ext.example.msg('Noticia', 'A Camiseta {0} agora estara nos seus favoritos',data.id);
-                                            AtualizarDataViewFavoritos();
-                                            Ext.get('iMinhaCamiseta').dom.src = controllerProdutos + '?t=' + new Date().getTime()+Math.random(0,9999);
-
-                                            Ext.getCmp('salvar_mc').disable();
-                                            Ext.getCmp('restaurar_mc').disable();
-                                            Ext.getCmp('recortar_mc').disable();
-
-                                            Ext.getCmp('cor_mc').getValue('');
-                                            Ext.getCmp('tamanho_mc').setValue('');
-                                            Ext.getCmp('nome_mc').setValue('');
-                                            Ext.getCmp('descricao_mc').setValue('');
-
-                                            Ext.getCmp('cor_mc').disable();
-                                            Ext.getCmp('tamanho_mc').disable();
-                                            Ext.getCmp('nome_mc').disable();
-                                            Ext.getCmp('descricao_mc').disable();
-                                            Ext.getCmp('descricao_mc').disable();
-
-                                            formUpload.form.reset();
-
-
-
-                                        }
-                                        else{
-                                            Ext.example.msg('Erro', 'Falha no Processamento');
-                                        }
-                                    }catch(e){
-                                        Ext.example.msg('Erro', '{0}',e);
-                                    }
-                                }
-                            },
-                            failure: function(e) {
-                                Ext.example.msg('Erro', '{0}',e);
-                            }
-                        });
-                    }
-                }]
-            });
+            /*movido para view-minha-camiseta.js*/
+            //            var bbarMinhaCamiseta = new Ext.Toolbar({
+            //                height: 30,
+            //                items:['->',{
+            //                    xtype: 'button',
+            //                    text: 'Enviar',
+            //                    id: 'enviar_mc',
+            //                    iconCls: 'silk-add',
+            //                    handler: function(){
+            //                        if(formUpload.getForm().isValid()){
+            //                            formUpload.getForm().submit({
+            //                                url: controllerProdutos + 'upload',
+            //                                waitMsg: 'Enviando imagem...',
+            //                                titleMsg: 'Aguarde',
+            //                                textMsg: 'Aguarde',
+            //                                success: function(){
+            //                                    Ext.get('iMinhaCamiseta').dom.src = controllerProdutos;
+            //                                    //   formUpload.getForm().reset();
+            //                                    Ext.getCmp('recortar_mc').enable();
+            //                                    Ext.getCmp('tamanho_mc').enable();
+            //                                    Ext.getCmp('cor_mc').enable();
+            //                                    Ext.getCmp('nome_mc').enable();
+            //                                    Ext.getCmp('descricao_mc').enable();
+            //                                },
+            //                                failure: function(){
+            //                                    Ext.example.msg('Erro', 'O envio da imagem falhou!');
+            //                                }
+            //                            });
+            //                        }
+            //                    }
+            //                },{
+            //                    xtype:'button',
+            //                    text: 'Recortar',
+            //                    id: 'recortar_mc',
+            //                    title: 'Recortar',
+            //                    iconCls: 'cut',
+            //                    handler:  function(){
+            //                        Ext.MessageBox.show({
+            //                            msg: 'Processando Camiseta, Aguarde...',
+            //                            progressText: 'Processando...',
+            //                            width:300,
+            //                            wait:true,
+            //                            waitConfig: {
+            //                                interval:100
+            //                            },
+            //                            icon:'silk-add',
+            //                            animEl: 'iMinhaCamiseta'
+            //                        });
+            //
+            //                        Ext.example.msg('Acao', 'Recortando...');
+            //                        Ext.getCmp('recortar_mc').disable();
+            //
+            //                        document.getElementById("iMinhaCamiseta").contentWindow.recortar();
+            //                        setTimeout(function(){
+            //                            validarRecorte();
+            //                            Ext.get('iMinhaCamiseta').dom.src = controllerProdutos + 'aguarde';
+            //                        }, 2000);
+            //
+            //                        setTimeout(function(){
+            //                            validarSalvarMinhaCamiseta();
+            //                            Ext.MessageBox.hide();
+            //                            Ext.getCmp('recortar_mc').disable();
+            //                            Ext.getCmp('restaurar_mc').enable();
+            //                            Ext.get('iMinhaCamiseta').dom.src = controllerProdutos + 'mostrar/?t=' + new Date().getTime()+Math.random(0,9999);
+            //                        }, 5000);
+            //
+            //                        
+            //
+            //                    }
+            //                },{
+            //                    xtype:'button',
+            //                    text: 'Restaurar',
+            //                    id: 'restaurar_mc',
+            //                    title: 'Restaurar',
+            //                    iconCls: 'image-edit',
+            //                    handler:  function(){
+            //                        Ext.example.msg('Acao', 'Restaurando...');
+            //                        Ext.get('iMinhaCamiseta').dom.src = controllerProdutos;
+            //                        Ext.getCmp('recortar_mc').enable();
+            //                        Ext.getCmp('restaurar_mc').disable();
+            //                        Ext.getCmp('recorte').setValue('');
+            //                        validarSalvarMinhaCamiseta();
+            //                    }
+            //                },{
+            //                    xtype:'button',
+            //                    text: 'Salvar',
+            //                    id: 'salvar_mc',
+            //                    title: 'Salvar',
+            //                    iconCls: 'picture-save',
+            //                    handler:  function(){
+            //                        Ext.example.msg('Acao', 'Salvando...');
+            //                        var conn = new Ext.data.Connection();
+            //                        var data = null;
+            //                        conn.request({
+            //                            url: controllerFavoritos + 'criar',
+            //                            method: 'POST',
+            //                            params: {
+            //                                co_produto: Ext.getCmp('cor_mc').getValue(),
+            //                                tm_produto: Ext.getCmp('tamanho_mc').getValue(),
+            //                                nm_produto: Ext.getCmp('nome_mc').getValue(),
+            //                                ds_produto: Ext.getCmp('descricao_mc').getValue()
+            //                            },
+            //                            success: function(responseObject) {
+            //                                if(responseObject.responseText){
+            //                                    try{
+            //                                        data = eval(responseObject.responseText);
+            //                                        if(data.success===true && data.id){
+            //                                            Ext.example.msg('Salvando', 'Camiseta {0} salva com sucesso',data.id);
+            //                                            Ext.example.msg('Noticia', 'A Camiseta {0} agora estara nos seus favoritos',data.id);
+            //                                            AtualizarDataViewFavoritos();
+            //                                            Ext.get('iMinhaCamiseta').dom.src = controllerProdutos + '?t=' + new Date().getTime()+Math.random(0,9999);
+            //
+            //                                            Ext.getCmp('salvar_mc').disable();
+            //                                            Ext.getCmp('restaurar_mc').disable();
+            //                                            Ext.getCmp('recortar_mc').disable();
+            //
+            //                                            Ext.getCmp('cor_mc').getValue('');
+            //                                            Ext.getCmp('tamanho_mc').setValue('');
+            //                                            Ext.getCmp('nome_mc').setValue('');
+            //                                            Ext.getCmp('descricao_mc').setValue('');
+            //
+            //                                            Ext.getCmp('cor_mc').disable();
+            //                                            Ext.getCmp('tamanho_mc').disable();
+            //                                            Ext.getCmp('nome_mc').disable();
+            //                                            Ext.getCmp('descricao_mc').disable();
+            //                                            Ext.getCmp('descricao_mc').disable();
+            //
+            //                                            formUpload.form.reset();
+            //
+            //
+            //
+            //                                        }
+            //                                        else{
+            //                                            Ext.example.msg('Erro', 'Falha no Processamento');
+            //                                        }
+            //                                    }catch(e){
+            //                                        Ext.example.msg('Erro', '{0}',e);
+            //                                    }
+            //                                }
+            //                            },
+            //                            failure: function(e) {
+            //                                Ext.example.msg('Erro', '{0}',e);
+            //                            }
+            //                        });
+            //                    }
+            //                }]
+            //            });
           
             function adicionarFavoritos(botao){
                 if(botao.value){
@@ -2740,7 +2751,7 @@ try{
                             items: new Ext.Panel({
                                 deferredRender:false,
                                 border:false,
-                                html: '<img alt="carregando..." width="650" height="604" src="'+controllerProdutos+'renderizar/?imagem='+selNode[0].data.hs_produto+'&cor='+selNode[0].data.co_produto+'&tamanho=650"/>'
+                                html: '<img alt="carregando..." width="650" height="604" src="'+controllerProdutos+'renderizar/?imagem='+selNode[0].data.hs_produto+'&cor='+selNode[0].data.co_produto+'&tamanho=650'+'&verso='+selNode[0].data.fg_verso+'"/>'
                             }),
                             buttons: []
                         });
@@ -2984,47 +2995,52 @@ try{
                     text: 'Criar Camiseta',
                     id: 'btnMinhaCamiseta',
                     iconCls: 'tag-blue-add',
-                    handler: function(){
-
-                        var novaAba = PainelCentral.items.find(function(aba){
-                            return aba.title === 'Minha Camiseta';
-                        });
-
-                        if(!novaAba)
-                        {
-                            try{
-                                var tabMinhaCamiseta = {
-                                    title: 'Minha Camiseta',
-                                    iconCls: 'tabs',
-                                    items:[new Ext.Panel({
-                                        margins: '0 0 0 0',
-                                        autoScroll: true,
-                                        width: '100%',
-                                        autoHeight: true,
-                                        autoEl: {
-                                            tag: 'iframe',
-                                            name: 'iMinhaCamiseta',
-                                            id: 'iMinhaCamiseta',
-                                            frameborder : 0,
-                                            src: controllerProdutos + '?cor=ffffff'
-                                        }
-                                    })],
-                                    closable:true,
-                                    closeAction:'hide',
-                                    tbar: tbarMinhaCamiseta,
-                                    bbar: bbarMinhaCamiseta
-                                };
-
-                                novaAba = Ext.getCmp('PainelCentral').add(tabMinhaCamiseta);
-                                Ext.getCmp('PainelCentral').activate(novaAba);
-                            }
-                            catch(e){
-                                Ext.example.msg('Erro', '{0}',e);
-                            }
-                        }
-                        PainelCentral.activate(novaAba);
-
-                    }
+                    action: 'view-minha-camiseta',
+                    controller: 'cliente',
+                    scope: this,
+                    handler: requestNewTab
+                //                    handler: function(){
+                //                    handler: function(){
+                //
+                //                        var novaAba = PainelCentral.items.find(function(aba){
+                //                            return aba.title === 'Minha Camiseta';
+                //                        });
+                //
+                //                        if(!novaAba)
+                //                        {
+                //                            try{
+                //                                var tabMinhaCamiseta = {
+                //                                    title: 'Minha Camiseta',
+                //                                    iconCls: 'tabs',
+                //                                    items:[new Ext.Panel({
+                //                                        margins: '0 0 0 0',
+                //                                        autoScroll: true,
+                //                                        width: '100%',
+                //                                        autoHeight: true,
+                //                                        autoEl: {
+                //                                            tag: 'iframe',
+                //                                            name: 'iMinhaCamiseta',
+                //                                            id: 'iMinhaCamiseta',
+                //                                            frameborder : 0,
+                //                                            src: controllerProdutos + '?cor=ffffff'
+                //                                        }
+                //                                    })],
+                //                                    closable:true,
+                //                                    closeAction:'hide',
+                //                                    tbar: tbarMinhaCamiseta,
+                //                                    bbar: bbarMinhaCamiseta
+                //                                };
+                //
+                //                                novaAba = Ext.getCmp('PainelCentral').add(tabMinhaCamiseta);
+                //                                Ext.getCmp('PainelCentral').activate(novaAba);
+                //                            }
+                //                            catch(e){
+                //                                Ext.example.msg('Erro', '{0}',e);
+                //                            }
+                //                        }
+                //                        PainelCentral.activate(novaAba);
+                //
+                //                    }
                 },
                 //'   ',{
                 //                    xtype:'button',
