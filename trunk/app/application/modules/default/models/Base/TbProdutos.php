@@ -1,4 +1,5 @@
 <?php
+
 // Connection Component Binding
 Doctrine_Manager::getInstance()->bindComponent('TbProdutos', 'doctrine');
 
@@ -24,90 +25,98 @@ Doctrine_Manager::getInstance()->bindComponent('TbProdutos', 'doctrine');
  * @author     ##NAME## <##EMAIL##>
  * @version    SVN: $Id: Builder.php 6820 2009-11-30 17:27:49Z jwage $
  */
-abstract class Base_TbProdutos extends Doctrine_Record
-{
-    public function setTableDefinition()
-    {
+abstract class Base_TbProdutos extends Doctrine_Record {
+
+    public function setTableDefinition() {
         $this->setTableName('tb_produtos');
         $this->hasColumn('sq_produto', 'integer', 4, array(
-             'type' => 'integer',
-             'length' => 4,
-             'fixed' => false,
-             'unsigned' => false,
-             'primary' => true,
-             'sequence' => 'tb_produtos_sq_produto',
-             ));
+            'type' => 'integer',
+            'length' => 4,
+            'fixed' => false,
+            'unsigned' => false,
+            'primary' => true,
+            'sequence' => 'tb_produtos_sq_produto',
+        ));
         $this->hasColumn('vl_produto', 'float', null, array(
-             'type' => 'float',
-             'fixed' => false,
-             'unsigned' => false,
-             'notnull' => true,
-             'primary' => false,
-             ));
+            'type' => 'float',
+            'fixed' => false,
+            'unsigned' => false,
+            'notnull' => true,
+            'primary' => false,
+        ));
         $this->hasColumn('co_produto', 'string', null, array(
-             'type' => 'string',
-             'fixed' => false,
-             'unsigned' => false,
-             'notnull' => true,
-             'primary' => false,
-             ));
+            'type' => 'string',
+            'fixed' => false,
+            'unsigned' => false,
+            'notnull' => true,
+            'primary' => false,
+        ));
         $this->hasColumn('tm_produto', 'string', null, array(
-             'type' => 'string',
-             'fixed' => true,
-             'unsigned' => false,
-             'notnull' => true,
-             'primary' => false,
-             ));
+            'type' => 'string',
+            'fixed' => true,
+            'unsigned' => false,
+            'notnull' => true,
+            'primary' => false,
+        ));
         $this->hasColumn('nm_produto', 'string', null, array(
-             'type' => 'string',
-             'fixed' => false,
-             'unsigned' => false,
-             'notnull' => true,
-             'primary' => false,
-             ));
+            'type' => 'string',
+            'fixed' => false,
+            'unsigned' => false,
+            'notnull' => true,
+            'primary' => false,
+        ));
         $this->hasColumn('ds_produto', 'string', null, array(
-             'type' => 'string',
-             'fixed' => false,
-             'unsigned' => false,
-             'notnull' => false,
-             'primary' => false,
-             ));
+            'type' => 'string',
+            'fixed' => false,
+            'unsigned' => false,
+            'notnull' => false,
+            'primary' => false,
+        ));
         $this->hasColumn('st_privado', 'boolean', 1, array(
-             'type' => 'boolean',
-             'length' => 1,
-             'fixed' => false,
-             'unsigned' => false,
-             'notnull' => true,
-             'default' => true,
-             'primary' => false,
-             ));
+            'type' => 'boolean',
+            'length' => 1,
+            'fixed' => false,
+            'unsigned' => false,
+            'notnull' => true,
+            'default' => true,
+            'primary' => false,
+        ));
+        $this->hasColumn('fg_verso', 'boolean', 1, array(
+            'type' => 'boolean',
+            'length' => 1,
+            'fixed' => false,
+            'unsigned' => false,
+            'notnull' => true,
+            'default' => false,
+            'primary' => false,
+        ));
         $this->hasColumn('st_ativo', 'boolean', 1, array(
-             'type' => 'boolean',
-             'length' => 1,
-             'fixed' => false,
-             'unsigned' => false,
-             'notnull' => true,
-             'default' => true,
-             'primary' => false,
-             ));
+            'type' => 'boolean',
+            'length' => 1,
+            'fixed' => false,
+            'unsigned' => false,
+            'notnull' => true,
+            'default' => true,
+            'primary' => false,
+        ));
         $this->hasColumn('hs_produto', 'string', null, array(
-             'type' => 'string',
-             'fixed' => false,
-             'unsigned' => false,
-             'notnull' => true,
-             'primary' => false,
-             ));
+            'type' => 'string',
+            'fixed' => false,
+            'unsigned' => false,
+            'notnull' => true,
+            'primary' => false,
+        ));
     }
 
-    public function setUp()
-    {
+    public function setUp() {
         parent::setUp();
         $this->hasMany('TbFavoritos', array(
-             'local' => 'sq_produto',
-             'foreign' => 'sq_produto'));
+            'local' => 'sq_produto',
+            'foreign' => 'sq_produto'));
 
         $this->hasMany('TbProdutoPedido', array(
-             'local' => 'sq_produto',
-             'foreign' => 'sq_produto'));
+            'local' => 'sq_produto',
+            'foreign' => 'sq_produto'));
     }
+
 }

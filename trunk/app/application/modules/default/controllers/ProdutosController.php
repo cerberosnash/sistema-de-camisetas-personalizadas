@@ -18,10 +18,12 @@ class ProdutosController extends Base_Controller_Action {
     }
 
     public function renderizarAction() {
+        $posicao = $_GET['verso'] === 'true' ? 'verso' : 'cores';
+        $imagem = $_GET['imagem'] ? $_GET['imagem'] : 'default';
         $this->_helper->layout->disableLayout();
         $this->_helper->viewRenderer->setNoRender(); //suppress auto-rendering
-        $img = new ImageEdit(SYSTEM_PATH_ABSOLUTE . '/public/img/cores/#' . $_GET['cor'] . '.png');
-        $img->addimage(SYSTEM_PATH_ABSOLUTE . '/public/uploads/' . $_GET["imagem"] . '.png', 310, 250);
+        $img = new ImageEdit(SYSTEM_PATH_ABSOLUTE . '/public/img/' . $posicao . '/#' . $_GET['cor'] . '.png');
+        $img->addimage(SYSTEM_PATH_ABSOLUTE . '/public/uploads/' . $imagem . '.png', 310, 250);
         $img->resize($_GET['tamanho']);
         $img->output("png", null, 9);
     }
@@ -40,14 +42,17 @@ class ProdutosController extends Base_Controller_Action {
     public function colorirAction() {
         $this->_helper->layout->disableLayout();
         $this->_helper->viewRenderer->setNoRender(); //suppress auto-rendering
+//        if ($_POST['cor'] && $_SESSION['upload']['crop']) {
+//            $_SESSION['upload']['cor'] = $_POST['cor'];
+//            $out = array('success' => true, 'cor' => $_SESSION['upload']['cor']);
+//        } else {
+//            $_SESSION['upload']['cor'] = 'ffffff';
+//            $out = array('success' => true, 'cor' => $_SESSION['upload']['cor']);
+//        }
 
-        if ($_POST['cor'] && $_SESSION['upload']['crop']) {
-            $_SESSION['upload']['cor'] = $_POST['cor'];
-            $out = array('success' => true, 'cor' => $_SESSION['upload']['cor']);
-        } else {
-            $_SESSION['upload']['cor'] = 'ffffff';
-            $out = array('success' => false, 'cor' => $_SESSION['upload']['cor']);
-        }
+        $_SESSION['upload']['cor'] = $_POST['cor'];
+        $_SESSION['upload']['verso'] = $_POST['posicao'];
+        $out = array('success' => true, 'cor' => $_SESSION['upload']['cor'], 'posicao' => $_SESSION['upload']['verso']);
 
         $this->_prepareJson($out);
     }
@@ -95,22 +100,22 @@ class ProdutosController extends Base_Controller_Action {
     }
 
     public function gerarAction() {
+
+        $posicao = $_SESSION['upload']['verso'] === 'true' ? 'verso' : 'cores';
+        $imagem = $_SESSION['upload']['imagem'] ? $_SESSION['upload']['imagem'] : 'default.png';
+        $cor = $_SESSION['upload']['cor'] ? $_SESSION['upload']['cor'] : 'ffffff';
+
         $this->_helper->layout->disableLayout();
         $this->_helper->viewRenderer->setNoRender(); //suppress auto-rendering
-
-        if (!$_SESSION['upload']['cor']) {
-            $_SESSION['upload']['cor'] = 'ffffff';
-        }
-
-        if ($_SESSION['upload']['imagem']) {
-            $img = new ImageEdit(SYSTEM_PATH_ABSOLUTE . '/public/img/cores/#' . $_SESSION['upload']['cor'] . '.png');
-//            if ($_GET["imagem"]) {
-//                $_SESSION['upload']['imagem'] = $_GET["imagem"];
-//            }
-            $img->addimage(SYSTEM_PATH_ABSOLUTE . '/public/uploads/' . $_SESSION['upload']['imagem'], 310, 250);
-            $img->resize($_GET['tamanho']);
-            $img->output("png", null, 9);
-        }
+//        if (!$_SESSION['upload']['cor']) {
+//            $_SESSION['upload']['cor'] = 'ffffff';
+//        }
+        //if ($_SESSION['upload']['imagem']) {
+        $img = new ImageEdit(SYSTEM_PATH_ABSOLUTE . '/public/img/' . $posicao . '/#' . $cor . '.png');
+        $img->addimage(SYSTEM_PATH_ABSOLUTE . '/public/uploads/' . $imagem, 310, 250);
+        $img->resize($_GET['tamanho']);
+        $img->output("png", null, 9);
+        //}
     }
 
 }
