@@ -845,7 +845,7 @@ try{
                             type: 'password',
                             maxlength: '100'
                         }
-                    },{
+                    }/*,{
                         xtype: 'compositefield',
                         fieldLabel: 'Código',
                         items:[{
@@ -855,7 +855,7 @@ try{
                             vtype: 'captcha',
                             width: 245
                         },boxCaptchaAutenticacao]
-                    }]
+                    }*/]
                 }
                 ],
                 buttons: [
@@ -2898,34 +2898,36 @@ try{
                 var novaAba = PainelCentral.items.find(function(aba){
                     return aba.action === action;
                 });
-
-                conn.request({
-                    url: controller+'/'+action,
-                    method: 'POST',
-                    success: function(responseObject) {
-                        if(responseObject.responseText){
-                            //   Ext.example.msg('Aguarde...', 'Controller:{0} Action: {1}:',controller,action);
-                            if(!novaAba)                            {
-                                try{
-                                    var aba =  eval(responseObject.responseText);
-                                    aba.iconCls = icon;
-                                    aba.title = titulo;
-                                    aba.controller = controller;
-                                    aba.action = action;
-                                    aba.closable = true;
-                                    aba.closeAction = 'hide';                                                  
-                                    novaAba = Ext.getCmp('PainelCentral').add(aba);
-                                    Ext.getCmp('PainelCentral').activate(novaAba);
-                                }catch(e){
-                                    Ext.example.msg('Error', '{0}',e);
+                
+                if(novaAba==null){
+                    conn.request({
+                        url: controller+'/'+action,
+                        method: 'POST',
+                        success: function(responseObject) {
+                            if(responseObject.responseText){
+                                //   Ext.example.msg('Aguarde...', 'Controller:{0} Action: {1}:',controller,action);
+                                if(!novaAba)                            {
+                                    try{
+                                        var aba =  eval(responseObject.responseText);
+                                        aba.iconCls = icon;
+                                        aba.title = titulo;
+                                        aba.controller = controller;
+                                        aba.action = action;
+                                        aba.closable = true;
+                                        aba.closeAction = 'hide';                                                  
+                                        novaAba = Ext.getCmp('PainelCentral').add(aba);
+                                        Ext.getCmp('PainelCentral').activate(novaAba);
+                                    }catch(e){
+                                        Ext.example.msg('Error', '{0}',e);
+                                    }
                                 }
                             }
+                        },
+                        failure: function() {
+                            Ext.example.msg('Error', 'MSG-TExt-Response-Error:');
                         }
-                    },
-                    failure: function() {
-                        Ext.example.msg('Error', 'MSG-TExt-Response-Error:');
-                    }
-                });
+                    });
+                }
                 PainelCentral.activate(novaAba);
             }
 
@@ -2994,7 +2996,7 @@ try{
                     xtype:'button',
                     text: 'Criar Camiseta',
                     id: 'btnMinhaCamiseta',
-                    iconCls: 'tag-blue-add',
+                    iconCls: 'picture-edit',
                     action: 'view-minha-camiseta',
                     controller: 'cliente',
                     scope: this,

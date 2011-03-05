@@ -66,9 +66,9 @@ App.Cliente.MinhaCamiseta = Ext.extend(Ext.form.FormPanel, {
             height: 30,
             items:['->',{
                 xtype: 'button',
-                text: 'Enviar',
+                text: 'Fazer upload da imagem',
                 id: 'enviar_mc',
-                iconCls: 'silk-add',
+                iconCls: 'folder-up',
                 handler: function(){
                     try{
                         if(formUpload.getForm().isValid()){
@@ -84,6 +84,7 @@ App.Cliente.MinhaCamiseta = Ext.extend(Ext.form.FormPanel, {
                                     Ext.getCmp('cor_mc').enable();
                                     Ext.getCmp('nome_mc').enable();
                                     Ext.getCmp('descricao_mc').enable();
+                                    Ext.getCmp('posicao_mc').enable();
                                 },
                                 failure: function(){
                                     Ext.example.msg('Erro', 'O envio da imagem falhou!');
@@ -175,26 +176,25 @@ App.Cliente.MinhaCamiseta = Ext.extend(Ext.form.FormPanel, {
                                         Ext.example.msg('Salvando', 'Camiseta {0} salva com sucesso',data.id);
                                         Ext.example.msg('Noticia', 'A Camiseta {0} agora estara nos seus favoritos',data.id);
                                         AtualizarDataViewFavoritos();
-                                        Ext.get('iMinhaCamiseta').dom.src = controllerProdutos + '?t=' + new Date().getTime()+Math.random(0,9999);
+                                        Ext.get('iMinhaCamiseta').dom.src = controllerProdutos + 'renderizar/?t=' + new Date().getTime()+Math.random(0,9999);
 
                                         Ext.getCmp('salvar_mc').disable();
                                         Ext.getCmp('restaurar_mc').disable();
                                         Ext.getCmp('recortar_mc').disable();
 
-                                        Ext.getCmp('cor_mc').getValue('');
+                                        Ext.getCmp('cor_mc').setValue('');
                                         Ext.getCmp('tamanho_mc').setValue('');
                                         Ext.getCmp('nome_mc').setValue('');
                                         Ext.getCmp('descricao_mc').setValue('');
+                                        Ext.getCmp('posicao_mc').setValue('');
 
                                         Ext.getCmp('cor_mc').disable();
                                         Ext.getCmp('tamanho_mc').disable();
                                         Ext.getCmp('nome_mc').disable();
                                         Ext.getCmp('descricao_mc').disable();
-                                        Ext.getCmp('descricao_mc').disable();
+                                        Ext.getCmp('posicao_mc').disable();
 
                                         Ext.getCmp('formUpload').form.reset();
-
-
 
                                     }
                                     else{
@@ -212,6 +212,18 @@ App.Cliente.MinhaCamiseta = Ext.extend(Ext.form.FormPanel, {
                 }
             }]
         });
+    },
+    resetarForm: function(){
+        
+        Ext.getCmp('salvar_mc').disable();
+        Ext.getCmp('restaurar_mc').disable();
+        Ext.getCmp('recortar_mc').disable();
+        Ext.getCmp('cor_mc').disable();
+        Ext.getCmp('tamanho_mc').disable();
+        Ext.getCmp('nome_mc').disable();
+        Ext.getCmp('descricao_mc').disable();
+        Ext.getCmp('posicao_mc').disable();
+
     },
     buildTbar: function(){
         this.tbar = new Ext.Toolbar({
@@ -389,12 +401,11 @@ App.Cliente.MinhaCamiseta = Ext.extend(Ext.form.FormPanel, {
         this.buildForm();
         this.buildBbar(this.formUpload);
         this.buildTbar();
+        this.resetarForm();
 
         App.Cliente.MinhaCamiseta.superclass.initComponent.call(this);
     }
 });
-
-
 
 function validarSalvarMinhaCamiseta(){
     if(Ext.getCmp('recorte').getValue() && Ext.getCmp('tamanho_mc').getValue() && Ext.getCmp('cor_mc').getValue() && Ext.getCmp('nome_mc').getValue() && Ext.getCmp('descricao_mc').getValue() && Ext.getCmp('posicao_mc').getValue()){

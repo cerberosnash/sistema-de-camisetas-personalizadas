@@ -14,6 +14,7 @@ class ClienteController extends Base_Controller_Action {
     }
 
     public function viewMinhaCamisetaAction() {
+        unset($_SESSION['upload']);
         $this->_helper->layout->disableLayout();
         $this->_helper->viewRenderer->setNoRender();
         $this->startEXTJS();
