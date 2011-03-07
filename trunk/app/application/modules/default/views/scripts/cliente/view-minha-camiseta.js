@@ -23,6 +23,7 @@ App.Cliente.MinhaCamiseta = Ext.extend(Ext.form.FormPanel, {
             baseParams: {},
             onSubmit: Ext.emptyFn,
             waitMsgTarget: false,
+            icon: Ext.MessageBox.INFO,
             scope: this,
             labelWidth: 42,
             defaults: {
@@ -40,8 +41,6 @@ App.Cliente.MinhaCamiseta = Ext.extend(Ext.form.FormPanel, {
                        
                 },
                 fieldLabel: 'Imagem'
-                   
-                    
             }],
             buttons: []
         })
@@ -87,7 +86,14 @@ App.Cliente.MinhaCamiseta = Ext.extend(Ext.form.FormPanel, {
                                     Ext.getCmp('posicao_mc').enable();
                                 },
                                 failure: function(){
-                                    Ext.example.msg('Erro', 'O envio da imagem falhou!');
+                                    Ext.MessageBox.show({
+                                        title: 'Erro',
+                                        msg: 'Imagem corrompida ou no formato invalido!',
+                                        width:300,
+                                        buttons: Ext.MessageBox.OK,
+                                        icon: Ext.MessageBox.ERROR,
+                                        animEl: 'enviar_mc'
+                                    });
                                 }
                             });
                         } 
@@ -110,7 +116,7 @@ App.Cliente.MinhaCamiseta = Ext.extend(Ext.form.FormPanel, {
                         waitConfig: {
                             interval:100
                         },
-                        icon:'silk-add',
+                        icon: Ext.MessageBox.INFO,
                         animEl: 'iMinhaCamiseta'
                     });
 

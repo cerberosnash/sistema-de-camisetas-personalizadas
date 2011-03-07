@@ -13,10 +13,10 @@ try{
             var controllerIndex = '/camisetas/';
             var controllerAutenticacao = '/camisetas/autenticacao/';
             var controllerUtil = "/camisetas/util/";
-            //var controllerPedidos = "/camisetas/pedidos/";
             var controllerGaleria = '/camisetas/galeria/';
-            //  var controllerCarrinho = '/camisetas/carrinho/';
             var controllerProdutos = '/camisetas/produtos/';
+            //var controllerPedidos = "/camisetas/pedidos/";
+            //  var controllerCarrinho = '/camisetas/carrinho/';
             //  var controllerLogoff = '/camisetas/logoff/';
             //  var controllerFavoritos = '/camisetas/favoritos/';
                   
