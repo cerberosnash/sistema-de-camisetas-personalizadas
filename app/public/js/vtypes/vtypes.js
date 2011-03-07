@@ -517,9 +517,9 @@ Ext.apply(Ext.form.VTypes, {
     passwordMask: /[a-zA-Z0-9]/
 });
 
-Ext.form.VTypes["onlytext"] = /[a-zA-Z\s]/;
-Ext.form.VTypes["onlytextMask"] = /[a-zA-Z\s]/;
-Ext.form.VTypes["onlytextText"] = 'Not a valid phone number.  Must be in the format 123-4567 or 123-456-7890 (dashes optional)';
+Ext.form.VTypes["onlytext"] = /[a-zA-Z'\s]/;
+Ext.form.VTypes["onlytextMask"] = /[a-zA-Z'\s]/;
+Ext.form.VTypes["onlytextText"] = "";
 
 
 Ext.apply(Ext.form.VTypes, {
