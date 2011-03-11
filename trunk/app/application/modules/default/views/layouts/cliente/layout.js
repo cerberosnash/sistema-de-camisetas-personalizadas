@@ -3246,7 +3246,7 @@ try{
                 var conn = new Ext.data.Connection();
                 var data = null;
                 conn.request({
-                    url: controllerCliente + 'carregar',
+                    url: controllerCliente + 'carregar-usuario',
                     method: 'POST',
                     params: {
                         campo : 'nm_usuario'
@@ -3256,7 +3256,7 @@ try{
                             try{
                                 data = eval(responseObject.responseText);
                                 if(data.success===true){
-                                    Ext.getCmp('tbarPrincipal').setText('Olá, '+data.campo+'.');
+                                    Ext.getCmp('tbarPrincipal').setText('Olá, '+data.campo+'. (Cliente)');
                                 }else{
                                     Ext.getCmp('tbarPrincipal').setText('Olá, Seja bem vindo.');
                                 }

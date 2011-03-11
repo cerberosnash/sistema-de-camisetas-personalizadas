@@ -7,19 +7,29 @@
         echo $this->headLink();
         echo $this->headScript();
         ?>
+        <script type="text/javascript" src="<?php echo $this->baseUrl(); ?>/public/extjs/examples/ux/ProgressBarPager.js"></script>
+        <script type="text/javascript" src="<?php echo $this->baseUrl(); ?>/public/extjs/examples/ux/statusbar/StatusBar.js"></script>
+        <script type="text/javascript" src="<?php echo $this->baseUrl(); ?>/application/modules/default/views/layouts/pagamento/layout.js"></script>
+        <script type="text/javascript" src="<?php echo $this->baseUrl(); ?>/public/extjs/examples/ux/IconComboBox.js"></script>
+        <script type="text/javascript" src="<?php echo $this->baseUrl(); ?>/public/extjs/examples/ux/RowEditor.js"></script>
+        <script type="text/javascript" src="<?php echo $this->baseUrl(); ?>/public/extjs/examples/ux/Spinner.js"></script>
+        <script type="text/javascript" src="<?php echo $this->baseUrl(); ?>/public/extjs/examples/ux/SpinnerField.js"></script>
+        <script type="text/javascript" src="<?php echo $this->baseUrl(); ?>/public/js/vtypes/vtypes.js"></script>
+        <script type="text/javascript" src="<?php echo $this->baseUrl(); ?>/public/js/upload/upload.js"></script>
+        <script type="text/javascript" src="<?php echo $this->baseUrl(); ?>/public/js/jquery/jquery.min.js"></script>
+        <script type="text/javascript" src="<?php echo $this->baseUrl(); ?>/public/js/outros/resolucao.js"></script>
     </head>
     <body>
-        <script type="text/javascript" language="javascript" src="/<?php echo $this->systemname; ?>/application/modules/default/views/layouts/componentes/TabCloseMenu.js"></script>
-        <script type="text/javascript" language="javascript" src="/<?php echo $this->systemname; ?>/public/extjs/examples/tabs/tabs-adv.js"></script>
-        <script type="text/javascript" language="javascript" src="/<?php echo $this->systemname; ?>/public/extjs/examples/ux/ProgressBarPager.js"></script>
-        <script type="text/javascript" language="javascript" src="/<?php echo $this->systemname; ?>/public/extjs/examples/ux/Search.js"></script>
-        <script type="text/javascript" language="javascript" src="/<?php echo $this->systemname; ?>/public/extjs/examples/ux/PanelResizer.js"></script>
-        <script type="text/javascript" language="javascript" src="/<?php echo $this->systemname; ?>/public/extjs/examples/ux/PagingMemoryProxy.js"></script>
-        <script type="text/javascript" language="javascript" src="/<?php echo $this->systemname; ?>/public/extjs/examples/ux/statusbar/StatusBar.js"></script>
-        <script type="text/javascript" src="/<?php echo $this->systemname; ?>/application/modules/default/views/layouts/<?php echo $this->controller; ?>/layout.js"></script>
+        <div id="introducao"><div id="marca-intro"></div><div id="loader"><p>Carregando...</p></div></div>
         <script type="text/javascript" language="javascript" >
-            Ext.onReady(function(){new App.Default.Layout.Pagamento;});
+            Ext.onReady(function(){
+                try{
+                    new App.Default.Layout.Pagamento;
+                    Ext.get('introducao').fadeOut(100);
+                }catch(e){
+                    alert('Ocorreu um erro fatal!\n['+e+']');
+                }
+            });
         </script>
-        <div id="tbar"></div>
     </body>
 </html>
