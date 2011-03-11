@@ -2,8 +2,12 @@
 
 class Base_Controller_Action extends Zend_Controller_Action {
 
-//    protected $MCA = array();
     protected $_session;
+
+    public function init() {
+        session_start();
+        $this->startAutenticacao();
+    }
 
     public function startAutenticacao() {
         if (!isset($_SESSION['Zend_Session_Namespace'])) {
@@ -13,48 +17,34 @@ class Base_Controller_Action extends Zend_Controller_Action {
         }
     }
 
+    public function carregarUsuarioAction() {
+
+        $this->_helper->layout->disableLayout();
+        $this->_helper->viewRenderer->setNoRender();
+
+        if ($this->getRequest()->isPost()) {
+            if (!$this->_getParam('campo')) {
+                $usuario = $this->_session->usuario;
+                $usuario->tx_senha = Base_Util::md6_decode($usuario->tx_senha);
+                $out = array(success => true, usuario => $usuario);
+                unset($usuario);
+            } else {
+                if (isset($this->_session->usuario->{$this->_getParam('campo')})) {
+                    $out = array(success => true, campo => $this->_session->usuario->{$this->_getParam('campo')});
+                } else {
+                    $out = array(success => false, error => 'Campo invalido!');
+                }
+            }
+        } else {
+            $out = array(success => false, error => 'Paramentros passados de forma invalida!');
+        }
+        $this->_prepareJson($out);
+    }
+
     protected function _prepareJson($out) {
         $callback = '(' . json_encode($out) . ')';
         $this->_response->appendBody($callback);
     }
-
-//    public function setMCA() {
-//        $this->MCA = array(
-//            'module' => $this->view->originalModule,
-//            'controller' => $this->view->originalController,
-//            'action' => $this->view->originalAction
-//        );
-//    }
-//
-//    public function getMCA() {
-//        return $this->MCA;
-//    }
-
-    public function init() {
-        session_start();
-        $this->startAutenticacao();
-//        $this->setMCA();
-    }
-
-//    protected function toUpper($value) {
-//        $objFilter = new Zend_Filter();
-//        $objStringToUpper = new Zend_Filter_StringToUpper();
-//
-//        $objStringToUpper->setEncoding('UTF-8');
-//        $objFilter->addFilter($objStringToUpper);
-//
-//        return $objFilter->filter($value);
-//    }
-//
-//    protected function toLower($value) {
-//        $objFilter = new Zend_Filter();
-//        $objStringToLower = new Zend_Filter_StringToLower();
-//
-//        $objStringToLower->setEncoding('UTF-8');
-//        $objFilter->addFilter($objStringToLower);
-//
-//        return $objFilter->filter($value);
-//    }
 
     public function startEXTJS($default=true) {
         $file = "../application/modules/" . $this->view->originalModule . "/views/scripts/"
@@ -89,18 +79,5 @@ class Base_Controller_Action extends Zend_Controller_Action {
         $file = str_replace($search, $replace, $file);
         return $file;
     }
-
-//    public function appendVariableExtJS() {
-//        if ($this->view->originalAction != 'help') {
-//            include $this->_directory . DIRECTORY_SEPARATOR . $_SESSION['language'] . '.php';
-//            $arrayVar = $translationStrings[$this->view->originalModule]
-//                    [$this->view->originalController]
-//                    [$this->view->originalAction];
-//            $script = " var label = " . Zend_Json::encode($arrayVar) . ";";
-//            return $script;
-//        } else {
-//            return;
-//        }
-//    }
 
 }
