@@ -5597,12 +5597,6 @@ INSERT INTO tb_municipios (sq_municipio, sq_uf, nm_municipio, st_ativo) VALUES (
 INSERT INTO tb_municipios (sq_municipio, sq_uf, nm_municipio, st_ativo) VALUES (450, 10, 'ACAILANDIA', true);
 
 
---
--- TOC entry 1852 (class 0 OID 17096)
--- Dependencies: 1562
--- Data for Name: tb_ufs; Type: TABLE DATA; Schema: public; Owner: postgres
---
-
 INSERT INTO tb_ufs (sq_uf, nm_uf, st_ativo, sg_uf) VALUES (1, 'Acre', true, 'AC');
 INSERT INTO tb_ufs (sq_uf, nm_uf, st_ativo, sg_uf) VALUES (2, 'Alagoas', true, 'AL');
 INSERT INTO tb_ufs (sq_uf, nm_uf, st_ativo, sg_uf) VALUES (3, 'Amapa', true, 'AP');

@@ -6,7 +6,7 @@ class Bootstrap {
 
     public function __construct($configSection) {
         $this->_configSection = $configSection;
-        $this->_configureHeader();
+        //$this->_configureHeader();
         $this->_configureIni();
 
         $rootDir = dirname(dirname(__FILE__));
@@ -62,20 +62,20 @@ class Bootstrap {
         Zend_Layout::startMvc(array('layoutPath' => ROOT_DIR . '/application/modules/default/views/layouts'));
     }
 
-    private function _configureHeader() {
-        // Evita que os dados sejam recuperados do cache do browser.
-        header("Expires:Mon, 26 Jul 1997 05:00:00 GMT"); //colocamos uma data passada para que expire
-        header("Last-Modified:" . gmdate("D, dM Y H:i:s") . "GMT"); //Última modificação, justo agora.
-        header("Cache-Control: no-cache, must-revalidate"); //evita que se guarde em cache, HTTP 1.1
-        header("Cache-Control: post-check=0, pre-check=0", false);
-        header("Pragma: no-cache"); //evita que se guarde em cache HTTP 1.0
-    }
+//    private function _configureHeader() {
+//        // Evita que os dados sejam recuperados do cache do browser.
+//        header("Expires:Mon, 26 Jul 1997 05:00:00 GMT"); //colocamos uma data passada para que expire
+//        header("Last-Modified:" . gmdate("D, dM Y H:i:s") . "GMT"); //Última modificação, justo agora.
+//        header("Cache-Control: no-cache, must-revalidate"); //evita que se guarde em cache, HTTP 1.1
+//        header("Cache-Control: post-check=0, pre-check=0", false);
+//        header("Pragma: no-cache"); //evita que se guarde em cache HTTP 1.0
+//    }
 
     private function _configureIni() {
         ini_set('default_charset', 'UTF-8');
         ini_set('display_errors', 1);
         ini_set('max_execution_time', '0');
-        ini_set('memory_limit', '1000M');
+        ini_set('memory_limit', '100M');
     }
 
     private function _exception($exception) {
@@ -87,13 +87,13 @@ class Bootstrap {
 
     protected function _initDoctrine() {
         $configSelection = $this->_configSection;
-        $banco = Zend_Registry::get('config'); //->$configSelection;
+        $banco = Zend_Registry::get('config');
         $manager = Doctrine_Manager::getInstance();
         $manager->setAttribute(Doctrine::ATTR_AUTO_ACCESSOR_OVERRIDE, true);
         $manager->setAttribute(Doctrine::ATTR_AUTOLOAD_TABLE_CLASSES, true);
         $manager->setAttribute(
                 Doctrine::ATTR_MODEL_LOADING,
-                Doctrine::MODEL_LOADING_AGGRESSIVE//MODEL_LOADING_CONSERVATIVE
+                Doctrine::MODEL_LOADING_AGGRESSIVE
         );
 
         Doctrine::loadModels($banco->prod->doctrine->models_path);
