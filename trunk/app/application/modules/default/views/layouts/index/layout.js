@@ -326,7 +326,7 @@ try{
                 return {
                     run : function(pbar, btn, count, cb,url){
                         btn.disabled = true;
-                        var ms = 5000/count;
+                        var ms = 1/count;
                         for(var i = 1; i < (count+2); i++){
                             setTimeout(f(i, pbar, btn, count, cb), i*ms);
                         }
@@ -358,7 +358,7 @@ try{
                 return {
                     run : function(pbar, btn, count, cb){
                         btn.disabled = true;
-                        var ms = 1000/count;
+                        var ms = 1/count;
                         for(var i = 1; i < (count+2); i++){
                             setTimeout(f(i, pbar, btn, count, cb), i*ms);
                         }
@@ -1198,7 +1198,7 @@ try{
                                             renderTo: 'boxLoadingAutenticacao'
                                         });
 
-                                        RunnerAutenticacao.run(pbarAutenticacao, Ext.getCmp('aEntrar'), 5, data.url);
+                                        RunnerAutenticacao.run(pbarAutenticacao, Ext.getCmp('aEntrar'), 1, data.url);
                                    
                                     }else{
                                         Ext.example.msg('Erro', data.error);

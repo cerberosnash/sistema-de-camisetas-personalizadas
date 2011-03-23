@@ -478,7 +478,8 @@ try{
                                 }else{
                                     Ext.example.msg('Erro', 'Falha na autenticação');
                                 }
-                            }catch(e){
+                            }
+                            catch(e){
                                 Ext.example.msg('Erro', '{0}',e);
                             }
                         }
