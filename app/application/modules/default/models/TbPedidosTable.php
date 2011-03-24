@@ -1,7 +1,5 @@
 <?php
 
-/**
- */
 class TbPedidosTable extends Doctrine_Table {
 
     public function listarPedidos($aParams) {
@@ -18,12 +16,12 @@ class TbPedidosTable extends Doctrine_Table {
 
             $query = new Doctrine_Pager(
                             $subquery = Doctrine_Query::create()
-                            ->select('p.sq_pedido,u.nm_usuario,p.dt_pedido,p.vl_pedido')
-                            ->from('TbPedidos p')
-                            ->innerJoin('p.TbUsuarios u ON p.sq_usuario = u.sq_usuario')
-                            ->where('p.sq_status = ?', 1)
-                            ->andWhere('p.st_ativo = ?', true)
-                            ->orderBy($aParams['sort'] . ' ' . $aParams['dir']), ++$page, $aParams['limit']);
+                                    ->select('p.sq_pedido,u.nm_usuario,p.dt_pedido,p.vl_pedido')
+                                    ->from('TbPedidos p')
+                                    ->innerJoin('p.TbUsuarios u ON p.sq_usuario = u.sq_usuario')
+                                    ->where('p.sq_status = ?', 1)
+                                    ->andWhere('p.st_ativo = ?', true)
+                                    ->orderBy($aParams['sort'] . ' ' . $aParams['dir']), ++$page, $aParams['limit']);
 
             $res = $query->execute(array(), Doctrine::HYDRATE_ARRAY);
 
@@ -45,10 +43,10 @@ class TbPedidosTable extends Doctrine_Table {
             $out['pedidos'] = $data;
 
             $out['totalCount'] = Doctrine_Query::create()
-                    ->from('TbPedidos p')
-                    ->where('p.sq_status = ?', 1)
-                    ->andWhere('p.st_ativo = ?', true)
-                    ->count();
+                            ->from('TbPedidos p')
+                            ->where('p.sq_status = ?', 1)
+                            ->andWhere('p.st_ativo = ?', true)
+                            ->count();
         } catch (Doctrine_Exception $e) {
             $out = array(success => false, error => $e->getMessage());
         }

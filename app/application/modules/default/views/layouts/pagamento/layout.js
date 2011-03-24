@@ -10,6 +10,7 @@ try{
         constructor: function(){
 
             var controllerPagamento = '/camisetas/pagamento/';
+            var controllerLogoff = '/camisetas/logoff/';
                             
             /* DataStores - Inicio */
 
@@ -21,26 +22,21 @@ try{
                 autoDestroy: true,
                 baseParams:{
                     start: 0,
-                    limit: 20,
+                    limit: 1000,
                     dir: 'asc',
                     sort: 'sq_pedido'
                 },
-                fields: [
-                {
+                fields: [{
                     name: 'sq_pedido',
                     type: 'int'
-                },
-                {
+                },{
                     name: 'dt_pedido'
-                },
-                {
+                },{
                     name: 'vl_pedido',
                     type: 'float'
-                },
-                {
+                },{
                     name: 'nm_usuario'
-                }
-                ],
+                }],
                 proxy: new Ext.data.HttpProxy({
                     method: 'post',
                     url: controllerPagamento + 'carregar'
@@ -55,7 +51,7 @@ try{
                     alert('[Error]\n[storePedidos]\n[Erro desconhecido.]');
                 }
             });
-            //            
+                        
             //            storePagamento.on('load',function(store){
             //                if(parseInt(store.reader.jsonData.totalCount)>0){
             //                    Ext.getCmp('btnBoletos').enable();
@@ -76,23 +72,23 @@ try{
                     window.location = controllerLogoff;
                 }
             }
-
-            var bbarEast = new Ext.Toolbar({
-                border: true,
-                frame: true,
-                height: 30,
-                items:[{
-                    xtype:'paging',
-                    pageSize: 20,
-                    store: storePagamento,
-                    displayInfo: true,
-                    plugins: [new Ext.ux.ProgressBarPager({
-                        displayMsg     : "<b>{0} &agrave; {1} de {2} camisetas(s)</b>"
-                    })]
-                }]
-            });
+            //
+            //            var bbarPagamentoPaginacao = new Ext.Toolbar({
+            //                border: true,
+            //                frame: true,
+            //                height: 30,
+            //                items:[{
+            //                    xtype:'paging',
+            //                    pageSize: 20,
+            //                    store: storePagamento,
+            //                    displayInfo: true,
+            //                    plugins: [new Ext.ux.ProgressBarPager({
+            //                        displayMsg     : "<b>{0} &agrave; {1} de {2} pedidos(s)</b>"
+            //                    })]
+            //                }]
+            //            });
             
-            var bbarWest = new Ext.Toolbar({
+            var bbarPagamento = new Ext.Toolbar({
                 border: false,
                 frame: false,
                 height: 25,
@@ -102,56 +98,194 @@ try{
                 ]
             });
 
-            var tbarCenter = new Ext.Toolbar({
+            var tbarPagamento = new Ext.Toolbar({
                 border: true,
                 frame: true,
                 height: 30,
-                margins: '5 5 5 5',
-                items  : []
+                //                margins: '5 5 5 5',
+                items  : [{
+                    xtype: 'button',
+                    id: 'btnConfirmarPagamento',
+                    text: 'Confirmar Pagamento',
+                    iconCls: 'accept',
+                    disabled: true,
+                    scope: this,
+                    handler: function(){
+                        Ext.MessageBox.show({
+                            title: 'Confirmacao de Pagamento',
+                            msg: 'Voce tem certeza que deseja confirma o pagamento deste pedido?',
+                            buttons: Ext.MessageBox.YESNOCANCEL,
+                            fn: confirmarPagamento,
+                            icon: Ext.MessageBox.QUESTION
+                        })
+                    }
+                },{
+                    xtype: 'button',
+                    id: 'btnCancelarPagamento',
+                    text: 'Cancelar Pagamento',
+                    iconCls: 'delete',
+                    disabled: true,
+                    scope: this,
+                    handler: function(){
+                        Ext.MessageBox.show({
+                            title: 'Confirmacao de Pagamento',
+                            msg: 'Voce tem certeza que deseja cancelar este pedido?',
+                            buttons: Ext.MessageBox.YESNOCANCEL,
+                            fn: cancelarPagamento,
+                            icon: Ext.MessageBox.QUESTION
+                        })
+                    }
+                }]
             });
 
-            var DataViewPagamentos = new Ext.grid.GridPanel({
+            /*Funcoes*/
+            /*Cancelar Pagamento do Pedido*/
+            function cancelarPagamento(btn){
+                if(btn=='yes'){
+
+                    /*Persistir cancelamento de pedido*/
+                    var conn = new Ext.data.Connection();
+                    var data = null;
+                    conn.request({
+                        url: controllerPagamento + 'cancelar',
+                        method: 'POST',
+                        params: {
+                            id_pedido : Ext.getCmp('dataGridPagamento').getSelectionModel().getSelected().get('sq_pedido')
+                        },
+                        success: function(responseObject) {
+                            if(responseObject.responseText){
+                                try{
+                                    data = eval(responseObject.responseText);
+                                    if(data.success===true){
+                                        Ext.example.msg('Alerta', 'Pagamento cancelado com sucesso!');
+                                        Ext.getCmp('btnConfirmarPagamento').disable();
+                                        Ext.getCmp('btnCancelarPagamento').disable();
+                                        storePagamento.load();
+                                    }else{
+                                        Ext.MessageBox.show({
+                                            title: 'Erro',
+                                            msg: data.error,
+                                            buttons: Ext.MessageBox.OK,
+                                            icon: Ext.MessageBox.ERROR,
+                                            fn: function(btn){
+                                                if(btn=='ok'){
+                                                    Ext.getCmp('btnConfirmarPagamento').disable();
+                                                    Ext.getCmp('btnCancelarPagamento').disable();
+                                                    storePagamento.load();
+                                                }
+                                            }
+                                        });
+                                    }
+                                }catch(e){
+                                    Ext.example.msg('Erro', '{0}',e);
+                                }
+                            }
+                        },
+                        failure: function(e) {
+                            Ext.example.msg('Erro', '{0}',e);
+                        }
+                    });
+
+                }
+            }
+
+            /*Confirmar Pagamento do Cliente*/
+            function confirmarPagamento(btn){
+                if(btn=='yes'){
+
+                    /*Persistir confirmacao de pagamento*/
+                    var conn = new Ext.data.Connection();
+                    var data = null;
+                    conn.request({
+                        url: controllerPagamento + 'confirmar',
+                        method: 'POST',
+                        params: {
+                            id_pedido : Ext.getCmp('dataGridPagamento').getSelectionModel().getSelected().get('sq_pedido')
+                        },
+                        success: function(responseObject) {
+                            if(responseObject.responseText){
+                                try{
+                                    data = eval(responseObject.responseText);
+                                    if(data.success===true){
+                                        Ext.example.msg('Alerta', 'Pagamento confirmado com sucesso!');
+                                        Ext.getCmp('btnConfirmarPagamento').disable();
+                                        Ext.getCmp('btnCancelarPagamento').disable();
+                                        storePagamento.load();
+                                    }else{
+                                        Ext.MessageBox.show({
+                                            title: 'Erro',
+                                            msg: data.error,
+                                            buttons: Ext.MessageBox.OK,
+                                            icon: Ext.MessageBox.ERROR,
+                                            fn: function(btn){
+                                                if(btn=='ok'){
+                                                    Ext.getCmp('btnConfirmarPagamento').disable();
+                                                    Ext.getCmp('btnCancelarPagamento').disable();
+                                                    storePagamento.load();
+                                                }
+                                            }
+                                        });
+                                    }
+                                }catch(e){
+                                    Ext.example.msg('Erro', '{0}',e);
+                                }
+                            }
+                        },
+                        failure: function(e) {
+                            Ext.example.msg('Erro', '{0}',e);
+                        }
+                    });
+
+                }
+            }
+
+            var dataGridPagamento = new Ext.grid.GridPanel({
                 id: 'dataGridPagamento',
                 iconCls: 'icon-grid',
                 stripeRows: true,
                 loadMask: true,
+                frame: false,
+                border: false,
+                margins:'0px 0px 0px 0px',
                 columnLines: true,
                 store: storePagamento,
+                viewConfig: {
+                    forceFit: true
+                },
                 sm: new Ext.grid.RowSelectionModel({
                     singleSelect:true,
                     listeners: {
                         selectionchange: function(sel){
                             var rec = sel.getSelected();
                             if(rec){
-                        //                                Ext.getCmp('QtdCarrinho').setValue(rec.get('qt_produto'));
-                        //                                Ext.getCmp('QtdCarrinho').enable();
-                        //                                Ext.getCmp('btnQtdCarrinho').enable();
-                        //                                Ext.getCmp('btnRemoverCarrinho').enable();
-                        }
+                                Ext.getCmp('btnConfirmarPagamento').enable();
+                                Ext.getCmp('btnCancelarPagamento').enable();
+                            }
                         }
                     }
                 }),
                 columns: [{
                     header: "#",
-                   // width: 15,
+                    width: 100,
                     sortable: true,
                     dataIndex: 'sq_pedido'
                 },{
                     header: "Data",
-                    //width: 5,
+                    width: 150,
                     sortable: true,
                     dataIndex: 'dt_pedido'
                 },{
                     header: "Valor",
-                    //width: 50,
+                    width: 150,
                     sortable: true,
                     dataIndex: 'vl_pedido'
                 },{
                     header: "Cliente",
-                    //width: 90,
+                    width: 200,
                     sortable: true,
                     dataIndex: 'nm_usuario'
-                }]
+                }],
+                plugins: new Ext.ux.ProgressBarPager()
             });
 
             var viewPortPagamento = new Ext.Panel({
@@ -171,9 +305,14 @@ try{
                 defaults:{
                     autoScroll:true
                 },
-                items: [DataViewPagamentos],
-                tbar: tbarCenter,
-                bbar: bbarEast
+                items: [dataGridPagamento],
+                tbar: tbarPagamento,
+                bbar: new Ext.PagingToolbar({
+                    pageSize: 100,
+                    store: storePagamento,
+                    displayInfo: true,
+                    plugins: new Ext.ux.ProgressBarPager()
+                })
             });
             
             var PainelCentral = new Ext.TabPanel({
@@ -270,7 +409,7 @@ try{
                 },{
                     id:'preview',
                     region: 'south',
-                    bbar: bbarWest,
+                    bbar: bbarPagamento,
                     border: false
                 },PainelCentral
                 ]
