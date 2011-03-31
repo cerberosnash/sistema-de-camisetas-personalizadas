@@ -16,8 +16,11 @@ class Bootstrap {
                 PATH_SEPARATOR . ROOT_DIR . '/application/modules/default/models'
                 . PATH_SEPARATOR . ROOT_DIR . '/application/modules/default/models/Base'
                 . PATH_SEPARATOR . ROOT_DIR . '/application/configuration'
-                . PATH_SEPARATOR . ROOT_DIR . '/library'
                 . PATH_SEPARATOR . ROOT_DIR . '/application/exceptions'
+                . PATH_SEPARATOR . ROOT_DIR . '/library'
+                . PATH_SEPARATOR . ROOT_DIR . '/library/PHPJasperXML'
+                . PATH_SEPARATOR . ROOT_DIR . '/library/PHPJasperXML/Fpdf'
+                . PATH_SEPARATOR . ROOT_DIR . '/library/PHPJasperXML/Tcpdf'
                 . PATH_SEPARATOR . ROOT_DIR . '/library/Base/Smtp'
                 . PATH_SEPARATOR . ROOT_DIR . '/library/Base'
                 . PATH_SEPARATOR . ROOT_DIR . '/library/Doctrine'
@@ -92,8 +95,7 @@ class Bootstrap {
         $manager->setAttribute(Doctrine::ATTR_AUTO_ACCESSOR_OVERRIDE, true);
         $manager->setAttribute(Doctrine::ATTR_AUTOLOAD_TABLE_CLASSES, true);
         $manager->setAttribute(
-                Doctrine::ATTR_MODEL_LOADING,
-                Doctrine::MODEL_LOADING_AGGRESSIVE
+                Doctrine::ATTR_MODEL_LOADING, Doctrine::MODEL_LOADING_AGGRESSIVE
         );
 
         Doctrine::loadModels($banco->prod->doctrine->models_path);
