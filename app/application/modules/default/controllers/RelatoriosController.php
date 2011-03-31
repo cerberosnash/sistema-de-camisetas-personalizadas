@@ -29,15 +29,41 @@ class RelatoriosController extends Base_Controller_Action {
                 break;
 
             case 2:
-                echo 'relatorio 2';
+                /* Descricao do Relatorio */
+
+                $PHPJasperXML = new Base_PHPJasperXML();
+                $PHPJasperXML->debugsql = false;
+                $PHPJasperXML->arrayParameter = array("value1" => 1);
+                $PHPJasperXML->xml_dismantle(simplexml_load_file('../library/PHPJasperXML/Templates/' . $this->_getParam('opcao') . '.jrxml'));
+
+                $PHPJasperXML->transferDBtoArray();
+                $PHPJasperXML->outpage("I");    //page output method I:standard output  D:Download file
                 break;
 
             case 3:
-                echo 'relatorio 3';
+                /* Descricao do Relatorio */
+
+                $PHPJasperXML = new Base_PHPJasperXML();
+                $PHPJasperXML->debugsql = false;
+                $PHPJasperXML->arrayParameter = array("parameter1" => 1);
+                $PHPJasperXML->xml_dismantle(simplexml_load_file('../library/PHPJasperXML/Templates/' . $this->_getParam('opcao') . '.jrxml'));
+
+                $PHPJasperXML->transferDBtoArray();
+                $PHPJasperXML->outpage("I");    //page output method I:standard output  D:Download file
                 break;
 
             default:
-                echo 'relatorio ' . $this->_getParam('opcao') . ' ainda nao foi registrado pela administrador do sistemas!';
+                /* Descricao do Relatorio */
+
+                $PHPJasperXML = new Base_PHPJasperXML();
+                $PHPJasperXML->debugsql = false;
+                $PHPJasperXML->arrayParameter = array("value1" => 1);
+                $PHPJasperXML->xml_dismantle(simplexml_load_file('../library/PHPJasperXML/Templates/' . $this->_getParam('opcao') . '.jrxml'));
+
+                $PHPJasperXML->transferDBtoArray();
+                $PHPJasperXML->outpage("I");    //page output method I:standard output  D:Download file
+                break;
+                //echo 'relatorio ' . $this->_getParam('opcao') . ' ainda nao foi registrado pela administrador do sistemas!';
                 break;
         }
     }
