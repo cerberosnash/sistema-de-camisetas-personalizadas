@@ -21,6 +21,7 @@ try{
                 remoteSort: true,
                 autoDestroy: true,
                 baseParams:{
+                    status: 1, /*status - 1 = Aguardando Pagamento */
                     start: 0,
                     limit: 1000,
                     dir: 'asc',
@@ -244,11 +245,13 @@ try{
                 iconCls: 'icon-grid',
                 stripeRows: true,
                 loadMask: true,
-                frame: false,
-                border: false,
+                frame: true,
+                border: true,
                 margins:'0px 0px 0px 0px',
                 columnLines: true,
                 store: storePagamento,
+                layout: 'fit',
+                forceLayout: true,
                 viewConfig: {
                     forceFit: true
                 },
@@ -273,24 +276,27 @@ try{
                     header: "Data",
                     width: 150,
                     sortable: true,
-                    dataIndex: 'dt_pedido'
+                    dataIndex: 'dt_pedido',
+                    renderer:Ext.util.Format.dateRenderer('d/m/Y')
                 },{
                     header: "Valor",
                     width: 150,
                     sortable: true,
-                    dataIndex: 'vl_pedido'
+                    dataIndex: 'vl_pedido',
+                    renderer: "brMoney"
                 },{
                     header: "Cliente",
                     width: 200,
                     sortable: true,
                     dataIndex: 'nm_usuario'
                 }],
-                plugins: new Ext.ux.ProgressBarPager()
+                plugins:[new Ext.ux.ProgressBarPager()]
             });
 
             var viewPortPagamento = new Ext.Panel({
                 id:'viewPortPagamento',
-                layout:'hbox',
+                bodyStyle:'padding:0px 0px 0px 0px',
+                layout:'fit',
                 layoutConfig: {
                     align : 'stretch',
                     pack  : 'start'
@@ -301,7 +307,7 @@ try{
                 frame: false,
                 border: false,
                 split: false,
-                margins:'0 0 0 0',
+                margins:'0px 0px 0px 0px',
                 defaults:{
                     autoScroll:true
                 },
