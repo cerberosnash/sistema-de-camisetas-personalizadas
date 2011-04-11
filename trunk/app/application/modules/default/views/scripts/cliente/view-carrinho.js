@@ -16,10 +16,10 @@ App.Cliente.Carrinho = Ext.extend(Ext.form.FormPanel, {
     frame: false,
     border: false,
     split: false,
-    margins:'0 0 0 0',
+    margins:'0px 0px 0px 0px',
     defaults:{
         autoScroll:true,
-        margins:'0 0 0 0'
+        margins:'0px 0px 0px 0px'
     },
     finalizarCarrinho: function(){
         Ext.Msg.show({
@@ -173,19 +173,32 @@ App.Cliente.Carrinho = Ext.extend(Ext.form.FormPanel, {
             header: "Tamanho",
             width: 10,
             sortable: true,
-            dataIndex: 'tm_produto'
+            dataIndex: 'tm_produto',
+            renderer: function (val, meta, record, rowIndex, colIndex, store) {
+                if(val=='G'){
+                    return 'Grande';
+                }else if(val=='M'){
+                    return 'Média';
+                }else{
+                    return 'Pequena';
+                }
+            }
         },{
             header: "Valor",
             width: 10,
             sortable: true,
-            dataIndex: 'vl_produto'
+            dataIndex: 'vl_produto',
+            renderer: 'brMoney'
         },
         {
             header: "Quantidade",
             width: 10,
             dataIndex: 'qt_produto',
             sortable: true,
-            editable: true
+            editable: true,
+            renderer: function (val, meta, record, rowIndex, colIndex, store) {
+                return val + ' Camiseta(s)';
+            }
         }
         ];
     },
@@ -234,6 +247,7 @@ App.Cliente.Carrinho = Ext.extend(Ext.form.FormPanel, {
             id: 'dataGridCarrinho',
             iconCls: 'icon-grid',
             stripeRows: true,
+            margins: '0px 0px 0px 0px',
             loadMask: true,
             columnLines: true,
             store: this.stores.carrinho,
@@ -294,7 +308,8 @@ App.Cliente.Carrinho = Ext.extend(Ext.form.FormPanel, {
         this.items = new Ext.Panel({
             layout: 'fit',
             frame: true,
-            bodyStyle:'padding:0px 0px 0px 0px;',
+            border: true,
+            bodyStyle:'padding:0px 0px 0px 0px',
             items: [this.grids.carrinho]
         });
     },

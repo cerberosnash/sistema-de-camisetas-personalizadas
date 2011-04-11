@@ -541,7 +541,7 @@ try{
                     name: 'email',
                     id: 'aEmail',
                     vtype:'email',
-                    value: 'cerberosnash@gmail.com'
+                    value: 'admin@camisetas.com'
                 }, {
                     fieldLabel: 'Senha',
                     name: 'senha',
@@ -581,7 +581,7 @@ try{
                     name: 'email',
                     id: 'rEmail',
                     vtype:'email',
-                    value: 'cerberosnash@gmail.com'
+                    value: 'admin@camisetas.com'
                 },{
                     xtype: 'compositefield',
                     fieldLabel: 'Código',

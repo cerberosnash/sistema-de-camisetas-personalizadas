@@ -479,7 +479,7 @@ Ext.apply(Ext.form.VTypes,{
 //Ext.form.VTypes["telefoneMask"] = /[\d-]/;
 //Ext.form.VTypes["telefoneText"] = 'Not a valid phone number.  Must be in the format 123-4567 or 123-456-7890 (dashes optional)';
 
-
+/*Telefone*/
 Ext.apply(Ext.form.VTypes, {
     telefone: function(val, field) {
         return /^(\d{4}[-]?){1,2}(\d{4})$/.test(val);
@@ -488,6 +488,7 @@ Ext.apply(Ext.form.VTypes, {
     telefoneMask: /[\d-]/
 });
 
+/*CEP*/
 Ext.apply(Ext.form.VTypes, {
     cep: function(val, field) {
         return /^(\d{5}[-]?){1,2}(\d{3})$/.test(val);
@@ -496,7 +497,7 @@ Ext.apply(Ext.form.VTypes, {
     cepMask: /[\d-]/
 });
 
-
+/*DDD*/
 Ext.apply(Ext.form.VTypes, {
     ddd: function(val, field) {
         var ddd = /^([0-9])/;
@@ -506,6 +507,7 @@ Ext.apply(Ext.form.VTypes, {
     dddMask: /[\d\s:amp]/i
 });
 
+/*Senha*/
 Ext.apply(Ext.form.VTypes, {
     password: function(value, field)
     {
@@ -515,6 +517,14 @@ Ext.apply(Ext.form.VTypes, {
     },
     passwordText: 'A senha deve ser composta de no minimo 6 numeros ou letras',
     passwordMask: /[a-zA-Z0-9]/
+});
+
+/*Rastreamento correios*/
+Ext.apply(Ext.form.VTypes, {
+    rastreamento: function(val, field) {
+        return /^([A-Z]{2})([0-9]{9})([A-Z]{2})$/.test(val);
+    },
+    rastreamentoText: 'Este rastreamento não é válido. Exemplo: SS123456789BR'
 });
 
 Ext.form.VTypes["onlytext"] = /[a-zA-Z'\s]/;
