@@ -9,4 +9,10 @@ class ConfeccaoController extends Base_Controller_Action {
         }
     }
 
+    public function carregarAction() {
+        $this->_helper->layout->disableLayout();
+        $this->_helper->viewRenderer->setNoRender();
+        $this->_prepareJson(Doctrine_Core::getTable('TbPedidos')->listarPedidos($this->_getAllParams()));
+    }
+
 }
