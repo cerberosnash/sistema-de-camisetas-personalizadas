@@ -305,9 +305,7 @@ try{
                     src: controllerDespache +'guia/pedido/30'                   
                 }
             });
-
-        
-            /*Movido para view-carrinho.js*/
+       
             var DataGridDespache = new Ext.grid.GridPanel({
                 layout: 'hbox',
                 iconCls: 'icon-grid',
