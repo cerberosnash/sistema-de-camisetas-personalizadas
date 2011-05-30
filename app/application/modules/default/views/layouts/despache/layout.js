@@ -9,11 +9,8 @@ try{
 
         constructor: function(){
 
-            //   var controllerCliente = '/camisetas/cliente/';
             var controllerDespache = '/camisetas/despache/';
             var controllerIndex = '/camisetas/';
-            //var controllerUtil = "/camisetas/util/";
-            //  var controllerProdutos = '/camisetas/produtos/';
             var controllerLogoff = '/camisetas/logoff/';
                
             var storeDespache = new Ext.data.JsonStore({
@@ -47,18 +44,40 @@ try{
                     alert('[Error]\n[storePedidos]\n[Erro desconhecido.]');
                 }
             });
-                        
-            //            storeDespache.on('load',function(store){
-            //                if(parseInt(store.reader.jsonData.totalCount)>0){
-            //                    Ext.getCmp('btnBoletos').enable();
-            //                }else{
-            //                    Ext.getCmp('btnBoletos').disable();
-            //                }
-            //            });
-            
+              
             storeDespache.load();
 
             /*DataStores - Fim*/
+
+            function finalizarPedido(){
+                var conn = new Ext.data.Connection();
+                var data = null;
+                conn.request({
+                    url: controllerDespache + 'finalizar-pedido',
+                    method: 'POST',
+                    params: {
+                        id_pedido : Ext.getCmp('nuPedido').getValue(),
+                        cd_rastreamento : Ext.getCmp('nuRastreamento').getValue()
+                    },
+                    success: function(responseObject) {
+                        if(responseObject.responseText){
+                            try{
+                                data = eval(responseObject.responseText);
+                                if(data.success===true){
+                                    alert(data.toSource());
+                                }else{
+                                    Ext.example.msg('Erro', 'Falha ao finalizar o pedido.');
+                                }
+                            }catch(e){
+                                Ext.example.msg('Erro', '{0}',e);
+                            }
+                        }
+                    },
+                    failure: function(e) {
+                        Ext.example.msg('Erro', '{0}',e);
+                    }
+                });
+            }
             
             function carregarInformacoesClientePedido(id){
                 var conn = new Ext.data.Connection();
@@ -167,7 +186,7 @@ try{
                         listeners: {
                             select: function(a){
                                 Ext.example.msg('Despache', 'Pedido {0} selecionado.', a.getValue());
-                                carregarInformacoesClientePedido( a.getValue());
+                                carregarInformacoesClientePedido(a.getValue());
                             }
                         }
                     }]
@@ -268,28 +287,26 @@ try{
                     }]
                 }
                 ],
-                buttons: [
-                {
+                buttons: [{
                     xtype: 'button',
                     bodyStyle:'padding:10px 10px 10px 10px',
-                    text: 'Gerar guia de postagem',
-                    id: 'btnGerarGuiaPostagem',
-                    iconCls: 'disk',
-                    handler: function(){
-                        alert('salvar');
-                    }
-                },
-                {
-                    xtype: 'button',
-                    bodyStyle:'padding:10px 10px 10px 10px',
-                    text: 'Concluir postagem',
+                    text: 'Finalizar postagem',
                     id: 'btnFinalizarPostagem',
                     iconCls: 'disk',
                     handler: function(){
-                        alert('gerar guia!!!');
+                        if(Ext.getCmp('nuRastreamento').validate() && Ext.getCmp('nuPedido').getValue()){
+                            finalizarPedido();
+                        }else{
+                            Ext.MessageBox.show({
+                                title: 'Atencao',
+                                msg: 'Informe o numero do pedido e o codigo de rastreamento antes de continuar!',
+                                buttons: Ext.MessageBox.OK,
+                                icon: Ext.MessageBox.ERROR
+                            })
+                        }
+                       
                     }
-                }
-                ]
+                }]
             });
             
             var painelVisualizacaoGuia = new Ext.Panel({
@@ -302,7 +319,8 @@ try{
                     name: 'iGuiaPostagem',
                     id: 'iGuiaPostagem',
                     frameborder : 0,
-                    src: controllerDespache +'guia/pedido/30'                   
+                    src: controllerDespache +'guia',
+                    style:'z-index:0'
                 }
             });
        
@@ -332,67 +350,7 @@ try{
                         }
                     }
                 }),
-                columns : [/*
-                {
-                    header: "#",
-                    width: 15,
-                    sortable: true,
-                    dataIndex: 'sq_produto'
-                },
-                {
-                    header: "Cor",
-                    width: 5,
-                    sortable: true,
-                    dataIndex: 'co_produto',
-                    renderer: function (val, meta, record, rowIndex, colIndex, store) {
-                        meta.css = ' c'+val;
-                        return '';
-                    }
-                },
-                {
-                    header: "Nome",
-                    width: 50,
-                    sortable: true,
-                    dataIndex: 'nm_produto'
-                },
-                {
-                    header: "Descricao",
-                    width: 90,
-                    sortable: true,
-                    dataIndex: 'ds_produto'
-                },
-                {
-                    header: "Tamanho",
-                    width: 10,
-                    sortable: true,
-                    dataIndex: 'tm_produto',
-                    renderer: function (val, meta, record, rowIndex, colIndex, store) {
-                        if(val=='G'){
-                            return 'Grande';
-                        }else if(val=='M'){
-                            return 'Média';
-                        }else{
-                            return 'Pequena';
-                        }
-                    }
-                },{
-                    header: "Valor",
-                    width: 10,
-                    sortable: true,
-                    dataIndex: 'vl_produto',
-                    renderer: 'brMoney'
-                },
-                {
-                    header: "Quantidade",
-                    width: 10,
-                    dataIndex: 'qt_produto',
-                    sortable: true,
-                    editable: true,
-                    renderer: function (val, meta, record, rowIndex, colIndex, store) {
-                        return val + ' Camiseta(s)';
-                    }
-                }*/
-                ],
+                columns : [],
                 //  tbar: tbarCarrinho,
                 viewConfig: {
                     forceFit: true
