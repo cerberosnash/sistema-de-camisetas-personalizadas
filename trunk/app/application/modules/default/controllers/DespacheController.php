@@ -19,23 +19,33 @@ class DespacheController extends Base_Controller_Action {
         $this->_helper->layout->disableLayout();
         $this->_helper->viewRenderer->setNoRender();
 
+        if ($this->_getParam('pedido')) {
+            $PHPJasperXML = new Base_PHPJasperXML();
+            $PHPJasperXML->debugsql = false;
 
-        /* Descricao do Relatorio */
+            $array = Doctrine_Core::getTable('TbPedidos')->cliente($this->_getParam('pedido'));
+            $array['pedido'] = $this->_getParam('pedido');
+            $array['profissional'] = $this->_session->usuario->nm_usuario;
 
-        $PHPJasperXML = new Base_PHPJasperXML();
-        $PHPJasperXML->debugsql = false;
-        $PHPJasperXML->arrayParameter = array("pedido" => $this->_getParam('pedido'));
-        $PHPJasperXML->xml_dismantle(simplexml_load_file('../library/PHPJasperXML/Templates/GuiaPostagem.jrxml'));
+            $PHPJasperXML->arrayParameter = $array;
+            $PHPJasperXML->xml_dismantle(simplexml_load_file('../library/PHPJasperXML/Templates/GuiaPostagem.jrxml'));
 
-        $PHPJasperXML->transferDBtoArray();
-        $PHPJasperXML->outpage("I");    //page output method I:standard output  D:Download file
+            $PHPJasperXML->transferDBtoArray();
+            $PHPJasperXML->outpage("I");    //page output method I:standard output  D:Download file
+        }
     }
 
     public function informacoesClienteAction() {
         $this->_helper->layout->disableLayout();
         $this->_helper->viewRenderer->setNoRender();
-
         $this->_prepareJson(Doctrine_Core::getTable('TbPedidos')->cliente($this->_getParam('id_pedido')));
+    }
+
+    public function finalizarPedidoAction() {
+        $this->_helper->layout->disableLayout();
+        $this->_helper->viewRenderer->setNoRender();
+var_dump($this->_getAllParams());
+//$this->_prepareJson(Doctrine_Core::getTable('TbPedidos')->cliente($this->_getParam('id_pedido'),$this->_getParam('cd_rastream')));
     }
 
 }

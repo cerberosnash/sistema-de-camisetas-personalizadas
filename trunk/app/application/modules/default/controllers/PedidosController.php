@@ -40,11 +40,6 @@ class PedidosController extends Base_Controller_Action {
             if ($this->_session->usuario->sq_usuario && $this->_getParam('nm_banco') && $this->_getParam('sq_pedido')) {
                 try {
                     $pedidos = Doctrine_Core::getTable('TbPedidos')->findByDql('sq_pedido = ' . $this->_getParam('sq_pedido') . ' AND sq_usuario = ' . $this->_session->usuario->sq_usuario . ' AND sq_status = 1 AND st_ativo = true limit 1')->toArray();
-
-//                    foreach ($pedidos as $key => $value) {
-//                        $pedidos[$key]['cd_pedido'] = $pedidos[$key]['sq_pedido'] . '-' . str_replace('-', '', $pedidos[$key]['dt_pedido']) . '-' . str_replace('.', '-', $pedidos[$key]['vl_pedido']);
-//                    }
-
                     $out = array(success => true, totalCount => count($pedidos), pedidos => $pedidos);
                 } catch (Doctrine_Exception $e) {
                     $out = array(success => false, error => "$e");
@@ -59,7 +54,7 @@ class PedidosController extends Base_Controller_Action {
     }
 
     public function boletoAction() {
-        /* cONSTANTES */
+        /* CONSTANTES */
         $dias_de_prazo_para_pagamento = 5;
         $taxa_boleto = 2.95;
         $valor_cobrado = 9.99;
@@ -131,20 +126,13 @@ class PedidosController extends Base_Controller_Action {
               #################################################
              */
 // SEUS DADOS
-            "identificacao" => "Clone Catho - Ltda",
+            "identificacao" => "Camisetas Personalizadas",
             "cpf_cnpj" => "00.000.000/0000-00",
             "endereco" => "Quadra 205 Conjunto 12 Casa 06" . "Pedido Numero :: " . $this->_getParam('sq_pedido'),
             "cidade_uf" => "Recanto das Emas / Distrito Federal",
-            "cedente" => "Clone Catho - Ltda"
+            "cedente" => "Camisetas Personalizadas"
         );
-// N�O ALTERAR!
-//require ("include/funcoes_bb.php");
-//require ("include/dump_bb.php");
-
-
         $boleto = new BoletoBB($config);
-        //$boleto->start();
-//require '../../../../library/Util/boletos/BB.php';
     }
 
 }
