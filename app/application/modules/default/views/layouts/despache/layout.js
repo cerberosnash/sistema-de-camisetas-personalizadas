@@ -49,11 +49,11 @@ try{
 
             /*DataStores - Fim*/
 
-            function finalizarPedido(){
+            function finalizarPostagem(){
                 var conn = new Ext.data.Connection();
                 var data = null;
                 conn.request({
-                    url: controllerDespache + 'finalizar-pedido',
+                    url: controllerDespache + 'finalizar-postagem',
                     method: 'POST',
                     params: {
                         id_pedido : Ext.getCmp('nuPedido').getValue(),
@@ -64,9 +64,10 @@ try{
                             try{
                                 data = eval(responseObject.responseText);
                                 if(data.success===true){
-                                    alert(data.toSource());
+                                    alert(data.message);
+                                    window.location = controllerDespache;
                                 }else{
-                                    Ext.example.msg('Erro', 'Falha ao finalizar o pedido.');
+                                    Ext.example.msg('Erro', 'Falha ao finalizar o pedido.\n[{0}]',data.error);
                                 }
                             }catch(e){
                                 Ext.example.msg('Erro', '{0}',e);
@@ -78,7 +79,7 @@ try{
                     }
                 });
             }
-            
+          
             function carregarInformacoesClientePedido(id){
                 var conn = new Ext.data.Connection();
                 var data = null;
@@ -144,9 +145,7 @@ try{
                 '-','-','-'
                 ]
             });
-
-                
-                
+                               
             var painelInformacoesPostagem =  new Ext.form.FormPanel({
                 region:'west',
                 layout: 'form',
@@ -295,7 +294,7 @@ try{
                     iconCls: 'disk',
                     handler: function(){
                         if(Ext.getCmp('nuRastreamento').validate() && Ext.getCmp('nuPedido').getValue()){
-                            finalizarPedido();
+                            finalizarPostagem();
                         }else{
                             Ext.MessageBox.show({
                                 title: 'Atencao',

@@ -1,4 +1,5 @@
 <?php
+
 // Connection Component Binding
 Doctrine_Manager::getInstance()->bindComponent('TbPedidos', 'doctrine');
 
@@ -22,73 +23,93 @@ Doctrine_Manager::getInstance()->bindComponent('TbPedidos', 'doctrine');
  * @author     ##NAME## <##EMAIL##>
  * @version    SVN: $Id: Builder.php 6820 2009-11-30 17:27:49Z jwage $
  */
-abstract class Base_TbPedidos extends Doctrine_Record
-{
-    public function setTableDefinition()
-    {
+abstract class Base_TbPedidos extends Doctrine_Record {
+
+    public function setTableDefinition() {
         $this->setTableName('tb_pedidos');
         $this->hasColumn('sq_pedido', 'integer', 4, array(
-             'type' => 'integer',
-             'length' => 4,
-             'fixed' => false,
-             'unsigned' => false,
-             'primary' => true,
-             'sequence' => 'tb_pedidos_sq_pedido',
-             ));
+            'type' => 'integer',
+            'length' => 4,
+            'fixed' => false,
+            'unsigned' => false,
+            'primary' => true,
+            'sequence' => 'tb_pedidos_sq_pedido',
+        ));
         $this->hasColumn('sq_status', 'integer', 4, array(
-             'type' => 'integer',
-             'length' => 4,
-             'fixed' => false,
-             'unsigned' => false,
-             'notnull' => true,
-             'primary' => false,
-             ));
+            'type' => 'integer',
+            'length' => 4,
+            'fixed' => false,
+            'unsigned' => false,
+            'notnull' => true,
+            'primary' => false,
+        ));
         $this->hasColumn('sq_usuario', 'integer', 4, array(
-             'type' => 'integer',
-             'length' => 4,
-             'fixed' => false,
-             'unsigned' => false,
-             'notnull' => true,
-             'primary' => false,
-             ));
+            'type' => 'integer',
+            'length' => 4,
+            'fixed' => false,
+            'unsigned' => false,
+            'notnull' => true,
+            'primary' => false,
+        ));
+        $this->hasColumn('sq_confeccionador', 'integer', 4, array(
+            'type' => 'integer',
+            'length' => 4,
+            'fixed' => false,
+            'unsigned' => false,
+            'notnull' => false,
+            'primary' => false,
+        ));
         $this->hasColumn('dt_pedido', 'date', null, array(
-             'type' => 'date',
-             'fixed' => false,
-             'unsigned' => false,
-             'notnull' => true,
-             'primary' => false,
-             ));
+            'type' => 'date',
+            'fixed' => false,
+            'unsigned' => false,
+            'notnull' => true,
+            'primary' => false,
+        ));
         $this->hasColumn('vl_pedido', 'float', null, array(
-             'type' => 'float',
-             'fixed' => false,
-             'unsigned' => false,
-             'notnull' => true,
-             'primary' => false,
-             ));
+            'type' => 'float',
+            'fixed' => false,
+            'unsigned' => false,
+            'notnull' => true,
+            'primary' => false,
+        ));
         $this->hasColumn('st_ativo', 'boolean', 1, array(
-             'type' => 'boolean',
-             'length' => 1,
-             'fixed' => false,
-             'unsigned' => false,
-             'notnull' => true,
-             'default' => true,
-             'primary' => false,
-             ));
+            'type' => 'boolean',
+            'length' => 1,
+            'fixed' => false,
+            'unsigned' => false,
+            'notnull' => true,
+            'default' => true,
+            'primary' => false,
+        ));
+        $this->hasColumn('fg_alocado', 'boolean', 1, array(
+            'type' => 'boolean',
+            'length' => 1,
+            'fixed' => false,
+            'unsigned' => false,
+            'notnull' => true,
+            'default' => false,
+            'primary' => false,
+        ));
     }
 
-    public function setUp()
-    {
+    public function setUp() {
         parent::setUp();
         $this->hasOne('TbUsuarios', array(
-             'local' => 'sq_usuario',
-             'foreign' => 'sq_usuario'));
+            'local' => 'sq_usuario',
+            'foreign' => 'sq_usuario'));
+
+        $this->hasOne('TbUsuarios', array(
+            'local' => 'sq_usuario',
+            'foreign' => 'sq_confeccionador'));
 
         $this->hasOne('TbStatus', array(
-             'local' => 'sq_status',
-             'foreign' => 'sq_status'));
+            'local' => 'sq_status',
+            'foreign' => 'sq_status'));
 
         $this->hasMany('TbProdutoPedido', array(
-             'local' => 'sq_pedido',
-             'foreign' => 'sq_pedido'));
+            'local' => 'sq_pedido',
+            'foreign' => 'sq_pedido'));
     }
+
 }

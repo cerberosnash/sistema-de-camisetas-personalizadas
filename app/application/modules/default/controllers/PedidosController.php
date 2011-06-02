@@ -6,8 +6,6 @@ class PedidosController extends Base_Controller_Action {
         parent::init();
         $this->_helper->layout->disableLayout();
         $this->_helper->viewRenderer->setNoRender();
-        /* debuggar */
-        //$this->_session->usuario->sq_usuario = 1;
     }
 
     public function carregarAction() {
@@ -15,7 +13,7 @@ class PedidosController extends Base_Controller_Action {
         if ($this->getRequest()->isPost()) {
             if (isset($this->_session->usuario)) {
                 try {
-                    $pedidos = Doctrine_Core::getTable('TbPedidos')->findByDql('sq_usuario = ' . $this->_session->usuario->sq_usuario . ' AND sq_status = 1 AND st_ativo = true')->toArray();
+                    $pedidos = Doctrine_Core::getTable('TbPedidos')->findByDql("sq_usuario = {$this->_session->usuario->sq_usuario} AND sq_status = 1 AND st_ativo = true")->toArray();
 
                     foreach ($pedidos as $key => $value) {
                         $pedidos[$key]['cd_pedido'] = $pedidos[$key]['sq_pedido'] . '-' . str_replace('-', '', $pedidos[$key]['dt_pedido']) . '-' . str_replace('.', '-', $pedidos[$key]['vl_pedido']);

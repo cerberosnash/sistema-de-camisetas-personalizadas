@@ -47,24 +47,6 @@ class PagamentoController extends Base_Controller_Action {
                         $out = array(success => false, error => 'O pagamento deste pedido ja foi confirmado!');
                     }
 
-//                    $query2 = Doctrine_Query::create()
-//                                    ->update('TbTelefones')
-//                                    ->set('nu_ddd', '?', $this->_getParam('dd_celular'))
-//                                    ->set('nu_telefone', '?', Base_Util::onlyNumbers($this->_getParam('nu_celular')))
-//                                    ->where('sq_usuario = ?', $this->_session->usuario->sq_usuario)
-//                                    ->andWhere('tp_telefone = ?', 'Celular')
-//                                    ->andWhere('st_ativo = ?', true);
-//                    $query2->execute();
-//
-//                    $query3 = Doctrine_Query::create()
-//                                    ->update('TbTelefones')
-//                                    ->set('nu_ddd', '?', $this->_getParam('dd_residencial'))
-//                                    ->set('nu_telefone', '?', Base_Util::onlyNumbers($this->_getParam('nu_residencial')))
-//                                    ->where('sq_usuario = ?', $this->_session->usuario->sq_usuario)
-//                                    ->andWhere('tp_telefone = ?', 'Residencial')
-//                                    ->andWhere('st_ativo = ?', true);
-//                    $query3->execute();
-
                     $conn->commit();
                 } catch (Doctrine_Exception $e) {
                     $conn->rollback();
@@ -99,24 +81,6 @@ class PagamentoController extends Base_Controller_Action {
                     } else {
                         $out = array(success => false, error => 'O pagamento deste pedido ja foi cancelado!');
                     }
-
-//                    $query2 = Doctrine_Query::create()
-//                                    ->update('TbTelefones')
-//                                    ->set('nu_ddd', '?', $this->_getParam('dd_celular'))
-//                                    ->set('nu_telefone', '?', Base_Util::onlyNumbers($this->_getParam('nu_celular')))
-//                                    ->where('sq_usuario = ?', $this->_session->usuario->sq_usuario)
-//                                    ->andWhere('tp_telefone = ?', 'Celular')
-//                                    ->andWhere('st_ativo = ?', true);
-//                    $query2->execute();
-//
-//                    $query3 = Doctrine_Query::create()
-//                                    ->update('TbTelefones')
-//                                    ->set('nu_ddd', '?', $this->_getParam('dd_residencial'))
-//                                    ->set('nu_telefone', '?', Base_Util::onlyNumbers($this->_getParam('nu_residencial')))
-//                                    ->where('sq_usuario = ?', $this->_session->usuario->sq_usuario)
-//                                    ->andWhere('tp_telefone = ?', 'Residencial')
-//                                    ->andWhere('st_ativo = ?', true);
-//                    $query3->execute();
 
                     $conn->commit();
                 } catch (Doctrine_Exception $e) {

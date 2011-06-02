@@ -41,11 +41,10 @@ class DespacheController extends Base_Controller_Action {
         $this->_prepareJson(Doctrine_Core::getTable('TbPedidos')->cliente($this->_getParam('id_pedido')));
     }
 
-    public function finalizarPedidoAction() {
+    public function finalizarPostagemAction() {
         $this->_helper->layout->disableLayout();
         $this->_helper->viewRenderer->setNoRender();
-var_dump($this->_getAllParams());
-//$this->_prepareJson(Doctrine_Core::getTable('TbPedidos')->cliente($this->_getParam('id_pedido'),$this->_getParam('cd_rastream')));
+        $this->_prepareJson(Doctrine_Core::getTable('TbPedidos')->finalizarPostagem($this->_getParam('id_pedido'), $this->_getParam('cd_rastreamento')));
     }
 
 }
