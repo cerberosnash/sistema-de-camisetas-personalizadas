@@ -1098,7 +1098,7 @@ try{
                             type: 'password',
                             maxlength: '100'
                         }
-                    },{
+                    }/*,{
                         xtype: 'compositefield',
                         fieldLabel: 'Código',
                         items:[{
@@ -1108,7 +1108,7 @@ try{
                             vtype: 'captcha',
                             width: 245
                         },boxCaptchaAutenticacao]
-                    }]
+                    }*/]
                 }],
                 buttons: [{
                     text: 'Finalizar Cadastro',
