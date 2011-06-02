@@ -9,10 +9,6 @@ class FavoritosController extends Base_Controller_Action {
         $this->_helper->layout->disableLayout();
         $this->_helper->viewRenderer->setNoRender();
         $this->upload = new Zend_Session_Namespace('upload');
-        /* debugger */
-        // $this->_session->usuario->sq_usuario = 1;
-        /* Habilitar isso para assegurar a passagem de parametros somente por POST */
-        /* if ($this->getRequest()->isPost()) {} else {} */
     }
 
     public function carregarAction() {

@@ -21,11 +21,12 @@ try{
                 remoteSort: true,
                 autoDestroy: true,
                 baseParams:{
-                    status: 1, /*status - 1 = Aguardando Confeccao */
+                    status: 2, /*status - 2 = Aguardando Confeccao */
                     start: 0,
-                    limit: 1000,
+                    limit: 20,
                     dir: 'asc',
-                    sort: 'sq_pedido'
+                    sort: 'sq_pedido',
+                    alocado: false
                 },
                 fields: [{
                     name: 'sq_pedido',
@@ -40,7 +41,10 @@ try{
                 }],
                 proxy: new Ext.data.HttpProxy({
                     method: 'post',
-                    url: controllerConfeccao + 'carregar'
+                    url: controllerConfeccao + 'carregar',
+                    params:{
+                        alocado:false
+                    }
                 })
             });
 
@@ -53,55 +57,71 @@ try{
                 }
             });
 
-            //            storeConfeccao.on('load',function(store){
-            //                if(parseInt(store.reader.jsonData.totalCount)>0){
-            //                    Ext.getCmp('btnBoletos').enable();
-            //                }else{
-            //                    Ext.getCmp('btnBoletos').disable();
-            //                }
-            //            });
+            storeConfeccao.on('load',function(store){
+                if(parseInt(store.reader.jsonData.totalCount)>0){
+                    Ext.getCmp('btnLockConfeccao').enable();
+                }else{
+                    Ext.getCmp('btnLockConfeccao').disable();
+                }
+            });
 
             storeConfeccao.load();
 
             var storeConfeccaoLock = new Ext.data.JsonStore({
-                root: 'pedidos',
+                root: 'produtos',
                 totalProperty: 'totalCount',
-                idProperty: 'sq_pedido',
+                idProperty: 'sq_produto',
                 remoteSort: true,
                 autoDestroy: true,
                 baseParams:{
-                    status: 3, /*status - 3 = Aguardando Confeccao */
                     start: 0,
-                    limit: 1000,
+                    limit: 20,
                     dir: 'asc',
-                    sort: 'sq_pedido'
+                    sort: 'sq_produto'
                 },
                 fields: [{
-                    name: 'sq_pedido',
+                    name: 'sq_produto',
                     type: 'int'
+                },{
+                    name: 'fg_verso'
+                },{
+                    name: 'co_produto'
+                },{
+                    name: 'nm_produto'
+                },{
+                    name: 'ds_produto'
+                },{
+                    name: 'tm_produto'
+                },{
+                    name: 'vl_produto'
+                },{
+                    name: 'nu_quantidade'
+                },{
+                    name: 'hs_produto',
+                    type: 'string'
                 }],
                 proxy: new Ext.data.HttpProxy({
                     method: 'post',
-                    url: controllerConfeccao + 'carregar'
+                    url: controllerConfeccao + 'carregar-produtos'
                 })
             });
 
             storeConfeccaoLock.on('loadexception',function(a,b,c){
                 var data = eval(c.responseText);
                 if(data.success===false){
-                    alert('[Error]\n[storePedidos]\n['+data.error+']');
+                    alert('[Error]\n[storeProdutos]\n['+data.error+']');
                 }else{
-                    alert('[Error]\n[storePedidos]\n[Erro desconhecido.]');
+                    alert('[Error]\n[storeProdutos]\n[Erro desconhecido.]');
                 }
             });
 
-            //            storeConfeccao.on('load',function(store){
-            //                if(parseInt(store.reader.jsonData.totalCount)>0){
-            //                    Ext.getCmp('btnBoletos').enable();
-            //                }else{
-            //                    Ext.getCmp('btnBoletos').disable();
-            //                }
-            //            });
+            storeConfeccaoLock.on('load',function(store){
+                if(parseInt(store.reader.jsonData.totalCount)>0){
+                    Ext.getCmp('btnFinalizarConfeccao').enable();
+                }else{
+                    Ext.getCmp('btnFinalizarConfeccao').disable();
+                }
+            });
 
             storeConfeccaoLock.load();
 
@@ -116,10 +136,6 @@ try{
                 }
             }
 
-            function ImprimirEstampa(hash){
-                window.open(pathUploads+hash,'Estampa','toolbar=no,location=no,status=no,menubar=no,scrollbars=no,resizable=no,width=420,height=525');
-            }
-
             var bbarPrincipal = new Ext.Toolbar({
                 border: false,
                 frame: false,
@@ -129,6 +145,10 @@ try{
                 '-','-','-'
                 ]
             });
+
+            function ImprimirEstampa(hash){
+                window.open(pathUploads+hash+'.png','Estampa','toolbar=no,location=no,status=no,menubar=no,scrollbars=no,resizable=no,width=420,height=525');
+            }
 
             function adicionarCarrinho(botao){
                 var conn = new Ext.data.Connection();
@@ -176,20 +196,7 @@ try{
                 loadMask: true,
                 columnLines: true,
                 store: storeConfeccao,
-                /*sm: new Ext.grid.RowSelectionModel({
-                    singleSelect:true,
-                    listeners: {
-                        selectionchange: function(sel){
-                            var rec = sel.getSelected();
-                            if(rec){
-                        //Ext.getCmp('QtdCarrinho').setValue(rec.get('qt_produto'));
-                        //Ext.getCmp('QtdCarrinho').enable();
-                        //Ext.getCmp('btnQtdCarrinho').enable();
-                        //Ext.getCmp('btnRemoverCarrinho').enable();
-                        }
-                        }
-                    }
-                }),*/
+         
                 columns: [{
                     header: "#",
                     width: 100,
@@ -227,7 +234,7 @@ try{
                                 title: 'Alocacao de pedido para confeccao',
                                 msg: 'Voce tem certeza que deseja alocar um pedido para ser confeccionado?\nAtencao: Somente voce poderá confeccionar o pedido alocado!',
                                 buttons: Ext.MessageBox.YESNOCANCEL,
-                                fn: Logoff,
+                                fn: alocarPedidoConfeccao,
                                 icon: Ext.MessageBox.WARNING
                             })
                         }
@@ -244,8 +251,7 @@ try{
                     plugins: [new Ext.ux.ProgressBarPager({
                         displayMsg     : "<b>{0} &agrave; {1} de {2} pedidos(s)</b>"
                     })]
-                }/*,
-                tbar: tbarCenter*/
+                }
             });
 
             /*Grid de pedidos a serem confeccionados*/
@@ -267,12 +273,7 @@ try{
                         selectionchange: function(sel){
                             var rec = sel.getSelected();
                             if(rec){
-
-                                ImprimirEstampa();
-                            //Ext.getCmp('QtdCarrinho').setValue(rec.get('qt_produto'));
-                            //Ext.getCmp('QtdCarrinho').enable();
-                            //Ext.getCmp('btnQtdCarrinho').enable();
-                            //Ext.getCmp('btnRemoverCarrinho').enable();
+                                ImprimirEstampa(rec.get('hs_produto'));
                             }
                         }
                     }
@@ -286,7 +287,6 @@ try{
                 },
                 {
                     header: "Cor",
-                    width: 5,
                     sortable: true,
                     dataIndex: 'co_produto',
                     renderer: function (val, meta, record, rowIndex, colIndex, store) {
@@ -295,20 +295,29 @@ try{
                     }
                 },
                 {
+                    header: "Posicao",
+                    sortable: true,
+                    dataIndex: 'fg_verso',
+                    renderer: function (val, meta, record, rowIndex, colIndex, store) {
+                        if(val=='true'){
+                            return 'Verso';
+                        }else{
+                            return 'Frente';
+                        }
+                    }
+                },
+                {
                     header: "Nome",
-                    width: 50,
                     sortable: true,
                     dataIndex: 'nm_produto'
                 },
                 {
                     header: "Descricao",
-                    width: 90,
                     sortable: true,
                     dataIndex: 'ds_produto'
                 },
                 {
                     header: "Tamanho",
-                    width: 10,
                     sortable: true,
                     dataIndex: 'tm_produto',
                     renderer: function (val, meta, record, rowIndex, colIndex, store) {
@@ -330,12 +339,17 @@ try{
                 {
                     header: "Quantidade",
                     width: 10,
-                    dataIndex: 'qt_produto',
+                    dataIndex: 'nu_quantidade',
                     sortable: true,
                     editable: true,
                     renderer: function (val, meta, record, rowIndex, colIndex, store) {
                         return val + ' Camiseta(s)';
                     }
+                },
+                {
+                    header: "Hash",
+                    dataIndex: 'hs_produto',
+                    sortable: true
                 }
                 ],
                 viewConfig: {
@@ -358,15 +372,15 @@ try{
                         xtype:'button',
                         text: 'Finalizar confeccao',
                         id: 'btnFinalizarConfeccao',
-                        iconCls: 'lock',
+                        iconCls: 'accept',
                         handler: function(){
                             Ext.MessageBox.show({
-                                title: 'Finalizar confeccao',
-                                msg: 'Voce tem certeza que deseja finalizar a confeccao deste pedido?',
+                                title: 'Finalizacao do Pedido',
+                                msg: 'Voce tem certeza que deseja finalizar este pedido?',
                                 buttons: Ext.MessageBox.YESNOCANCEL,
-                                fn: Logoff,
+                                fn: finalizarConfeccao,
                                 icon: Ext.MessageBox.QUESTION
-                            })
+                            });
                         }
                     }]
                 })
@@ -379,10 +393,7 @@ try{
                 resizable: true,
                 bodyStyle:'padding:0px 0px 0px 0px',
                 margins: '0px 0px 0px 0px',
-                layoutConfig: {
-                //    align : 'stretch',
-                //pack  : 'start'
-                },
+                layoutConfig: {},
                 iconCls: 'application-view-icons',
                 title: 'Confeccao',
                 resizeTabs:false,
@@ -392,9 +403,7 @@ try{
                 defaults:{
                     autoScroll:true
                 },
-                items: [DataGridConfeccao,DataGridConfeccaoLock]//,
-            //tbar: tbarCenter//,
-            // bbar: bbarEast
+                items: [DataGridConfeccao,DataGridConfeccaoLock]
             });
 
             var PainelCentral = new Ext.TabPanel({
@@ -411,16 +420,13 @@ try{
                 margins:'0 0 0 0',
                 activeTab:0,
                 defaults:{
-                    //   closable: true,
                     autoScroll:true
                 },
                 items:[viewPortConfeccao]
             });
 
-
-         
-
-            var tbarPrincipal = new Ext.ux.StatusBar({
+            /*Botao Sair*/
+            new Ext.ux.StatusBar({
                 id: 'tbarPrincipal',
                 renderTo:Ext.getBody(),
                 items: [{
@@ -442,6 +448,67 @@ try{
             });
 
 
+            /*Funcoes*/
+            function alocarPedidoConfeccao(btn){
+                if(btn=='yes'){
+                    var conn = new Ext.data.Connection();
+                    var data = null;
+                    conn.request({
+                        url: controllerConfeccao + 'alocar',
+                        method: 'POST',
+                        success: function(responseObject) {
+                            if(responseObject.responseText){
+                                try{
+                                    data = eval(responseObject.responseText);
+                                    if(data.success===true){
+                                        storeConfeccao.load();
+                                        storeConfeccaoLock.load();
+                                        Ext.example.msg('Noticia',data.message);
+                                    }else{
+                                        Ext.example.msg('Erro',data.error);
+                                    }
+                                }catch(e){
+                                    Ext.example.msg('Erro', '{0}',e);
+                                }
+                            }
+                        },
+                        failure: function(e) {
+                            Ext.example.msg('Erro', '{0}',e);
+                            Ext.getCmp('tbarPrincipal').setText('Olá, Seja bem vindo.');
+                        }
+                    });
+                }
+            }
+
+            function finalizarConfeccao(btn){
+                if(btn=='yes'){
+                    var conn = new Ext.data.Connection();
+                    var data = null;
+                    conn.request({
+                        url: controllerConfeccao + 'finalizar-confeccao',
+                        method: 'POST',
+                        success: function(responseObject) {
+                            if(responseObject.responseText){
+                                try{
+                                    data = eval(responseObject.responseText);
+                                    if(data.success===true){
+                                        storeConfeccao.load();
+                                        storeConfeccaoLock.load();
+                                        Ext.example.msg('Noticia',data.message);
+                                    }else{
+                                        Ext.example.msg('Erro',data.error);
+                                    }
+                                }catch(e){
+                                    Ext.example.msg('Erro', '{0}',e);
+                                }
+                            }
+                        },
+                        failure: function(e) {
+                            Ext.example.msg('Erro', '{0}',e);
+                        }
+                    });
+                }
+            }
 
             /*Recuperar no do usuario logado*/
             var nomeUsuarioLogado = function(){
@@ -498,8 +565,6 @@ try{
                 ]
 
             });
-
-            //Ext.getCmp('btnAddCarrinho').disable();
       
             App.Default.Layout.Confeccao.superclass.constructor.apply(this,arguments);
         }

@@ -57,34 +57,4 @@ class UtilController extends Base_Controller_Action {
         $captcha = new Captcha(72, 25, 4);
     }
 
-//    public function recuperarSenhaAction() {
-//        $this->_helper->layout->disableLayout();
-//        $this->_helper->viewRenderer->setNoRender();
-//
-//        $usuario = Doctrine_Core::getTable('TbUsuarios')->findByDql('tx_email = ?', $this->_getParam('tx_email'))->toArray();
-//
-//        if (count($usuario) > 0) {
-//            if ($usuario[0]['st_ativo'] === true) {
-//                $body = $this->templateRecuperarSenha($usuario[0]['nm_usuario'], $usuario[0]['tx_senha']);
-//                $mail = new Base_PHPMailer();
-//                $mail->IsHTML(true);
-//                $mail->AddAddress($this->_getParam('tx_email'), $usuario[0]['nm_usuario']);
-//                $mail->Subject = 'Recuperacao de Senha - Camisetas Personalizadas';
-//                $mail->MsgHTML($body);
-//
-//                if (!$mail->Send()) {
-//                    $out = array(success => false, error => $mail->ErrorInfo);
-//                } else {
-//                    $out = array(success => true);
-//                }
-//            } else {
-//                $out = array(success => false, error => 'Este usuário está bloqueado!');
-//            }
-//        } else {
-//            $out = array(success => false, error => 'Email não encontrado na base de dados!');
-//        }
-//
-//        $this->_prepareJson($out);
-//    }
-
 }

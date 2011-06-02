@@ -37,25 +37,25 @@
 iframe { display:block; width:100%; border:none;margin:0; padding:0; height:100%; }
 
 /*Extreme Components*/
-.c000000 {background-image: url(/camisetas/public/css/icons/cores/000000.gif) !important;}
-.c1bbc81 {background-image: url(/camisetas/public/css/icons/cores/1bbc81.gif) !important;}
-.c34a4c4 {background-image: url(/camisetas/public/css/icons/cores/34a4c4.gif) !important;}
-.c171c46 {background-image: url(/camisetas/public/css/icons/cores/171c46.gif) !important;}
-.c344ca3 {background-image: url(/camisetas/public/css/icons/cores/344ca3.gif) !important;}
-.c520b0b {background-image: url(/camisetas/public/css/icons/cores/520b0b.gif) !important;}
-.c174621 {background-image: url(/camisetas/public/css/icons/cores/174621.gif) !important;}
-.c717171 {background-image: url(/camisetas/public/css/icons/cores/717171.gif) !important;}
-.ca7bc1b {background-image: url(/camisetas/public/css/icons/cores/a7bc1b.gif) !important;}
-.ca3346b {background-image: url(/camisetas/public/css/icons/cores/a3346b.gif) !important;}
-.ca33434 {background-image: url(/camisetas/public/css/icons/cores/a33434.gif) !important;}
-.cd83200 {background-image: url(/camisetas/public/css/icons/cores/d83200.gif) !important;}
-.cf6d600 {background-image: url(/camisetas/public/css/icons/cores/f6d600.gif) !important;}
-.cf60000 {background-image: url(/camisetas/public/css/icons/cores/f60000.gif) !important;}
-.cffffff {background-image: url(/camisetas/public/css/icons/cores/ffffff.gif) !important;}
+.c000000 {background-image: url(/camisetas/public/css/icons/cores/000000.png) !important;}
+.c1bbc81 {background-image: url(/camisetas/public/css/icons/cores/1bbc81.png) !important;}
+.c34a4c4 {background-image: url(/camisetas/public/css/icons/cores/34a4c4.png) !important;}
+.c171c46 {background-image: url(/camisetas/public/css/icons/cores/171c46.png) !important;}
+.c344ca3 {background-image: url(/camisetas/public/css/icons/cores/344ca3.png) !important;}
+.c520b0b {background-image: url(/camisetas/public/css/icons/cores/520b0b.png) !important;}
+.c174621 {background-image: url(/camisetas/public/css/icons/cores/174621.png) !important;}
+.c717171 {background-image: url(/camisetas/public/css/icons/cores/717171.png) !important;}
+.ca7bc1b {background-image: url(/camisetas/public/css/icons/cores/a7bc1b.png) !important;}
+.ca3346b {background-image: url(/camisetas/public/css/icons/cores/a3346b.png) !important;}
+.ca33434 {background-image: url(/camisetas/public/css/icons/cores/a33434.png) !important;}
+.cd83200 {background-image: url(/camisetas/public/css/icons/cores/d83200.png) !important;}
+.cf6d600 {background-image: url(/camisetas/public/css/icons/cores/f6d600.png) !important;}
+.cf60000 {background-image: url(/camisetas/public/css/icons/cores/f60000.png) !important;}
+.cffffff {background-image: url(/camisetas/public/css/icons/cores/ffffff.png) !important;}
 
 
 .todas-cores {
-    background-image: url(/camisetas/public/css/icons/cores/null.gif) ! important;
+    background-image: url(/camisetas/public/css/icons/cores/null.png) ! important;
 } .ux-flag-ch {
     background-image: url(/camisetas/public/css/icons/flags/flag_ch.png) ! important;
 } .ux-flag-lu {
@@ -142,12 +142,12 @@ iframe { display:block; width:100%; border:none;margin:0; padding:0; height:100%
 
 /*logo*/
 #logo {
-    background-image: url(/camisetas/outros/png-1.0/imagens/bg_logo.png) ! important;
+    background-image: url(/camisetas/public/img/bg_logo.png) ! important;
     height: 100%;
 }
 
 #marca {
-    background-image: url(/camisetas/outros/png-1.0/imagens/marca.png) ! important;
+    background-image: url(/camisetas/public/img/marca.png) ! important;
     background-repeat: no-repeat;
     height: 100%;
     width: 600px;
@@ -155,7 +155,7 @@ iframe { display:block; width:100%; border:none;margin:0; padding:0; height:100%
 }
 
 #contato {
-    background-image: url(/camisetas/outros/png-1.0/imagens/contato.png) ! important;
+    background-image: url(/camisetas/public/img/contato.png) ! important;
     background-repeat: no-repeat;
     height: 100%;
     width: 200px;
@@ -164,13 +164,13 @@ iframe { display:block; width:100%; border:none;margin:0; padding:0; height:100%
 }
 
 #loader {
-    background-image: url(/camisetas/outros/png-1.0/imagens/loader.gif) ! important;
+    background-image: url(/camisetas/public/img/loader.gif) ! important;
     height: 16px;
     width: 16px;
 }
 
 #introducao{
-    background-image: url(/camisetas/outros/png-1.0/imagens/bg_intro.png) ! important;
+    background-image: url(/camisetas/public/img/bg_intro.png) ! important;
     position: absolute;
     top: 0px;
     left: 0px;
@@ -183,7 +183,7 @@ iframe { display:block; width:100%; border:none;margin:0; padding:0; height:100%
     top:10px;
     left: 10px;
     position: absolute;
-    background-image: url(/camisetas/outros/png-1.0/imagens/marca.png) ! important;
+    background-image: url(/camisetas/public/img/marca.png) ! important;
     background-repeat: no-repeat;
     height: 100%;
     width: 600px;

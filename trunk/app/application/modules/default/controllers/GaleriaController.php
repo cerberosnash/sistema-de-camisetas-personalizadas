@@ -1,10 +1,5 @@
 <?php
 
-/**
- *
- * @author Michael Fernandes Rodrigues
- *
- */
 class GaleriaController extends Base_Controller_Action {
 
     public function init() {

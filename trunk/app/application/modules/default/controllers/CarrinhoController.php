@@ -9,8 +9,6 @@ class CarrinhoController extends Base_Controller_Action {
         $this->_helper->layout->disableLayout();
         $this->_helper->viewRenderer->setNoRender();
         $this->startCarrinho();
-        /* debuggar */
-        //$this->_session->usuario->sq_usuario = 1;
     }
 
     private function startCarrinho() {
@@ -19,8 +17,8 @@ class CarrinhoController extends Base_Controller_Action {
 
     public function carregarAction() {
         try {
-            $images = array(); //corrige o bug que ExtJs que processa uma chave do json nula
-            $cont = 0; //corrige o bug que ExtJs que processa uma chave do json nula
+            $images = array(); #corrige o bug que ExtJs que processa uma chave do json nula
+            $cont = 0; #corrige o bug que ExtJs que processa uma chave do json nula
             $find = array();
             if (count($this->carrinho->camiseta) > 0) {
                 foreach ($this->carrinho->camiseta as $key => $value) {
