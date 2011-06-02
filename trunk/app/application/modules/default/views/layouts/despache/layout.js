@@ -64,7 +64,7 @@ try{
                             try{
                                 data = eval(responseObject.responseText);
                                 if(data.success===true){
-                                    alert(data.message);
+                                    Ext.example.msg('Erro', '{0}',data.message);
                                     window.location = controllerDespache;
                                 }else{
                                     Ext.example.msg('Erro', 'Falha ao finalizar o pedido.\n[{0}]',data.error);
@@ -359,11 +359,8 @@ try{
                     pageSize: 20,
                     store: storeDespache,
                     displayInfo: true,
-                    plugins: [/*new Ext.ux.ProgressBarPager({
-                        displayMsg     : "<b>{0} &agrave; {1} de {2} camisetas(s)</b>"
-                    })*/]
-                }/*,
-                tbar: tbarCenter*/
+                    plugins: []
+                }
             });
 
             var viewPortDespache = new Ext.Panel({
@@ -385,9 +382,7 @@ try{
                 defaults:{
                     autoScroll:true
                 },
-                items: [DataGridDespache,painelInformacoesPostagem,painelVisualizacaoGuia]//,
-            //tbar: tbarCenter//,
-            // bbar: bbarEast
+                items: [DataGridDespache,painelInformacoesPostagem,painelVisualizacaoGuia]
             });
         
 
@@ -405,18 +400,14 @@ try{
                 margins:'0 0 0 0',
                 activeTab:0,
                 defaults:{
-                    //   closable: true,
                     autoScroll:true
                 },
-                listeners:{
-                //beforeremove: removeTab
-                },
-                //plugins: new Ext.ux.TabCloseMenu(),
+                listeners:{},
                 items:[viewPortDespache]
             });
 
             
-            var tbarPrincipal = new Ext.ux.StatusBar({
+            new Ext.ux.StatusBar({
                 id: 'tbarPrincipal',
                 renderTo:Ext.getBody(),
                 items: [{

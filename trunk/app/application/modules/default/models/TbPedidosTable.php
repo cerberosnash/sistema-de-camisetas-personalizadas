@@ -173,8 +173,7 @@ class TbPedidosTable extends Doctrine_Table {
                             ->set('sq_status', '?', 4)
                             ->where('sq_status = ?', 3)
                             ->andWhere('sq_pedido = ?', $id_pedido)
-                            ->andWhere('st_ativo = ?', true)
-                            ->limit(1);
+                            ->andWhere('st_ativo = ?', true);
 
             if ($query->execute() > 0) {
                 $out = array(success => true, message => 'Postagem finalizada com sucesso!');
