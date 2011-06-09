@@ -1,4 +1,3 @@
-1 - Possibilitar a inclusao do caracter ' no campo nome do cadastro de cliente e profissinal;
-2 - Adicinar mensagem de erro quando o upload da imagem nao obtiver exito
+1 - Possibilitar a inclusao do caracter ' no campo nome do cadastro de cliente e profissinal.
+2 - Adicinar mensagem de erro quando o upload da imagem nao obtiver exito.
 3 - Possibilitar a criacao estampa na frente ou atras das camisetas.
-4 - 
