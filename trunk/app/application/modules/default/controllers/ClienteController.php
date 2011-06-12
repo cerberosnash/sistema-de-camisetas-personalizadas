@@ -134,6 +134,8 @@ class ClienteController extends Base_Controller_Action {
         $this->_helper->layout->disableLayout();
         $this->_helper->viewRenderer->setNoRender();
 
+        $sq_usuario = $this->_getParam('sq_usuario') ? $this->_getParam('sq_usuario') : $this->_session->usuario->sq_usuario;
+
         if ($this->getRequest()->isPost()) {
             if (
                     $this->_getParam('nm_usuario') &&
@@ -162,7 +164,7 @@ class ClienteController extends Base_Controller_Action {
                                     ->set('tx_endereco', '?', $this->_getParam('tx_endereco'))
                                     ->set('tx_email', '?', $this->_getParam('tx_email'))
                                     ->set('tx_senha', '?', Base_Util::md6_encode($this->_getParam('tx_senha')))
-                                    ->where('sq_usuario = ?', $this->_session->usuario->sq_usuario)
+                                    ->where('sq_usuario = ?', $sq_usuario)
                                     ->andWhere('st_ativo = ?', true);
                     $query1->execute();
 

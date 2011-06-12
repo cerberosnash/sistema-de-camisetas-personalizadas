@@ -57,7 +57,7 @@ session_start();
                 /* *** CABECALHO *** */
 
                 #instr_header {
-                    background: url('<?php echo BOLETO_PATH; ?>imagens/logo_empresa.png') no-repeat top left;
+                    background: url('<?php echo SYSTEM_PATH . "/public/img/logo-boleto.png"; ?>') no-repeat top left;
                     padding-left: 160px;
                     height: 65px;
                 }
@@ -573,7 +573,7 @@ session_start();
                                 <td class="outras_deducoes">&nbsp;</td>
                                 <td class="mora_multa">&nbsp;</td>
                                 <td class="outros_acrescimos">&nbsp;</td>
-                                <td class="valor_cobrado">&nbsp;</td>
+                                <td class="valor_cobrado"><?php echo $_SESSION["dadosboleto"]["valor_cobrado"] ?></td>
                             </tr>
                         </tbody>
                     </table>

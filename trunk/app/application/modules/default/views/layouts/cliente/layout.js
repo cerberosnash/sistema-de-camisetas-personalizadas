@@ -476,7 +476,7 @@ try{
                                     Ext.getCmp('acUF').setRawValue(data.cliente.nm_uf);
                                     Ext.getCmp('acMunicipio').setRawValue(data.cliente.nm_municipio);
                                 }else{
-                                    Ext.example.msg('Erro', 'Falha na autenticação');
+                                    Ext.example.msg('Erro', 'Falha ao tentar carregar as informacoes do usuario!');
                                 }
                             }
                             catch(e){

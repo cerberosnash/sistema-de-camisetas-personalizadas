@@ -96,18 +96,33 @@ class CarrinhoController extends Base_Controller_Action {
                     $produto->save();
                 }
                 $conn->commit();
+
+                unset($this->carrinho->camiseta);
+                $out = array(success => true);
+
+                if ($out[success] == true) {
+                    /* Cliente do pedido */
+                    $cliente = Doctrine_Core::getTable('TbPedidos')->cliente($this->_getParam('id_pedido'), 1/* Aguandando Pagamento */);
+                    /* Notificacao via email */
+                    $this->sendMailNotification(
+                            array(
+                                template => 'padrao',
+                                email => $this->_session->usuario->tx_email,
+                                assunto => "Aguardando o Pagamento do Pedido #{$pedido->sq_pedido}",
+                                message => array(
+                                    nome => $this->_session->usuario->nm_usuario,
+                                    mensagem => "<p>Estamos confirmando o recebimento do pedido #{$pedido->sq_pedido}.</p>
+                                        <p>Apos o pagamento deste pedido iniciaremos o processo de confeccao de sua(s) camiseta(s)..</p>
+                                        <p><strong>Obrigado!</strong></p>"
+                                )
+                            )
+                    );
+                }
             }
         } catch (Doctrine_Exception $e) {
             $conn->rollback();
-            $error = true;
             $out = array(success => false, error => $e->getMessage());
         }
-
-        if (!$error) {
-            unset($this->carrinho->camiseta);
-            $out = array(success => true);
-        }
-
         $this->_prepareJson($out);
     }
 

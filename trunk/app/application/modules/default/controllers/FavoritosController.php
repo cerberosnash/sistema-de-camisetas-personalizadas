@@ -22,7 +22,7 @@ class FavoritosController extends Base_Controller_Action {
                     try {
                         $error = false;
                         $produto = new TbProdutos();
-                        $produto->vl_produto = 29.99;
+                        $produto->vl_produto = PRICE_DEFAULT_CAMISETA;
                         $produto->co_produto = $this->_getParam('co_produto');
                         $produto->tm_produto = $this->_getParam('tm_produto');
                         $produto->nm_produto = $this->_getParam('nm_produto');

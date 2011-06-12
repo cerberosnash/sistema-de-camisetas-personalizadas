@@ -38,13 +38,36 @@ class DespacheController extends Base_Controller_Action {
     public function informacoesClienteAction() {
         $this->_helper->layout->disableLayout();
         $this->_helper->viewRenderer->setNoRender();
-        $this->_prepareJson(Doctrine_Core::getTable('TbPedidos')->cliente($this->_getParam('id_pedido')));
+        $this->_prepareJson(Doctrine_Core::getTable('TbPedidos')->cliente($this->_getParam('id_pedido'), 3/* Aguardando Despachar */));
     }
 
     public function finalizarPostagemAction() {
         $this->_helper->layout->disableLayout();
         $this->_helper->viewRenderer->setNoRender();
-        $this->_prepareJson(Doctrine_Core::getTable('TbPedidos')->finalizarPostagem($this->_getParam('id_pedido'), $this->_getParam('cd_rastreamento')));
+        $out = Doctrine_Core::getTable('TbPedidos')->finalizarPostagem($this->_getParam('id_pedido'), $this->_getParam('cd_rastreamento'));
+
+        if ($out[success] == true) {
+            /* Cliente do pedido */
+            $cliente = Doctrine_Core::getTable('TbPedidos')->cliente($this->_getParam('id_pedido'), 4/* Aguandando Despachar */);
+            /* Notificacao via email */
+            $this->sendMailNotification(
+                    array(
+                        template => 'padrao',
+                        email => $cliente['tx_email'],
+                        assunto => "Rastreamento do Pedido #{$this->_getParam('id_pedido')}",
+                        message => array(
+                            nome => $cliente['nm_usuario'],
+                            mensagem => "<p>Este é o codigo de rastreamento do seu pedido <strong><a href='" . URL_SEARCH_CORREIOS . "{$this->_getParam('cd_rastreamento')}'>{$this->_getParam('cd_rastreamento')}</a></strong>.</p>
+                                        <p>A equipe do Camisetas Personalizadas agradece a preferencia.</p>
+                                        <p><strong>Obrigado!</strong></p>"
+                        )
+                    )
+            );
+            /* Registrar Historico Atividades */
+            $this->registerHistoryActivity(array(atividade => 5/* Finalizar Postagem do Pedido */, pedido => $this->_getParam('id_pedido')));
+        }
+
+        $this->_prepareJson($out);
     }
 
 }
