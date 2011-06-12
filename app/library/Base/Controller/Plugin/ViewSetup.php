@@ -33,7 +33,7 @@ class Base_Controller_Plugin_ViewSetup extends Zend_Controller_Plugin_Abstract {
         $view->headMeta()->setName('Cache-control', 'no-cache');
         $view->headMeta()->setName('Pragma', 'no-cache'); //evita que se guarde em cache HTTP 1.0
         /* Titulo e Icone do Sistema */
-        $view->headTitle(mb_strtoupper(SYSTEM_NAME, 'utf-8'));
+        $view->headTitle(mb_strtoupper(NOME_EMPRESA, 'utf-8'));
         $view->systemname = SYSTEM_NAME;
         $view->headLink()->headLink(array('rel' => 'shortcut icon', 'href' => $view->baseUrl() . '/public/img/favicon.gif', 'type' => 'image/x-icon'));
     }

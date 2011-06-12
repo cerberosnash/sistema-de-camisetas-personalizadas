@@ -48,6 +48,27 @@ class PagamentoController extends Base_Controller_Action {
                     }
 
                     $conn->commit();
+
+                    if ($out[success] == true) {
+                        /* Cliente do pedido */
+                        $cliente = Doctrine_Core::getTable('TbPedidos')->cliente($this->_getParam('id_pedido'), 2/* Aguandando Confeccao */);
+                        /* Notificacao via email */
+                        $this->sendMailNotification(
+                                array(
+                                    template => 'padrao',
+                                    email => $cliente['tx_email'],
+                                    assunto => 'Confirmacao de Pagamento',
+                                    message => array(
+                                        nome => $cliente['nm_usuario'],
+                                        mensagem => "<p>Estamos confirmando o pagamento do pedido <strong>#{$this->_getParam('id_pedido')}</strong>.</p>
+                                        <p>Em breve iniciaremos o processo de confeccao de sua(s) camiseta(s)...</p>
+                                        <p><strong>Obrigado!</strong></p>"
+                                    )
+                                )
+                        );
+                        /* Registrar Historico Atividades */
+                        $this->registerHistoryActivity(array(atividade => 1/* Confirmacao Pagamento */, pedido => $this->_getParam('id_pedido')));
+                    }
                 } catch (Doctrine_Exception $e) {
                     $conn->rollback();
                     $out = array(success => false, error => $e->getMessage());
@@ -83,6 +104,27 @@ class PagamentoController extends Base_Controller_Action {
                     }
 
                     $conn->commit();
+
+                    if ($out[success] == true) {
+                        /* Cliente do pedido */
+                        $cliente = Doctrine_Core::getTable('TbPedidos')->cliente($this->_getParam('id_pedido'), 5/* Cancelado por falta de pagamento */);
+                        /* Notificacao via email */
+                        $this->sendMailNotification(
+                                array(
+                                    template => 'padrao',
+                                    email => $cliente['tx_email'],
+                                    assunto => 'Pedido Cancelado',
+                                    message => array(
+                                        nome => $cliente['nm_usuario'],
+                                        mensagem => "<p>O pedido <strong>#{$this->_getParam('id_pedido')}</strong> foi cancelado por falta de pagamento.</p>
+                                        <p>Se voce fez o pagamento do boleto e esta recebendo notificacao por favor entre em contato conosco respondendo este email.</p>
+                                        <p><strong>Obrigado!</strong></p>"
+                                    )
+                                )
+                        );
+                        /* Registrar Historico Atividades */
+                        $this->registerHistoryActivity(array(atividade => 2/* Cancelar Pagamento */, pedido => $this->_getParam('id_pedido')));
+                    }
                 } catch (Doctrine_Exception $e) {
                     $conn->rollback();
                     $out = array(success => false, error => $e->getMessage());

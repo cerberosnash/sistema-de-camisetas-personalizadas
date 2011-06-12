@@ -115,10 +115,10 @@ class TbPedidosTable extends Doctrine_Table {
         }
     }
 
-    public function cliente($id_pedido) {
+    public function cliente($id_pedido, $sq_status = 3) {
         try {
             $query = Doctrine_Query::create()
-                            ->select('u.nm_usuario,t.nu_telefone,t.nu_ddd,t.tp_telefone,m.nm_municipio,e.nm_uf,p.sq_pedido,u.nu_cep,u.nu_cpf,u.tx_endereco')
+                            ->select('u.nm_usuario,u.tx_email,t.nu_telefone,t.nu_ddd,t.tp_telefone,m.nm_municipio,e.nm_uf,p.sq_pedido,u.nu_cep,u.nu_cpf,u.tx_endereco')
                             ->from('TbUsuarios u')
                             ->innerJoin('u.TbMunicipios m ON m.sq_municipio = u.sq_municipio')
                             ->innerJoin('m.TbUfs e ON e.sq_uf = m.sq_uf')
@@ -128,7 +128,7 @@ class TbPedidosTable extends Doctrine_Table {
                             ->andWhere('u.st_ativo = ?', true)
                             ->andWhere('p.st_ativo = ?', true)
                             ->andWhere('t.st_ativo = ?', true)
-                            ->andWhere('p.sq_status = ?', 3)
+                            ->andWhere('p.sq_status = ?', $sq_status)
                             ->limit(1);
             $res = $query->execute(null, Doctrine::HYDRATE_ARRAY);
 
@@ -232,7 +232,7 @@ class TbPedidosTable extends Doctrine_Table {
             $pedidos[0]->fg_alocado = true;
             $pedidos[0]->save();
 
-            return array(success => true, message => 'Pedido alocado com sucesso!');
+            return array(success => true, pedido => $pedidos[0]['sq_pedido'], message => 'Pedido alocado com sucesso!');
         } catch (Doctrine_Exception $e) {
             return array(success => false, error => $e->getMessage());
         }

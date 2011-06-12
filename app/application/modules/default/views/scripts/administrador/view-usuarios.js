@@ -1,0 +1,204 @@
+Ext.namespace('App.Cliente');
+
+App.Cliente.Usuarios = Ext.extend(Ext.form.FormPanel, {
+    tbar: null,
+    items: null,
+    stores: {},
+    grids: {},
+    columns: {},
+    layout: 'fit',
+    bodyStyle:'padding:0px 0px 0px 0px',
+    layoutConfig:{
+        align:'stretch',
+        pack:'start'
+    },
+    resizeTabs:false,
+    frame: false,
+    border: false,
+    split: false,
+    margins:'0px 0px 0px 0px',
+    defaults:{
+        autoScroll:true,
+        margins:'0px 0px 0px 0px'
+    },
+    buildColumns: function(){
+        this.columns.usuarios =  [
+        {
+            header: "#",
+            width: 15,
+            sortable: true,
+            dataIndex: 'sq_usuario'
+        },
+        {
+            header: "Nome",
+            sortable: true,
+            dataIndex: 'nm_usuario'
+        },
+        {
+            header: "Perfil",
+            sortable: true,
+            dataIndex: 'sq_perfil',
+            renderer: function (val, meta, record, rowIndex, colIndex, store) {
+                switch (val) {
+                    case 1:
+                        return 'Cliente';
+                        break;
+                    case 2:
+                        return 'Pagamento';
+                        break;
+                    case 3:
+                        return 'Confeccao';
+                        break;
+                    case 4:
+                        return 'Despache';
+                        break;
+                    case 5:
+                        return 'Administrador';
+                        break;
+                    default:
+                        return 'Desconhecido'
+                        break;
+                }
+            }
+        },
+        {
+            header: "Ativo",
+            width: 90,
+            sortable: true,
+            dataIndex: 'st_ativo',
+            renderer: function (val, meta, record, rowIndex, colIndex, store) {
+                switch (val) {
+                    case true:
+                        return 'Sim';
+                        break;
+                    case false:
+                        return 'Nao';
+                        break;
+                   
+                }
+            }
+           
+        }]
+    },
+    buildStores: function(){
+        this.stores.usuarios = new Ext.data.JsonStore({
+            id: 'storeUsuarios',
+            root: 'usuarios',
+            totalProperty: 'totalCount',
+            idProperty: 'sq_usuario',
+            remoteSort: true,
+            autoDestroy: true,
+            baseParams:{
+                start:0,
+                limit:20,
+                dir: 'asc'
+            },
+            fields: ['sq_usuario','nm_usuario','sq_perfil','st_ativo'],
+            proxy: new Ext.data.HttpProxy({
+                method: 'post',
+                url: controllerAdministrador + 'carregar-usuarios'
+            })
+        });
+
+        //        this.stores.usuarios.on('load',function(store){
+        //            if(parseInt(store.reader.jsonData.totalCount)>0){
+        //                Ext.getCmp('btnUsuarios').enable();
+        //                Ext.getCmp('txTotalUsuarios').setText('Total: R$'+parseFloat(store.reader.jsonData.totalUsuarios));
+        //                Ext.getCmp('btnFinalizarUsuarios').enable();
+        //            }else{
+        //                Ext.getCmp('btnUsuarios').disable();
+        //                Ext.getCmp('QtdUsuarios').disable();
+        //                Ext.getCmp('btnQtdUsuarios').disable();
+        //                Ext.getCmp('btnRemoverUsuarios').disable();
+        //                Ext.getCmp('btnFinalizarUsuarios').disable();
+        //                Ext.getCmp('txTotalUsuarios').setText('Total: R$0.00');
+        //            }
+        //        });
+
+        this.stores.usuarios.setDefaultSort('sq_usuario', 'asc');
+        this.stores.usuarios.load();
+    },
+    buildGrids: function(){
+        this.grids.usuarios = new Ext.grid.GridPanel({
+            id: 'dataGridUsuarios',
+            iconCls: 'icon-grid',
+            stripeRows: true,
+            margins: '0px 0px 0px 0px',
+            loadMask: true,
+            columnLines: true,
+            store: this.stores.usuarios,
+            listeners:{
+                dblclick:function(){
+                    var rec = Ext.getCmp('dataGridUsuarios').getSelectionModel().getSelected();
+                    carregarFormAlteracaoUsuario(rec.get('sq_usuario'));
+                    windowAlteracaoUsuario.show();
+                }
+            },
+            sm: new Ext.grid.RowSelectionModel({
+                singleSelect:true,
+                listeners: {
+                    selectionchange: function(sel){
+                        var rec = sel.getSelected();
+                        if(rec){
+                            Ext.getCmp('QtdUsuarios').setValue(rec.get('qt_produto'));
+                            Ext.getCmp('QtdUsuarios').enable();
+                            Ext.getCmp('btnQtdUsuarios').enable();
+                            Ext.getCmp('btnRemoverUsuarios').enable();
+                        }
+                    }
+                }
+            }),
+            columns : this.columns.usuarios,
+            tbar: this.tbar,
+            viewConfig: {
+                forceFit: true
+            },
+            bbar: {
+                xtype:'paging',
+                pageSize: 20,
+                store: this.stores.usuarios,
+                displayInfo: true,
+                plugins: [new Ext.ux.ProgressBarPager({
+                    displayMsg     : "<b>{0} &agrave; {1} de {2} camisetas(s)</b>"
+                })]
+            }
+        });
+    },
+    cadastrarNovoProfissional: function(){
+        alert('ss');
+    },
+    buildItems: function(){
+        this.items = new Ext.Panel({
+            layout: 'fit',
+            frame: true,
+            border: true,
+            bodyStyle:'padding:0px 0px 0px 0px',
+            items: [this.grids.usuarios]
+        });
+    },
+    buildTbar: function(){
+        this.tbar = new Ext.Toolbar({
+            id: 'tbarUsuarios',
+            height: 30,
+            items:[{
+                text: 'Adicionar Novo Profissional',
+                id: 'btnNovoUsuario',
+                iconCls: 'user-add',
+                handler: this.cadastrarNovoProfissional
+            }]
+        });
+    },
+    initComponent : function() {
+ 
+        this.buildStores();
+        this.buildColumns();
+        this.buildGrids();
+        this.buildItems();
+        this.buildTbar();
+           
+        App.Cliente.Usuarios.superclass.initComponent.call(this);
+    }
+});
+
+
+new App.Cliente.Usuarios;

@@ -273,52 +273,9 @@ class Base_PHPMailer extends PHPMailer {
         $this->Password = SYSTEM_EMAIL_PASS;         // Sua senha do GMAIL
         $this->SetLanguage("br", SYSTEM_PATH_ABSOLUTE . "/library/Base/Smtp/language/"); //nao altere
         $this->IsSMTP();
-        $this->IsHTML();
+        $this->IsHTML(true);
         $this->SetFrom(SYSTEM_EMAIL_ADDRESS_FROM, SYSTEM_EMAIL_NAME_FROM);
     }
-
-//    public function IsHTML($ishtml = true) {
-//        if ($ishtml) {
-//            $mail->message_type = 'html';
-//            $mail->ContentType = 'text/html';
-//            $mail->CharSet = 'utf-8';
-//        } else {
-//            $this->ContentType = 'text/plain';
-//        }
-//    }
-//
-//    public function GetMailMIME() {
-//        $result = '';
-//        switch ($this->message_type) {
-//            case 'plain':
-//                // $result .= $this->HeaderLine('Content-Transfer-Encoding', $this->Encoding);
-//                //  $result .= sprintf("Content-Type: %s; charset=\"%s\"", $this->ContentType, $this->CharSet);
-//                break;
-//            case 'html':
-//                $result .= $this->HeaderLine('Content-Transfer-Encoding', $this->Encoding);
-//                $result .= sprintf("Content-Type: %s; charset=\"%s\"", $this->ContentType, $this->CharSet);
-//                break;
-//            case 'attachments':
-//            case 'alt_attachments':
-//                if ($this->InlineImageExists()) {
-//                    $result .= sprintf("Content-Type: %s;%s\ttype=\"text/html\";%s\tboundary=\"%s\"%s", 'multipart/related', $this->LE, $this->LE, $this->boundary[1], $this->LE);
-//                } else {
-//                    $result .= $this->HeaderLine('Content-Type', 'multipart/mixed;');
-//                    $result .= $this->TextLine("\tboundary=\"" . $this->boundary[1] . '"');
-//                }
-//                break;
-//            case 'alt':
-//                $result .= $this->HeaderLine('Content-Type', 'multipart/alternative;');
-//                $result .= $this->TextLine("\tboundary=\"" . $this->boundary[1] . '"');
-//                break;
-//        }
-//
-//        if ($this->Mailer != 'mail') {
-//            $result .= $this->LE . $this->LE;
-//        }
-//
-//        return $result;
-//    }
 
 }
 

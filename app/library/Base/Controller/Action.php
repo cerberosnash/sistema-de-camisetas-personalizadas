@@ -47,11 +47,7 @@ class Base_Controller_Action extends Zend_Controller_Action {
     }
 
     public function startEXTJS($default=true) {
-        $file = "../application/modules/" . $this->view->originalModule . "/views/scripts/"
-                . $this->view->originalController . "/" . $this->view->originalAction . ".js";
-
-        $file = (file_get_contents($file));
-
+        $file = file_get_contents("../application/modules/{$this->view->originalModule}/views/scripts/{$this->view->originalController}/{$this->view->originalAction}.js");
         if ($default === true) {
             $this->_response->appendBody(($file));
         } else if ($default === false) {
@@ -72,12 +68,48 @@ class Base_Controller_Action extends Zend_Controller_Action {
         $this->view->out = $file;
     }
 
-    public function templateRecuperarSenha($nm_usuario, $tx_senha) {
-        $file = (file_get_contents(SYSTEM_EMAIL_TEMPLATES . $this->view->originalAction . '.html'));
-        $search = array("{{NOME}}", "{{SENHA}}", "{{POSTIT}}");
-        $replace = array($nm_usuario, Base_Util::md6_decode($tx_senha), SYSTEM_PATH . "/public/img/templates/email/recuperar-senha/postit.png");
-        $file = str_replace($search, $replace, $file);
-        return $file;
+    public function getTemplateMail($aParams) {
+        $file = (file_get_contents(SYSTEM_EMAIL_TEMPLATES . "{$aParams['template']}.html"));
+
+        switch ($aParams['template']) {
+
+            case 'padrao':
+                $search = array("{{NOME}}", "{{MENSAGEM}}", "{{POSTIT}}");
+                $replace = array($aParams['message']['nome'], $aParams['message']['mensagem'], SYSTEM_PATH . "/public/img/templates/email/postit.png");
+                break;
+
+            case 'recuperar-senha':
+                $search = array("{{NOME}}", "{{SENHA}}", "{{POSTIT}}");
+                $replace = array($aParams['message']['nome'], $aParams['message']['senha'], SYSTEM_PATH . "/public/img/templates/email/postit.png");
+                break;
+        }
+
+        return str_replace($search, $replace, $file);
+    }
+
+    public function sendMailNotification($aParams) {
+        $mail = new Base_PHPMailer();
+        $mail->AddAddress($aParams['email']);
+        $mail->Subject = $aParams['assunto'];
+        $mail->MsgHTML($this->getTemplateMail($aParams));
+        if (!$mail->Send()) {
+            return false;
+        }
+        return true;
+    }
+
+    public function registerHistoryActivity($aParams) {
+        $conn = Doctrine_Manager::connection();
+        $conn->beginTransaction();
+
+        /* Novo Historico */
+        $historico = new TbHistoricoAtividades();
+        $historico->sq_usuario = $this->_session->usuario->sq_usuario;
+        $historico->sq_atividade = $aParams['atividade'];
+        $historico->sq_pedido = $aParams['pedido'];
+        $historico->save();
+
+        $conn->commit();
     }
 
 }

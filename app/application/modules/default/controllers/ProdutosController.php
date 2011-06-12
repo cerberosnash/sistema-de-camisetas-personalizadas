@@ -15,13 +15,15 @@ class ProdutosController extends Base_Controller_Action {
     }
 
     public function renderizarAction() {
-        $posicao = $_GET['verso'] === 'true' ? 'verso' : 'cores';
-        $imagem = $_GET['imagem'] ? $_GET['imagem'] : 'default';
         $this->_helper->layout->disableLayout();
         $this->_helper->viewRenderer->setNoRender(); //suppress auto-rendering
-        $img = new ImageEdit(SYSTEM_PATH_ABSOLUTE . '/public/img/' . $posicao . '/#' . $_GET['cor'] . '.png');
-        $img->addimage(SYSTEM_PATH_ABSOLUTE . '/public/uploads/' . $imagem . '.png', 310, 250);
-        $img->resize($_GET['tamanho']);
+        $posicao = $this->_getParam('verso') === 'true' ? 'verso' : 'cores';
+        $imagem = $this->_getParam('imagem') ? $this->_getParam('imagem') : 'default';
+        $file = is_file(SYSTEM_PATH_ABSOLUTE . "/public/uploads/{$imagem}.png") ? SYSTEM_PATH_ABSOLUTE . "/public/uploads/{$imagem}.png" : SYSTEM_PATH_ABSOLUTE . "/public/uploads/default.png";
+        $background = is_file(SYSTEM_PATH_ABSOLUTE . "/public/img/{$posicao}/#{$this->_getParam('cor')}.png") ? SYSTEM_PATH_ABSOLUTE . "/public/img/{$posicao}/#{$this->_getParam('cor')}.png" : SYSTEM_PATH_ABSOLUTE . "/public/img/cores/#ffffff.png";
+        $img = new ImageEdit($background);
+        $img->addimage($file, 310, 250);
+        $img->resize($this->_getParam('tamanho'));
         $img->output("png", null, 9);
     }
 

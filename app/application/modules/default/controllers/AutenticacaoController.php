@@ -62,14 +62,24 @@ class AutenticacaoController extends Base_Controller_Action {
 
             if (count($usuario) > 0) {
                 if ($usuario[0]['st_ativo'] === true) {
-                    $mail = new Base_PHPMailer();
-                    $mail->IsHTML(true);
-                    $mail->AddAddress($this->_getParam('tx_email'), $usuario[0]['nm_usuario']);
-                    $mail->Subject = 'Recuperacao de Senha - Camisetas Personalizadas';
-                    $mail->MsgHTML($this->templateRecuperarSenha($usuario[0]['nm_usuario'], $usuario[0]['tx_senha']));
-
-                    if (!$mail->Send()) {
-                        $out = array(success => false, error => $mail->ErrorInfo);
+                    $sendMail = $this->sendMailNotification(
+                                    array(
+                                        template => 'recuperar-senha',
+                                        email => $this->_getParam('tx_email'),
+                                        assunto => 'Recuperacao de Senha - Camisetas Personalizadas',
+                                        message => array(
+                                            nome => $usuario[0]['nm_usuario'],
+                                            senha => Base_Util::md6_decode($usuario[0]['tx_senha'])
+                                        )
+                                    )
+                    );
+//                    $mail = new Base_PHPMailer();
+//                    $mail->AddAddress($this->_getParam('tx_email'), $usuario[0]['nm_usuario']);
+//                    $mail->Subject = 'Recuperacao de Senha - Camisetas Personalizadas';
+//                    $mail->MsgHTML($this->templateRecuperarSenha($usuario[0]['nm_usuario'], $usuario[0]['tx_senha']));
+//!$mail->Send()
+                    if (!$sendMail) {
+                        $out = array(success => false, error => 'Ocorreu um erro ao tentar enviar o email com a senha!');
                     } else {
                         $out = array(success => true);
                     }

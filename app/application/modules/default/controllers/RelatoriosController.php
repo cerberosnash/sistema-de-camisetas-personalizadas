@@ -9,63 +9,50 @@ class RelatoriosController extends Base_Controller_Action {
         }
     }
 
+    public function indexAction() {
+        $this->_helper->layout->disableLayout();
+        $this->_helper->viewRenderer->setNoRender();
+        if (($this->_session->usuario->tx_perfil != 'administrador')) {
+            $this->_redirect('');
+        }
+    }
+
     public function gerarAction() {
         $this->_helper->layout->disableLayout();
         $this->_helper->viewRenderer->setNoRender();
 
+        $PHPJasperXML = new Base_PHPJasperXML();
+        $PHPJasperXML->debugsql = false;
+
         switch ($this->_getParam('opcao')) {
             case 1:
-
-                /* Descricao do Relatorio */
-
-                $PHPJasperXML = new Base_PHPJasperXML();
-                $PHPJasperXML->debugsql = false;
-                $PHPJasperXML->arrayParameter = array("value1" => 1);
-                $PHPJasperXML->xml_dismantle(simplexml_load_file('../library/PHPJasperXML/Templates/' . $this->_getParam('opcao') . '.jrxml'));
-
-                $PHPJasperXML->transferDBtoArray();
-                $PHPJasperXML->outpage("I");    //page output method I:standard output  D:Download file
-
+                /* Relatorio de camisetas vendidas [Periodo] */
+                $PHPJasperXML->arrayParameter = array(
+                    dt_inicio => $this->_getParam('dt_inicio'),
+                    dt_final => $this->_getParam('dt_final'),
+                    ddt_inicio => Base_Util::convertDate($this->_getParam('dt_inicio')),
+                    ddt_final => Base_Util::convertDate($this->_getParam('dt_final'))
+                );
                 break;
 
             case 2:
-                /* Descricao do Relatorio */
-
-                $PHPJasperXML = new Base_PHPJasperXML();
-                $PHPJasperXML->debugsql = false;
-                $PHPJasperXML->arrayParameter = array("value1" => 1);
-                $PHPJasperXML->xml_dismantle(simplexml_load_file('../library/PHPJasperXML/Templates/' . $this->_getParam('opcao') . '.jrxml'));
-
-                $PHPJasperXML->transferDBtoArray();
-                $PHPJasperXML->outpage("I");    //page output method I:standard output  D:Download file
-                break;
-
-            case 3:
-                /* Descricao do Relatorio */
-
-                $PHPJasperXML = new Base_PHPJasperXML();
-                $PHPJasperXML->debugsql = false;
-                $PHPJasperXML->arrayParameter = array("parameter1" => 1);
-                $PHPJasperXML->xml_dismantle(simplexml_load_file('../library/PHPJasperXML/Templates/' . $this->_getParam('opcao') . '.jrxml'));
-
-                $PHPJasperXML->transferDBtoArray();
-                $PHPJasperXML->outpage("I");    //page output method I:standard output  D:Download file
+                /* Relatorio de producao individual (Confeccao) [Periodo] */
+                $PHPJasperXML->arrayParameter = array(
+                    dt_inicio => $this->_getParam('dt_inicio'),
+                    dt_final => $this->_getParam('dt_final'),
+                    ddt_inicio => Base_Util::convertDate($this->_getParam('dt_inicio')),
+                    ddt_final => Base_Util::convertDate($this->_getParam('dt_final'))
+                );
                 break;
 
             default:
-                /* Descricao do Relatorio */
 
-                $PHPJasperXML = new Base_PHPJasperXML();
-                $PHPJasperXML->debugsql = false;
-                $PHPJasperXML->arrayParameter = array("value1" => 1);
-                $PHPJasperXML->xml_dismantle(simplexml_load_file('../library/PHPJasperXML/Templates/' . $this->_getParam('opcao') . '.jrxml'));
-
-                $PHPJasperXML->transferDBtoArray();
-                $PHPJasperXML->outpage("I");    //page output method I:standard output  D:Download file
-                break;
-                //echo 'relatorio ' . $this->_getParam('opcao') . ' ainda nao foi registrado pela administrador do sistemas!';
                 break;
         }
+
+        $PHPJasperXML->xml_dismantle(simplexml_load_file("../library/PHPJasperXML/Templates/Relatorio{$this->_getParam('opcao')}.jrxml"));
+        $PHPJasperXML->transferDBtoArray();
+        $PHPJasperXML->outpage("I");    //page output method I:standard output  D:Download file
     }
 
 }

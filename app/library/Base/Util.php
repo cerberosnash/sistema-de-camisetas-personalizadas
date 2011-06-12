@@ -27,4 +27,8 @@ class Base_Util {
         return base64_decode(base64_decode(base64_decode($string)));
     }
 
+    public static function convertDate($data) {
+        return implode(preg_match("~\/~", $data) == 0 ? "/" : "-", array_reverse(explode(preg_match("~\/~", $data) == 0 ? "-" : "/", $data)));
+    }
+
 }
