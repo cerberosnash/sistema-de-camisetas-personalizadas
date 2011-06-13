@@ -17,7 +17,7 @@ class Base_Controller_Action extends Zend_Controller_Action {
         }
     }
 
-    public function carregarUsuarioAction() {
+    public function carregarUsuarioLogadoAction() {
 
         $this->_helper->layout->disableLayout();
         $this->_helper->viewRenderer->setNoRender();
@@ -88,12 +88,14 @@ class Base_Controller_Action extends Zend_Controller_Action {
     }
 
     public function sendMailNotification($aParams) {
-        $mail = new Base_PHPMailer();
-        $mail->AddAddress($aParams['email']);
-        $mail->Subject = $aParams['assunto'];
-        $mail->MsgHTML($this->getTemplateMail($aParams));
-        if (!$mail->Send()) {
-            return false;
+        if (EMAIL_NOTIFICATION_CLIENT) {
+            $mail = new Base_PHPMailer();
+            $mail->AddAddress($aParams['email']);
+            $mail->Subject = $aParams['assunto'];
+            $mail->MsgHTML($this->getTemplateMail($aParams));
+            if (!$mail->Send()) {
+                return false;
+            }
         }
         return true;
     }

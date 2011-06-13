@@ -122,6 +122,29 @@ try{
                 ]
             });
 
+            var storeRelatorios = new Ext.data.ArrayStore({
+                fields: ['mValor', 'vValor'],
+                data : [
+                ['Relatorio de Camisetas Vendidas', '1'],
+                ['Relatorio de Producao Individual', '2'],
+                ['Relatorio de Pedidos Pagos', '3'],
+                ['Relatorio de Pedidos Cancelados', '4'],
+                ['Relatorio de Pedidos Enviados', '5'],
+                ['Relatorio de Atividades', '6']
+                ]
+            });
+
+            var storePerfis = new Ext.data.ArrayStore({
+                fields: ['mValor', 'vValor'],
+                data : [
+                ['Cliente', '1'],
+                ['Pagamento', '2'],
+                ['Confeccao', '3'],
+                ['Despache', '4'],
+                ['Administrador', '5']
+                ]
+            }); 
+ 
             var storeCamisetas = new Ext.data.JsonStore({
                 root: 'images',
                 totalProperty: 'totalCount',
@@ -206,6 +229,7 @@ try{
                                     Ext.getCmp('acUF').setRawValue(data.usuario.nm_uf);
                                     Ext.getCmp('acMunicipio').setRawValue(data.usuario.nm_municipio);
                                     Ext.getCmp('acAtivo').setValue(data.usuario.st_ativo);
+                                    Ext.getCmp('acPerfil').setValue(data.usuario.sq_perfil);
                                 }else{
                                     Ext.example.msg('Erro', 'Falha ao tentar carregar as informacoes do usuario!');
                                 }
@@ -235,24 +259,54 @@ try{
                         height: 25
                     },
                     xtype: 'fieldset',
-                    title: 'Dados Pessoais',
+                    title: 'Informacoes do Relatorio',
                     items: [{
-                        xtype: 'textfield',
                         defaults:{
                             msgTarget: 'side',
                             allowBlank: false,
                             height: 25
                         },
-                        fieldLabel: 'Nome',
-                        name: 'Nome',
-                        id: 'acNome',
-                        maxLength: 100,
-                        vtype: 'onlytext',
-                        autoCreate: {
-                            tag: 'input',
-                            type: 'text',
-                            maxlength: '100'
-                        }
+                        fieldLabel: 'Tipo de Relatorio',
+                        name: 'Tipo',
+                        id: 'tipoRelatorio',
+                        xtype: 'combo',
+                        store: storeRelatorios,
+                        displayField:'mValor',
+                        valueField: 'vValor',
+                        typeAhead: true,
+                        mode: 'local',
+                        value: '1',
+                        editable: false,
+                        forceSelection: true,
+                        triggerAction: 'all'
+                    },{
+                        xtype: 'compositefield',
+                        fieldLabel: 'Periodo',
+                        name: 'Periodo',
+                        defaults:{
+                            msgTarget: 'side',
+                            allowBlank: false,
+                            height: 25
+                        },
+                        items: [{
+                            xtype: 'datefield',
+                            format: 'd-M-Y',
+                            fieldLabel: 'Inicio',
+                            id: 'inicioRelatorio',
+                            name: 'inicioRelatorio',
+                            width:160,
+                            vtype: 'daterange',
+                            endDateField: 'finalRelatorio'
+                        },{
+                            xtype: 'datefield',
+                            format: 'd-M-Y',
+                            fieldLabel: 'Final',
+                            id: 'finalRelatorio',
+                            name: 'finalRelatorio',
+                            width:155,
+                            vtype: 'daterange',
+                            startDateField: 'inicioRelatorio'
+                        }]
                     }]
                 }
                 ],
@@ -260,12 +314,14 @@ try{
                 {
                     xtype: 'button',
                     bodyStyle:'padding:10px 10px 10px 10px',
-                    text: 'Salvar Alteracoes',
-                    id: 'acGerarRelatorio',
+                    text: 'Gerar Relatorio',
+                    id: 'btnGerarRelatorio',
                     type: 'submit',
-                    iconCls: 'disk',
+                    iconCls: 'report',
                     handler: function(){
-                        alert('gerar relatorio');
+                        if(Ext.getCmp('inicioRelatorio').isValid() && Ext.getCmp('finalRelatorio').isValid()){
+                            window.open('/camisetas/relatorios/gerar/opcao/'+Ext.getCmp('tipoRelatorio').getValue()+'/dt_inicio/'+Ext.getCmp('inicioRelatorio').getValue().format('Y-m-d')+'/dt_final/'+Ext.getCmp('finalRelatorio').getValue().format('Y-m-d'));
+                        }
                     }
                 }
                 ]
@@ -493,7 +549,7 @@ try{
                     }]
                 },{
                     xtype: 'fieldset',
-                    title: 'Situação',
+                    title: 'Perfil',
                     defaults:{
                         width: 320,
                         msgTarget: 'side',
@@ -502,9 +558,30 @@ try{
                         minLength: 6
                     },
                     items: [{
+                        id:'acPerfil',
+                        xtype: 'combo',
+                        store: storePerfis,
+                        fieldLabel: 'Tipo',
+                        displayField:'mValor',
+                        valueField: 'vValor',
+                        typeAhead: true,
+                        mode: 'local',
+                        editable: false,
+                        forceSelection: true,
+                        triggerAction: 'all',
+                        width: 100,
+                        selectOnFocus:true,
+                        listeners: {
+                            select: function(a){
+                                if(a.getValue()>1){
+                                    Ext.example.msg('Atencao', 'Verifique se voce nao esta atribuindo um perfil do BACKEND a um cliente!');
+                                }
+                            }
+                        }
+                    },{
                         xtype: 'checkbox',
-                        fieldLabel: 'Perfil Ativo',
-                        name: 'Perfil Ativo',
+                        fieldLabel: 'Ativo',
+                        name: 'Ativo',
                         id: 'acAtivo'
                     }]
                 } ],
@@ -545,7 +622,8 @@ try{
                                 tx_endereco : Ext.getCmp('acEndereco').getValue(),
                                 tx_email : Ext.getCmp('acEmail').getValue(),
                                 tx_senha : Ext.getCmp('acSenha').getValue(),
-                                st_ativo : Ext.getCmp('acAtivo').getValue()
+                                st_ativo : Ext.getCmp('acAtivo').getValue(),
+                                sq_perfil : Ext.getCmp('acPerfil').getValue()
                             },
                             success: function(responseObject) {
                                 if(responseObject.responseText){
@@ -585,15 +663,14 @@ try{
                 }
             }
 
-
             var windowRelatorios = new Ext.Window({
                 id: 'windowRelatorios',
                 resizable: false,
                 iconCls: 'vcard-edit',
                 layout:'fit',
                 title: 'Relatorios',
-                width:502,
-                height: 200,
+                width:520,
+                height: 180,
                 modal: true,
                 closeAction:'hide',
                 plain: false,
@@ -706,7 +783,8 @@ try{
             function validarValoresFavoritos(){
                 if(parseFloat(Ext.getCmp('fr_preco_min').getValue()) > parseFloat(Ext.getCmp('fr_preco_max').getValue())){
                     Ext.example.msg('Atenção', 'O preço maximo ({0}) nao pode ser menor que o preco minimo ({1})!',Ext.getCmp('fr_preco_max').getValue() , Ext.getCmp('fr_preco_min').getValue());
-                }else{
+                }
+                else{
                     AtualizarDataViewFavoritos();
                 }
             }
@@ -1203,7 +1281,7 @@ try{
                                         storeCamisetas.load();
                                         try{
                                             Ext.getCmp('DataViewCamisetas').store.load();
-                                        }catch(e){}   
+                                        }catch(e){}
                                     }else{
                                         Ext.example.msg('Erro', 'Falha ao tentar remover a camiseta da galeria');
                                     }
@@ -1269,7 +1347,8 @@ try{
                             tplVisualizacao.overwrite(painelVisualizacaoGaleria.body, selNode[0].data);
                             Ext.getCmp('btnDelCamiseta').enable();
                             Ext.getCmp('btnDelCamiseta').value = selNode[0].data.sq_produto;
-                        }catch(e){
+                        }
+                        catch(e){
                             Ext.example.msg('Erro', '{0}',e);
                         }
                     }
@@ -1439,7 +1518,7 @@ try{
                 var conn = new Ext.data.Connection();
                 var data = null;
                 conn.request({
-                    url: controllerAdministrador + 'carregar-usuario',
+                    url: controllerAdministrador + 'carregar-usuario-logado',
                     method: 'POST',
                     params: {
                         campo : 'nm_usuario'
@@ -1466,7 +1545,38 @@ try{
                 });
             }
 
+            /*function dateRangeFunc(){
+                // Date picker
+                var fromdate = new Ext.form.DateField({
+                    format: 'Y-M-d', //YYYY-MMM-DD
+                    fieldLabel: '',
+                    id: 'startdt',
+                    name: 'startdt',
+                    width:140,
+                    allowBlank:false,
+                    vtype: 'daterange',
+                    endDateField: 'enddt'// id of the 'To' date field
+                });
+
+                var todate = new Ext.form.DateField({
+                    format: 'Y-M-d', //YYYY-MMM-DD
+                    fieldLabel: '',
+                    id: 'enddt',
+                    name: 'enddt',
+                    width:140,
+                    allowBlank:false,
+                    vtype: 'daterange',
+                    startDateField: 'startdt'// id of the 'From' date field
+                });
+
+                fromdate.render('fromdate');
+                todate.render('todate');
+            }*/
+
+
             nomeUsuarioLogado();
+
+            // dateRangeFunc();
 
             new Ext.Viewport({
                 layout:'border',

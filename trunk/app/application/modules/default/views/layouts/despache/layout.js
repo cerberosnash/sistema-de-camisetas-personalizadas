@@ -433,7 +433,7 @@ try{
                 var conn = new Ext.data.Connection();
                 var data = null;
                 conn.request({
-                    url: controllerDespache + 'carregar-usuario',
+                    url: controllerDespache + 'carregar-usuario-logado',
                     method: 'POST',
                     params: {
                         campo : 'nm_usuario'
