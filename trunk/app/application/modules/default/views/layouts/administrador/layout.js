@@ -769,7 +769,11 @@ try{
             }
 
             var AtualizarDataViewFavoritos = function(){
-                storeFavoritos.load();
+                try{
+                    storeFavoritos.load();
+                }catch(e){
+                    
+                }
             }
 
             function validarValoresCamisetas(){
