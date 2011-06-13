@@ -104,18 +104,11 @@ class AdministradorController extends Base_Controller_Action {
         $this->_helper->viewRenderer->setNoRender();
 
         if ($this->getRequest()->isPost()) {
-            if (!$this->_getParam('campo')) {
-                $usuario = Doctrine_Core::getTable('TbUsuarios')->carregarUsuario($this->_getParam('sq_usuario'));
-                $usuario['tx_senha'] = Base_Util::md6_decode($usuario['tx_senha']);
-                $out = array(success => true, usuario => $usuario);
-            } else {
-                $usuario = Doctrine_Core::getTable('TbUsuarios')->findOneBy('sq_usuario', $this->_getParam('sq_usuario'))->toArray();
-                if (isset($usuario[$this->_getParam('campo')])) {
-                    $out = array(success => true, campo => $usuario->{$this->_getParam('campo')});
-                } else {
-                    $out = array(success => false);
-                }
-            }
+
+            $usuario = Doctrine_Core::getTable('TbUsuarios')->carregarUsuario($this->_getParam('sq_usuario'));
+            $usuario['tx_senha'] = Base_Util::md6_decode($usuario['tx_senha']);
+            $out = array(success => true, usuario => $usuario);
+
             if (!isset($usuario['sq_usuario'])) {
                 $out = array(success => false);
             }
@@ -159,6 +152,7 @@ class AdministradorController extends Base_Controller_Action {
                                     ->set('tx_endereco', '?', $this->_getParam('tx_endereco'))
                                     ->set('tx_email', '?', $this->_getParam('tx_email'))
                                     ->set('tx_senha', '?', Base_Util::md6_encode($this->_getParam('tx_senha')))
+                                    ->set('sq_perfil', '?', $this->_getParam('sq_perfil'))
                                     ->set('st_ativo', '?', $this->_getParam('st_ativo'))
                                     ->where('sq_usuario = ?', $sq_usuario);
                     $query1->execute();

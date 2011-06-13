@@ -42,5 +42,8 @@ define('URL_SEARCH_CORREIOS', 'http://websro.correios.com.br/sro_bin/txect01$.In
 //Email suporte ao Cliente
 define('EMAIL_SUPPORT_CLIENT', "sistema.camisetas.personalizadas@gmail.com");
 
+//Notificacoes via email
+define('EMAIL_NOTIFICATION_CLIENT', false);
+
 //Preco padrao para camisetas criadas pelos clientes
 define('PRICE_DEFAULT_CAMISETA', 29.99);

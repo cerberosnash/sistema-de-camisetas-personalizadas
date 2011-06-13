@@ -371,7 +371,7 @@ try{
                 var conn = new Ext.data.Connection();
                 var data = null;
                 conn.request({
-                    url: controllerPagamento + 'carregar-usuario',
+                    url: controllerPagamento + 'carregar-usuario-logado',
                     method: 'POST',
                     params: {
                         campo : 'nm_usuario'

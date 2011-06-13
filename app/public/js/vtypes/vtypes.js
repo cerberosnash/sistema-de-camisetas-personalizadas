@@ -1,3 +1,4 @@
+/*CPF Field*/
 Ext.ux.CPFField = function(config){
     var defConfig = {
         autocomplete: 'off',
@@ -9,6 +10,7 @@ Ext.ux.CPFField = function(config){
     Ext.ux.CPFField.superclass.constructor.call(this, config);
 };
 
+/*CPF Field*/
 Ext.extend(Ext.ux.CPFField, Ext.form.TextField,{
     initEvents : function(){
         Ext.ux.CPFField.superclass.initEvents.call(this);
@@ -46,7 +48,6 @@ Ext.extend(Ext.ux.CPFField, Ext.form.TextField,{
             if(this.soNumero){
                 field.value = '00000000000';
             }else{
-                //field.value = '000.000.000-00';
                 field.value = '';
             }
         }
@@ -93,7 +94,7 @@ Ext.extend(Ext.ux.CPFField, Ext.form.TextField,{
 
 Ext.ComponentMgr.registerType('cpffield', Ext.ux.CPFField);
 
-// Validação de CPF
+/* Validação de CPF*/
 function validacpf(CPF){
     var i;
     s = CPF.replace(/\D/g, "");
@@ -127,16 +128,15 @@ function validacpf(CPF){
 }
 
 Ext.apply(Ext.form.VTypes,{
-    cpf: function(val,field){
+    cpf: function(val){
         return validacpf(val);
     },
-
     cpfText: 'CPF não é válido!'
 });
 
 /*Telefone*/
 Ext.apply(Ext.form.VTypes, {
-    telefone: function(val, field) {
+    telefone: function(val) {
         return /^(\d{4}[-]?){1,2}(\d{4})$/.test(val);
     },
     telefoneText: 'Telefone Inválido! Exemplo: (9999-9999)',
@@ -145,7 +145,7 @@ Ext.apply(Ext.form.VTypes, {
 
 /*CEP*/
 Ext.apply(Ext.form.VTypes, {
-    cep: function(val, field) {
+    cep: function(val) {
         return /^(\d{5}[-]?){1,2}(\d{3})$/.test(val);
     },
     cepText: 'Cep Inválido! Exemplo: (72610-512)',
@@ -154,7 +154,7 @@ Ext.apply(Ext.form.VTypes, {
 
 /*DDD*/
 Ext.apply(Ext.form.VTypes, {
-    ddd: function(val, field) {
+    ddd: function(val) {
         var ddd = /^([0-9])/;
         return ddd.test(val);
     },
@@ -164,8 +164,7 @@ Ext.apply(Ext.form.VTypes, {
 
 /*Senha*/
 Ext.apply(Ext.form.VTypes, {
-    password: function(value, field)
-    {
+    password: function(value){
         var hasSpecial = value.match(/[a-zA-Z0-9]/);
         var hasLength = (value.length >= 6);
         return (hasSpecial && hasLength);
@@ -176,7 +175,7 @@ Ext.apply(Ext.form.VTypes, {
 
 /*Rastreamento correios*/
 Ext.apply(Ext.form.VTypes, {
-    rastreamento: function(val, field) {
+    rastreamento: function(val) {
         return /^([A-Z]{2})([0-9]{9})([A-Z]{2})$/.test(val);
     },
     rastreamentoText: 'Este rastreamento não é válido. Exemplo: SS123456789BR'
@@ -186,12 +185,10 @@ Ext.form.VTypes["onlytext"] = /[a-zA-Z'\s]/;
 Ext.form.VTypes["onlytextMask"] = /[a-zA-Z'\s]/;
 Ext.form.VTypes["onlytextText"] = "";
 
-
-Ext.apply(Ext.form.VTypes, {
-    comparefield: function(value, field)
-    {
-        if (field.idFieldCompare)
-        {
+/*Comparar Campos*/
+Ext.apply(Ext.form.VTypes,{
+    comparefield: function(value, field){
+        if (field.idFieldCompare){
             var campo = Ext.getCmp(field.idFieldCompare);
             this.comparefieldText = 'O conteudo deste campo esta diferente do campo <b>'+campo.getName()+'</b>.';
             return (value == campo.getValue());
@@ -204,7 +201,7 @@ Ext.apply(Ext.form.VTypes, {
     comparefieldText: 'Não foi informado o campo para comparar o conteudo!'
 });
 
-
+/*Captchar*/
 var codeCaptcha = null;
 
 Ext.apply(Ext.form.VTypes, {
@@ -237,13 +234,35 @@ Ext.apply(Ext.form.VTypes, {
                     Ext.example.msg('Erro', '{0}',e);
                 }
             });
-            Ext.example.msg('Erro', '{0} - {1}',value,codeCaptcha);
             return (value == codeCaptcha);
             
         }else{
-            Ext.example.msg('Erro', 'menos de 4');
             return false;
         }
     },
     captchaText: 'O código não confere!'
+});
+
+/*Range de Datas*/
+Ext.apply(Ext.form.VTypes, {
+    daterange : function(val, field) {
+        var date = field.parseDate(val);
+
+        if(!date){
+            return;
+        }
+
+        if (field.startDateField && (!this.dateRangeMax || (date.getTime() != this.dateRangeMax.getTime()))) {
+            var start = Ext.getCmp(field.startDateField);
+            start.setMaxValue(date);
+            start.validate();
+            this.dateRangeMax = date;
+        } else if (field.endDateField && (!this.dateRangeMin || (date.getTime() != this.dateRangeMin.getTime()))) {
+            var end = Ext.getCmp(field.endDateField);
+            end.setMinValue(date);
+            end.validate();
+            this.dateRangeMin = date;
+        }
+        return true;
+    }
 });
