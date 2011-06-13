@@ -100,21 +100,6 @@ App.Cliente.Usuarios = Ext.extend(Ext.form.FormPanel, {
             })
         });
 
-        //        this.stores.usuarios.on('load',function(store){
-        //            if(parseInt(store.reader.jsonData.totalCount)>0){
-        //                Ext.getCmp('btnUsuarios').enable();
-        //                Ext.getCmp('txTotalUsuarios').setText('Total: R$'+parseFloat(store.reader.jsonData.totalUsuarios));
-        //                Ext.getCmp('btnFinalizarUsuarios').enable();
-        //            }else{
-        //                Ext.getCmp('btnUsuarios').disable();
-        //                Ext.getCmp('QtdUsuarios').disable();
-        //                Ext.getCmp('btnQtdUsuarios').disable();
-        //                Ext.getCmp('btnRemoverUsuarios').disable();
-        //                Ext.getCmp('btnFinalizarUsuarios').disable();
-        //                Ext.getCmp('txTotalUsuarios').setText('Total: R$0.00');
-        //            }
-        //        });
-
         this.stores.usuarios.setDefaultSort('sq_usuario', 'asc');
         this.stores.usuarios.load();
     },
@@ -165,7 +150,7 @@ App.Cliente.Usuarios = Ext.extend(Ext.form.FormPanel, {
         });
     },
     cadastrarNovoProfissional: function(){
-        alert('ss');
+        windowNovoProfissional.show();
     },
     buildItems: function(){
         this.items = new Ext.Panel({

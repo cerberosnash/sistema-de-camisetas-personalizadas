@@ -29,30 +29,24 @@
 	<parameter name="ddt_inicio" class="java.lang.String"/>
 	<parameter name="ddt_final" class="java.lang.String"/>
 	<queryString>
-		<![CDATA[SELECT
-pdt.sq_produto,
-pdt.nm_produto,
-pdt.fg_verso,
-pdt.vl_produto,
-COUNT(*) AS total
-FROM tb_produto_pedido pxp
-INNER JOIN tb_produtos pdt ON pdt.sq_produto = pxp.sq_produto
-INNER JOIN tb_historico_atividades atv ON atv.sq_pedido = pxp.sq_pedido
-WHERE atv.sq_atividade = 4 AND atv.dt_atividade >= '$P{dt_inicio}'  AND atv.dt_atividade <= '$P{dt_final}'
-GROUP BY
-pdt.sq_produto,
-pdt.vl_produto,
-pdt.nm_produto,
-pdt.ds_produto,
-pdt.fg_verso
-ORDER BY total]]>
+		<![CDATA[select
+hatv.sq_usuario,
+usr.nm_usuario,
+count(distinct hatv.sq_pedido) as total_pedidos,
+sum(pdd.vl_pedido) as total_valor
+from tb_historico_atividades hatv
+inner join tb_usuarios usr on usr.sq_usuario = hatv.sq_usuario
+inner join tb_atividades atv on atv.sq_atividade = hatv.sq_atividade
+inner join tb_pedidos pdd on pdd.sq_pedido = hatv.sq_pedido
+where hatv.sq_atividade = 5 and hatv.dt_atividade >= '$P{dt_inicio}' and hatv.dt_atividade <= '$P{dt_final}'
+group by
+hatv.sq_usuario,
+usr.nm_usuario]]>
 	</queryString>
-	<field name="sq_produto" class="java.lang.Integer"/>
-	<field name="nm_produto" class="java.lang.String"/>
-	<field name="ds_produto" class="java.lang.String"/>
-	<field name="fg_verso" class="java.lang.Boolean"/>
-	<field name="vl_produto" class="java.lang.Double"/>
-	<field name="total" class="java.lang.Long"/>
+	<field name="nm_usuario" class="java.lang.String"/>
+	<field name="total_pedidos" class="java.lang.Long"/>
+	<field name="total_valor" class="java.lang.Double"/>
+	<field name="sq_usuario" class="java.lang.Integer"/>
 	<background>
 		<band splitType="Stretch"/>
 	</background>
@@ -81,21 +75,21 @@ ORDER BY total]]>
 				<textElement verticalAlignment="Middle">
 					<font size="12" isBold="true"/>
 				</textElement>
-				<text><![CDATA[Nome]]></text>
+				<text><![CDATA[Nome do Profissional]]></text>
 			</staticText>
 			<staticText>
 				<reportElement x="505" y="126" width="50" height="20"/>
 				<textElement verticalAlignment="Middle">
 					<font size="12" isBold="true"/>
 				</textElement>
-				<text><![CDATA[Total]]></text>
+				<text><![CDATA[Valor]]></text>
 			</staticText>
 			<staticText>
 				<reportElement x="445" y="126" width="60" height="20"/>
 				<textElement verticalAlignment="Middle">
 					<font size="12" isBold="true"/>
 				</textElement>
-				<text><![CDATA[Valor]]></text>
+				<text><![CDATA[Pedidos]]></text>
 			</staticText>
 			<textField>
 				<reportElement x="199" y="97" width="68" height="20"/>
@@ -146,22 +140,22 @@ ORDER BY total]]>
 			<textField>
 				<reportElement x="0" y="3" width="49" height="20"/>
 				<textElement/>
-				<textFieldExpression class="java.lang.Integer"><![CDATA[$F{sq_produto}]]></textFieldExpression>
+				<textFieldExpression class="java.lang.Integer"><![CDATA[$F{sq_usuario}]]></textFieldExpression>
 			</textField>
 			<textField>
 				<reportElement x="49" y="3" width="396" height="20"/>
 				<textElement/>
-				<textFieldExpression class="java.lang.String"><![CDATA[$F{nm_produto}]]></textFieldExpression>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{nm_usuario}]]></textFieldExpression>
 			</textField>
 			<textField>
 				<reportElement x="505" y="3" width="49" height="20"/>
 				<textElement/>
-				<textFieldExpression class="java.lang.Long"><![CDATA[$F{total}]]></textFieldExpression>
+				<textFieldExpression class="java.lang.Long"><![CDATA[$F{total_valor}]]></textFieldExpression>
 			</textField>
 			<textField>
 				<reportElement x="445" y="3" width="60" height="20"/>
 				<textElement/>
-				<textFieldExpression class="java.lang.Double"><![CDATA[$F{vl_produto}]]></textFieldExpression>
+				<textFieldExpression class="java.lang.Double"><![CDATA[$F{total_pedidos}]]></textFieldExpression>
 			</textField>
 		</band>
 	</detail>

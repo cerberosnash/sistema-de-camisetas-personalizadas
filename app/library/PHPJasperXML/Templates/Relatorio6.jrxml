@@ -64,7 +64,7 @@ inner join tb_pedidos pdd on pdd.sq_pedido = hatv.sq_pedido]]>
 				<textElement verticalAlignment="Middle">
 					<font size="12" isBold="true"/>
 				</textElement>
-				<text><![CDATA[#]]></text>
+				<text><![CDATA[N. Pedido]]></text>
 			</staticText>
 			<staticText>
 				<reportElement x="66" y="126" width="156" height="20"/>
