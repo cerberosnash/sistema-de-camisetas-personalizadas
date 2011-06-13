@@ -189,4 +189,68 @@ class AdministradorController extends Base_Controller_Action {
         }
     }
 
+    public function adicionarUsuarioAction() {
+        $this->_helper->layout->disableLayout();
+        $this->_helper->viewRenderer->setNoRender();
+
+        if ($this->getRequest()->isPost()) {
+            if (
+                    $this->_getParam('nm_usuario') &&
+                    $this->_getParam('nu_cpf') &&
+                    $this->_getParam('sq_municipio') &&
+                    $this->_getParam('nu_cep') &&
+                    $this->_getParam('tx_endereco') &&
+                    $this->_getParam('tx_email') &&
+                    $this->_getParam('tx_senha') &&
+                    $this->_getParam('dd_residencial') &&
+                    $this->_getParam('nu_residencial') &&
+                    $this->_getParam('dd_celular') &&
+                    $this->_getParam('nu_celular')
+            ) {
+
+                try {
+                    $conn = Doctrine_Manager::connection();
+                    $conn->beginTransaction();
+
+                    /* Usuario */
+                    $cliente = new TbUsuarios();
+                    $cliente->sq_perfil = $this->_getParam('sq_perfil');
+                    $cliente->nm_usuario = $this->_getParam('nm_usuario');
+                    $cliente->nu_cpf = Base_Util::onlyNumbers($this->_getParam('nu_cpf'));
+                    $cliente->sq_municipio = $this->_getParam('sq_municipio');
+                    $cliente->nu_cep = Base_Util::onlyNumbers($this->_getParam('nu_cep'));
+                    $cliente->tx_endereco = $this->_getParam('tx_endereco');
+                    $cliente->tx_email = Base_Util::toLower($this->_getParam('tx_email'));
+                    $cliente->tx_senha = Base_Util::md6_encode($this->_getParam('tx_senha'));
+                    $cliente->save();
+                    /* Telefones */
+                    /* Residencial */
+                    $residencial = new TbTelefones();
+                    $residencial->sq_usuario = $cliente->sq_usuario;
+                    $residencial->tp_telefone = 'Residencial';
+                    $residencial->nu_ddd = Base_Util::onlyNumbers($this->_getParam('dd_residencial'));
+                    $residencial->nu_telefone = Base_Util::onlyNumbers($this->_getParam('nu_residencial'));
+                    $residencial->save();
+                    /* Celular */
+                    $celular = new TbTelefones();
+                    $celular->sq_usuario = $cliente->sq_usuario;
+                    $celular->tp_telefone = 'Celular';
+                    $celular->nu_ddd = Base_Util::onlyNumbers($this->_getParam('dd_celular'));
+                    $celular->nu_telefone = Base_Util::onlyNumbers($this->_getParam('nu_celular'));
+                    $celular->save();
+
+                    $conn->commit();
+
+                    $out = array(success => true);
+                } catch (Doctrine_Exception $e) {
+                    $conn->rollback();
+                    $out = array(success => false, error => ExceptionMessage::toString($e));
+                }
+            } else {
+                $out = array(success => false, error => 'Todos os campos sao obrigatorios!');
+            }
+            $this->_prepareJson($out);
+        }
+    }
+
 }

@@ -92,7 +92,7 @@ class RelatoriosController extends Base_Controller_Action {
 
         $PHPJasperXML->xml_dismantle(simplexml_load_file("../library/PHPJasperXML/Templates/Relatorio{$this->_getParam('opcao')}.jrxml"));
         $PHPJasperXML->transferDBtoArray();
-        $PHPJasperXML->outpage("D", $this->_getParam('opcao') . '.pdf');    //page output method I:standard output  D:Download file
+        $PHPJasperXML->outpage("I", $this->_getParam('opcao') . '.pdf');    //page output method I:standard output  D:Download file
     }
 
 }

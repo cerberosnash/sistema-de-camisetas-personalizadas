@@ -143,7 +143,17 @@ try{
                 ['Despache', '4'],
                 ['Administrador', '5']
                 ]
-            }); 
+            });
+
+            var storePerfisProfissionais = new Ext.data.ArrayStore({
+                fields: ['mValor', 'vValor'],
+                data : [
+                ['Pagamento', '2'],
+                ['Confeccao', '3'],
+                ['Despache', '4'],
+                ['Administrador', '5']
+                ]
+            });
  
             var storeCamisetas = new Ext.data.JsonStore({
                 root: 'images',
@@ -242,6 +252,324 @@ try{
                         Ext.example.msg('Erro', '{0}',e);
                     }
                 });
+            }
+
+            var formCadastroProfissional =  new Ext.form.FormPanel({
+                id: 'formCadastroProfissional',
+                frame:false,
+                border: true,
+                title: '',
+                bodyStyle:'padding:10px 10px 10px 10px',
+                layout: 'form',
+                items: [{
+                    defaults:{
+                        width: 320,
+                        msgTarget: 'side',
+                        allowBlank: false,
+                        height: 25
+                    },
+                    xtype: 'fieldset',
+                    title: 'Dados Pessoais',
+                    items: [{
+                        xtype: 'textfield',
+                        defaults:{
+                            msgTarget: 'side',
+                            allowBlank: false,
+                            height: 25
+                        },
+                        fieldLabel: 'Nome',
+                        name: 'Nome',
+                        id: 'nvUsuario',
+                        maxLength: 100,
+                        vtype: 'onlytext',
+                        autoCreate: {
+                            tag: 'input',
+                            type: 'text',
+                            maxlength: '100'
+                        }
+                    },{
+                        xtype: 'cpffield',
+                        fieldLabel: 'CPF',
+                        id: 'nvCpf',
+                        vtype: 'cpf'
+                    },{
+                        xtype: 'compositefield',
+                        fieldLabel: 'Tel. Residencial',
+                        defaults:{
+                            msgTarget: 'side',
+                            allowBlank: false,
+                            height: 25
+                        },
+                        items: [{
+                            xtype: 'textfield',
+                            name: 'DDD Residencial',
+                            id: 'nvDdResidencial',
+                            width: 30,
+                            maxLengthText: 'O Código DDD deve conter {0} digitos',
+                            minLengthText: 'O Código DDD deve conter {0} digitos',
+                            maxLength: 3,
+                            minLength: 3,
+                            vtype: 'ddd',
+                            autoCreate: {
+                                tag: 'input',
+                                type: 'text',
+                                maxlength: '3'
+                            }
+                        },{
+                            xtype: 'textfield',
+                            name: 'Tel. Residencial',
+                            id: 'nvNuResidencial',
+                            width: 285,
+                            vtype: 'telefone',
+                            autoCreate: {
+                                tag: 'input',
+                                type: 'text',
+                                maxlength: '9'
+                            }
+                        }
+                        ]
+                    },{
+                        xtype: 'compositefield',
+                        fieldLabel: 'Tel. Celular',
+                        defaults:{
+                            msgTarget: 'side',
+                            allowBlank: false,
+                            height: 25
+                        },
+                        items: [{
+                            xtype: 'textfield',
+                            name: 'DDD Celular',
+                            id: 'nvDdCelular',
+                            width: 30,
+                            maxLengthText: 'O Código DDD deve conter {0} digitos',
+                            minLengthText: 'O Código DDD deve conter {0} digitos',
+                            maxLength: 3,
+                            minLength: 3,
+                            vtype: 'ddd',
+                            autoCreate: {
+                                tag: 'input',
+                                type: 'text',
+                                maxlength: '3'
+                            }
+                        },{
+                            xtype: 'textfield',
+                            name: 'Tel. Celular',
+                            id: 'nvNuCelular',
+                            width: 285,
+                            vtype: 'telefone',
+                            autoCreate: {
+                                tag: 'input',
+                                type: 'text',
+                                maxlength: '9'
+                            }
+                        }]
+                    },{
+                        fieldLabel: 'Estado',
+                        xtype: 'combo',
+                        name: 'Estado',
+                        id: 'nvUf',
+                        store: storeEstados,
+                        listeners:{
+                            select:{
+                                fn:function(combo){
+                                    Ext.getCmp('nvMunicipio').clearValue();
+                                    Ext.getCmp('nvMunicipio').enable();
+                                    storeMunicipios.load({
+                                        params: {
+                                            sq_uf: combo.getValue()
+                                        }
+                                    });
+                                }
+                            }
+                        },
+                        displayField: 'nm_uf',
+                        valueField: 'sq_uf',
+                        editable: false, // usar no combo de UFs
+                        typeAhead: true,
+                        forceSelection: true,
+                        mode: 'remote',
+                        triggerAction: 'all',
+                        emptyText:'',
+                        selectOnFocus:true
+                    },{
+                        fieldLabel: 'Município',
+                        xtype: 'combo',
+                        name: 'Municipio',
+                        id: 'nvMunicipio',
+                        store: storeMunicipios,
+                        displayField: 'nm_municipio',
+                        valueField: 'sq_municipio',
+                        minChars: 5,
+                        editable: true,
+                        typeAhead: true,
+                        forceSelection: true,
+                        mode: 'local',
+                        triggerAction: 'all',
+                        emptyText:'',
+                        selectOnFocus:true
+                    },{
+                        xtype: 'textfield',
+                        fieldLabel: 'CEP',
+                        id: 'nvCep',
+                        name: 'CEP',
+                        vtype: 'cep',
+                        autoCreate: {
+                            tag: 'input',
+                            type: 'text',
+                            maxlength: '9'
+                        }
+                    },{
+                        fieldLabel: 'Endereço',
+                        id: 'nvEndereco',
+                        xtype: 'textarea',
+                        maxLength: 100,
+                        height: 50,
+                        autoCreate: {
+                            tag: 'textarea',
+                            type: 'textarea',
+                            maxlength: '100'
+                        }
+                    }]
+                },{
+                    xtype: 'fieldset',
+                    title: 'Autenticação',
+                    defaults:{
+                        width: 320,
+                        msgTarget: 'side',
+                        allowBlank: false,
+                        maxLength: 100,
+                        minLength: 6
+                    },
+                    items: [{
+                        xtype: 'textfield',
+                        fieldLabel: 'Email',
+                        name: 'Email',
+                        id: 'nvEmail',
+                        vtype: 'email'
+                    },{
+                        xtype: 'textfield',
+                        fieldLabel: 'Senha',
+                        name: 'Senha',
+                        id: 'nvSenha',
+                        inputType: 'password',
+                        initialPasswordField: 'password',
+                        vtype: 'password'
+                    }]
+                },{
+                    xtype: 'fieldset',
+                    defaults:{
+                        width: 320,
+                        msgTarget: 'side',
+                        allowBlank: false,
+                        maxLength: 100,
+                        minLength: 6
+                    },
+                    title: 'Perfil',
+                    items: [{
+                        id:'nvPerfil',
+                        xtype: 'combo',
+                        store: storePerfisProfissionais,
+                        fieldLabel: 'Funcao do Profissional',
+                        displayField:'mValor',
+                        valueField: 'vValor',
+                        typeAhead: true,
+                        mode: 'local',
+                        editable: false,
+                        forceSelection: true,
+                        triggerAction: 'all',
+                        width: 100,
+                        selectOnFocus:true,
+                        listeners: {
+                            select: function(a){
+                            }
+                        }
+                    }]
+                }],
+                buttons: [{
+                    text: 'Finalizar Cadastro',
+                    id: 'cEntrar',
+                    type: 'submit',
+                    iconCls: 'disk',
+                    handler: onSubmitCadastro
+                }]
+            });
+
+            var windowNovoProfissional = new Ext.Window({
+                id: 'windowNovoProfissional',
+                resizable: false,
+                iconCls: 'user-add',
+                layout:'fit',
+                title: 'Cadastro',
+                width:502,
+                height: 550,
+                modal: true,
+                onHide : function(){
+                    formCadastroProfissional.form.reset();
+                },
+                closeAction:'hide',
+                plain: false,
+                items: [formCadastroProfissional]
+            });
+
+            function onSubmitCadastro(){
+                if(formCadastroProfissional.form.isValid()===true){
+                    try{
+                        var conn = new Ext.data.Connection();
+                        var data = null;
+                        conn.request({
+                            url: controllerAdministrador + 'adicionar-usuario',
+                            method: 'POST',
+                            params: {
+                                nm_usuario : Ext.getCmp('nvUsuario').getValue(),
+                                nu_cpf : Ext.getCmp('nvCpf').getValue(),
+                                dd_residencial : Ext.getCmp('nvDdResidencial').getValue(),
+                                nu_residencial : Ext.getCmp('nvNuResidencial').getValue(),
+                                dd_celular : Ext.getCmp('nvDdCelular').getValue(),
+                                nu_celular : Ext.getCmp('nvNuCelular').getValue(),
+                                sq_uf : Ext.getCmp('nvUf').getValue(),
+                                sq_municipio : Ext.getCmp('nvMunicipio').getValue(),
+                                nu_cep : Ext.getCmp('nvCep').getValue(),
+                                tx_endereco : Ext.getCmp('nvEndereco').getValue(),
+                                tx_email : Ext.getCmp('nvEmail').getValue(),
+                                tx_senha : Ext.getCmp('nvSenha').getValue(),
+                                sq_perfil : Ext.getCmp('nvPerfil').getValue()
+                            },
+                            success: function(responseObject) {
+                                if(responseObject.responseText){
+                                    try{
+                                        data = eval(responseObject.responseText);
+                                        if(data.success===true){
+                                            windowNovoProfissional.hide();
+                                            Ext.MessageBox.show({
+                                                title: 'Seja bem vindo!',
+                                                msg: 'Novo profissional cadastro com sucesso!',
+                                                buttons: Ext.MessageBox.OK,
+                                                icon: Ext.MessageBox.INFO
+                                            });
+                                        }else{
+                                            Ext.example.msg('Erro', data.error);
+                                            Ext.MessageBox.show({
+                                                title: 'Erro!',
+                                                msg: data.error,
+                                                buttons: Ext.MessageBox.OK,
+                                                icon: Ext.MessageBox.ERROR
+                                            });
+                                        }
+                                    }catch(e){
+                                        Ext.example.msg('Erro', '{0}',e);
+                                    }
+                                }
+                            },
+                            failure: function(e) {
+                                Ext.example.msg('Erro', '{0}',e);
+                            }
+                        });
+                    }catch(e){
+                        Ext.example.msg('Erro', '{0}',e);
+                    }
+                }else{
+                    Ext.example.msg('Erro', 'Falha no Cadastro');
+                }
             }
 
             var formRelatorios =  new Ext.form.FormPanel({
@@ -1490,7 +1818,7 @@ try{
                 },
                 {
                     xtype:'button',
-                    text: 'Usuarios',
+                    text: 'Manter Usuarios',
                     id: 'btnUsuarios',
                     iconCls: 'user',
                     action: 'view-usuarios',
