@@ -1,5 +1,6 @@
 <?php
 
+
 class AdministradorController extends Base_Controller_Action {
 
     private $upload;
@@ -93,22 +94,17 @@ class AdministradorController extends Base_Controller_Action {
     public function carregarUsuariosAction() {
         $this->_helper->layout->disableLayout();
         $this->_helper->viewRenderer->setNoRender();
-
         $out = Doctrine_Core::getTable('TbUsuarios')->listarUsuarios($this->_getAllParams());
-
         $this->_prepareJson($out);
     }
 
     public function carregarUsuarioAction() {
         $this->_helper->layout->disableLayout();
         $this->_helper->viewRenderer->setNoRender();
-
         if ($this->getRequest()->isPost()) {
-
             $usuario = Doctrine_Core::getTable('TbUsuarios')->carregarUsuario($this->_getParam('sq_usuario'));
             $usuario['tx_senha'] = Base_Util::md6_decode($usuario['tx_senha']);
             $out = array(success => true, usuario => $usuario);
-
             if (!isset($usuario['sq_usuario'])) {
                 $out = array(success => false);
             }
@@ -121,9 +117,7 @@ class AdministradorController extends Base_Controller_Action {
     public function alterarUsuarioAction() {
         $this->_helper->layout->disableLayout();
         $this->_helper->viewRenderer->setNoRender();
-
         $sq_usuario = $this->_getParam('sq_usuario') ? $this->_getParam('sq_usuario') : $this->_session->usuario->sq_usuario;
-
         if ($this->getRequest()->isPost()) {
             if (
                     $this->_getParam('nm_usuario') &&
@@ -138,7 +132,6 @@ class AdministradorController extends Base_Controller_Action {
                     $this->_getParam('dd_celular') &&
                     $this->_getParam('nu_celular')
             ) {
-
                 try {
                     $conn = Doctrine_Manager::connection();
                     $conn->beginTransaction();
@@ -192,7 +185,6 @@ class AdministradorController extends Base_Controller_Action {
     public function adicionarUsuarioAction() {
         $this->_helper->layout->disableLayout();
         $this->_helper->viewRenderer->setNoRender();
-
         if ($this->getRequest()->isPost()) {
             if (
                     $this->_getParam('nm_usuario') &&
@@ -207,11 +199,9 @@ class AdministradorController extends Base_Controller_Action {
                     $this->_getParam('dd_celular') &&
                     $this->_getParam('nu_celular')
             ) {
-
                 try {
                     $conn = Doctrine_Manager::connection();
                     $conn->beginTransaction();
-
                     /* Usuario */
                     $cliente = new TbUsuarios();
                     $cliente->sq_perfil = $this->_getParam('sq_perfil');
