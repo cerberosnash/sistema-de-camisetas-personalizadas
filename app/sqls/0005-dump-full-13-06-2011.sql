@@ -1,116 +1,3 @@
---
--- PostgreSQL database dump
---
-
-SET statement_timeout = 0;
-SET client_encoding = 'UTF8';
-SET standard_conforming_strings = off;
-SET check_function_bodies = false;
-SET client_min_messages = warning;
-SET escape_string_warning = off;
-
---
--- Name: plpgsql; Type: PROCEDURAL LANGUAGE; Schema: -; Owner: postgres
---
-
-CREATE OR REPLACE PROCEDURAL LANGUAGE plpgsql;
-
-
-ALTER PROCEDURAL LANGUAGE plpgsql OWNER TO postgres;
-
-SET search_path = public, pg_catalog;
-
-SET default_tablespace = '';
-
-SET default_with_oids = false;
-
---
--- Name: tb_atividades; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
---
-
-CREATE TABLE tb_atividades (
-    sq_atividade integer NOT NULL,
-    tx_atividade character varying(100) NOT NULL,
-    st_ativo boolean DEFAULT true NOT NULL
-);
-
-
-ALTER TABLE public.tb_atividades OWNER TO postgres;
-
---
--- Name: tb_atividades_sq_atividade_seq; Type: SEQUENCE; Schema: public; Owner: postgres
---
-
-CREATE SEQUENCE tb_atividades_sq_atividade_seq
-    START WITH 1
-    INCREMENT BY 1
-    NO MINVALUE
-    NO MAXVALUE
-    CACHE 1;
-
-
-ALTER TABLE public.tb_atividades_sq_atividade_seq OWNER TO postgres;
-
---
--- Name: tb_atividades_sq_atividade_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
---
-
-ALTER SEQUENCE tb_atividades_sq_atividade_seq OWNED BY tb_atividades.sq_atividade;
-
-
---
--- Name: tb_atividades_sq_atividade_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
---
-
-SELECT pg_catalog.setval('tb_atividades_sq_atividade_seq', 6, true);
-
-
---
--- Name: tb_favoritos; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
---
-
-CREATE TABLE tb_favoritos (
-    sq_favorito integer NOT NULL,
-    sq_usuario integer NOT NULL,
-    sq_produto integer NOT NULL,
-    st_ativo boolean DEFAULT true NOT NULL
-);
-
-
-ALTER TABLE public.tb_favoritos OWNER TO postgres;
-
---
--- Name: tb_favoritos_sq_favorito_seq; Type: SEQUENCE; Schema: public; Owner: postgres
---
-
-CREATE SEQUENCE tb_favoritos_sq_favorito_seq
-    START WITH 1
-    INCREMENT BY 1
-    NO MINVALUE
-    NO MAXVALUE
-    CACHE 1;
-
-
-ALTER TABLE public.tb_favoritos_sq_favorito_seq OWNER TO postgres;
-
---
--- Name: tb_favoritos_sq_favorito_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
---
-
-ALTER SEQUENCE tb_favoritos_sq_favorito_seq OWNED BY tb_favoritos.sq_favorito;
-
-
---
--- Name: tb_favoritos_sq_favorito_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
---
-
-SELECT pg_catalog.setval('tb_favoritos_sq_favorito_seq', 46, true);
-
-
---
--- Name: tb_historico_atividades; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
---
-
 CREATE TABLE tb_historico_atividades (
     sq_historico_atividade integer NOT NULL,
     sq_usuario integer NOT NULL,
@@ -120,40 +7,6 @@ CREATE TABLE tb_historico_atividades (
 );
 
 
-ALTER TABLE public.tb_historico_atividades OWNER TO postgres;
-
---
--- Name: tb_historico_atividades_sq_historico_atividade_seq; Type: SEQUENCE; Schema: public; Owner: postgres
---
-
-CREATE SEQUENCE tb_historico_atividades_sq_historico_atividade_seq
-    START WITH 1
-    INCREMENT BY 1
-    NO MINVALUE
-    NO MAXVALUE
-    CACHE 1;
-
-
-ALTER TABLE public.tb_historico_atividades_sq_historico_atividade_seq OWNER TO postgres;
-
---
--- Name: tb_historico_atividades_sq_historico_atividade_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
---
-
-ALTER SEQUENCE tb_historico_atividades_sq_historico_atividade_seq OWNED BY tb_historico_atividades.sq_historico_atividade;
-
-
---
--- Name: tb_historico_atividades_sq_historico_atividade_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
---
-
-SELECT pg_catalog.setval('tb_historico_atividades_sq_historico_atividade_seq', 36, true);
-
-
---
--- Name: tb_municipios; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
---
-
 CREATE TABLE tb_municipios (
     sq_municipio integer NOT NULL,
     sq_uf integer NOT NULL,
@@ -161,40 +14,6 @@ CREATE TABLE tb_municipios (
     st_ativo boolean DEFAULT true NOT NULL
 );
 
-
-ALTER TABLE public.tb_municipios OWNER TO postgres;
-
---
--- Name: tb_municipios_sq_municipio_seq; Type: SEQUENCE; Schema: public; Owner: postgres
---
-
-CREATE SEQUENCE tb_municipios_sq_municipio_seq
-    START WITH 1
-    INCREMENT BY 1
-    NO MINVALUE
-    NO MAXVALUE
-    CACHE 1;
-
-
-ALTER TABLE public.tb_municipios_sq_municipio_seq OWNER TO postgres;
-
---
--- Name: tb_municipios_sq_municipio_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
---
-
-ALTER SEQUENCE tb_municipios_sq_municipio_seq OWNED BY tb_municipios.sq_municipio;
-
-
---
--- Name: tb_municipios_sq_municipio_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
---
-
-SELECT pg_catalog.setval('tb_municipios_sq_municipio_seq', 5597, true);
-
-
---
--- Name: tb_pedidos; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
---
 
 CREATE TABLE tb_pedidos (
     sq_pedido integer NOT NULL,
@@ -209,39 +28,6 @@ CREATE TABLE tb_pedidos (
 );
 
 
-ALTER TABLE public.tb_pedidos OWNER TO postgres;
-
---
--- Name: tb_pedidos_sq_pedido_seq; Type: SEQUENCE; Schema: public; Owner: postgres
---
-
-CREATE SEQUENCE tb_pedidos_sq_pedido_seq
-    START WITH 1
-    INCREMENT BY 1
-    NO MINVALUE
-    NO MAXVALUE
-    CACHE 1;
-
-
-ALTER TABLE public.tb_pedidos_sq_pedido_seq OWNER TO postgres;
-
---
--- Name: tb_pedidos_sq_pedido_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
---
-
-ALTER SEQUENCE tb_pedidos_sq_pedido_seq OWNED BY tb_pedidos.sq_pedido;
-
-
---
--- Name: tb_pedidos_sq_pedido_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
---
-
-SELECT pg_catalog.setval('tb_pedidos_sq_pedido_seq', 70, true);
-
-
---
--- Name: tb_perfil; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
---
 
 CREATE TABLE tb_perfil (
     sq_perfil integer NOT NULL,
@@ -249,40 +35,6 @@ CREATE TABLE tb_perfil (
     st_ativo boolean DEFAULT true NOT NULL
 );
 
-
-ALTER TABLE public.tb_perfil OWNER TO postgres;
-
---
--- Name: tb_perfil_sq_perfil_seq; Type: SEQUENCE; Schema: public; Owner: postgres
---
-
-CREATE SEQUENCE tb_perfil_sq_perfil_seq
-    START WITH 1
-    INCREMENT BY 1
-    NO MINVALUE
-    NO MAXVALUE
-    CACHE 1;
-
-
-ALTER TABLE public.tb_perfil_sq_perfil_seq OWNER TO postgres;
-
---
--- Name: tb_perfil_sq_perfil_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
---
-
-ALTER SEQUENCE tb_perfil_sq_perfil_seq OWNED BY tb_perfil.sq_perfil;
-
-
---
--- Name: tb_perfil_sq_perfil_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
---
-
-SELECT pg_catalog.setval('tb_perfil_sq_perfil_seq', 5, true);
-
-
---
--- Name: tb_produto_pedido; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
---
 
 CREATE TABLE tb_produto_pedido (
     sq_produto_pedido integer NOT NULL,
@@ -293,39 +45,6 @@ CREATE TABLE tb_produto_pedido (
 );
 
 
-ALTER TABLE public.tb_produto_pedido OWNER TO postgres;
-
---
--- Name: tb_produto_pedido_sq_produto_pedido_seq; Type: SEQUENCE; Schema: public; Owner: postgres
---
-
-CREATE SEQUENCE tb_produto_pedido_sq_produto_pedido_seq
-    START WITH 1
-    INCREMENT BY 1
-    NO MINVALUE
-    NO MAXVALUE
-    CACHE 1;
-
-
-ALTER TABLE public.tb_produto_pedido_sq_produto_pedido_seq OWNER TO postgres;
-
---
--- Name: tb_produto_pedido_sq_produto_pedido_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
---
-
-ALTER SEQUENCE tb_produto_pedido_sq_produto_pedido_seq OWNED BY tb_produto_pedido.sq_produto_pedido;
-
-
---
--- Name: tb_produto_pedido_sq_produto_pedido_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
---
-
-SELECT pg_catalog.setval('tb_produto_pedido_sq_produto_pedido_seq', 75, true);
-
-
---
--- Name: tb_produtos; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
---
 
 CREATE TABLE tb_produtos (
     sq_produto integer NOT NULL,
@@ -341,39 +60,6 @@ CREATE TABLE tb_produtos (
 );
 
 
-ALTER TABLE public.tb_produtos OWNER TO postgres;
-
---
--- Name: tb_produtos_sq_produto_seq; Type: SEQUENCE; Schema: public; Owner: postgres
---
-
-CREATE SEQUENCE tb_produtos_sq_produto_seq
-    START WITH 1
-    INCREMENT BY 1
-    NO MINVALUE
-    NO MAXVALUE
-    CACHE 1;
-
-
-ALTER TABLE public.tb_produtos_sq_produto_seq OWNER TO postgres;
-
---
--- Name: tb_produtos_sq_produto_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
---
-
-ALTER SEQUENCE tb_produtos_sq_produto_seq OWNED BY tb_produtos.sq_produto;
-
-
---
--- Name: tb_produtos_sq_produto_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
---
-
-SELECT pg_catalog.setval('tb_produtos_sq_produto_seq', 52, true);
-
-
---
--- Name: tb_status; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
---
 
 CREATE TABLE tb_status (
     sq_status integer NOT NULL,
@@ -381,40 +67,6 @@ CREATE TABLE tb_status (
     st_ativo boolean DEFAULT true NOT NULL
 );
 
-
-ALTER TABLE public.tb_status OWNER TO postgres;
-
---
--- Name: tb_status_sq_status_seq; Type: SEQUENCE; Schema: public; Owner: postgres
---
-
-CREATE SEQUENCE tb_status_sq_status_seq
-    START WITH 1
-    INCREMENT BY 1
-    NO MINVALUE
-    NO MAXVALUE
-    CACHE 1;
-
-
-ALTER TABLE public.tb_status_sq_status_seq OWNER TO postgres;
-
---
--- Name: tb_status_sq_status_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
---
-
-ALTER SEQUENCE tb_status_sq_status_seq OWNED BY tb_status.sq_status;
-
-
---
--- Name: tb_status_sq_status_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
---
-
-SELECT pg_catalog.setval('tb_status_sq_status_seq', 5, true);
-
-
---
--- Name: tb_telefones; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
---
 
 CREATE TABLE tb_telefones (
     sq_telefone integer NOT NULL,
@@ -426,40 +78,6 @@ CREATE TABLE tb_telefones (
 );
 
 
-ALTER TABLE public.tb_telefones OWNER TO postgres;
-
---
--- Name: tb_telefones_sq_telefone_seq; Type: SEQUENCE; Schema: public; Owner: postgres
---
-
-CREATE SEQUENCE tb_telefones_sq_telefone_seq
-    START WITH 1
-    INCREMENT BY 1
-    NO MINVALUE
-    NO MAXVALUE
-    CACHE 1;
-
-
-ALTER TABLE public.tb_telefones_sq_telefone_seq OWNER TO postgres;
-
---
--- Name: tb_telefones_sq_telefone_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
---
-
-ALTER SEQUENCE tb_telefones_sq_telefone_seq OWNED BY tb_telefones.sq_telefone;
-
-
---
--- Name: tb_telefones_sq_telefone_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
---
-
-SELECT pg_catalog.setval('tb_telefones_sq_telefone_seq', 19, true);
-
-
---
--- Name: tb_ufs; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
---
-
 CREATE TABLE tb_ufs (
     sq_uf integer NOT NULL,
     nm_uf character varying(100) NOT NULL,
@@ -467,40 +85,6 @@ CREATE TABLE tb_ufs (
     st_ativo boolean DEFAULT true NOT NULL
 );
 
-
-ALTER TABLE public.tb_ufs OWNER TO postgres;
-
---
--- Name: tb_ufs_sq_uf_seq; Type: SEQUENCE; Schema: public; Owner: postgres
---
-
-CREATE SEQUENCE tb_ufs_sq_uf_seq
-    START WITH 1
-    INCREMENT BY 1
-    NO MINVALUE
-    NO MAXVALUE
-    CACHE 1;
-
-
-ALTER TABLE public.tb_ufs_sq_uf_seq OWNER TO postgres;
-
---
--- Name: tb_ufs_sq_uf_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
---
-
-ALTER SEQUENCE tb_ufs_sq_uf_seq OWNED BY tb_ufs.sq_uf;
-
-
---
--- Name: tb_ufs_sq_uf_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
---
-
-SELECT pg_catalog.setval('tb_ufs_sq_uf_seq', 27, true);
-
-
---
--- Name: tb_usuarios; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
---
 
 CREATE TABLE tb_usuarios (
     sq_usuario integer NOT NULL,
@@ -514,120 +98,6 @@ CREATE TABLE tb_usuarios (
     nu_cep character varying(8) NOT NULL,
     st_ativo boolean DEFAULT true NOT NULL
 );
-
-
-ALTER TABLE public.tb_usuarios OWNER TO postgres;
-
---
--- Name: tb_usuarios_sq_usuario_seq; Type: SEQUENCE; Schema: public; Owner: postgres
---
-
-CREATE SEQUENCE tb_usuarios_sq_usuario_seq
-    START WITH 1
-    INCREMENT BY 1
-    NO MINVALUE
-    NO MAXVALUE
-    CACHE 1;
-
-
-ALTER TABLE public.tb_usuarios_sq_usuario_seq OWNER TO postgres;
-
---
--- Name: tb_usuarios_sq_usuario_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
---
-
-ALTER SEQUENCE tb_usuarios_sq_usuario_seq OWNED BY tb_usuarios.sq_usuario;
-
-
---
--- Name: tb_usuarios_sq_usuario_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
---
-
-SELECT pg_catalog.setval('tb_usuarios_sq_usuario_seq', 31, true);
-
-
---
--- Name: sq_atividade; Type: DEFAULT; Schema: public; Owner: postgres
---
-
-ALTER TABLE tb_atividades ALTER COLUMN sq_atividade SET DEFAULT nextval('tb_atividades_sq_atividade_seq'::regclass);
-
-
---
--- Name: sq_favorito; Type: DEFAULT; Schema: public; Owner: postgres
---
-
-ALTER TABLE tb_favoritos ALTER COLUMN sq_favorito SET DEFAULT nextval('tb_favoritos_sq_favorito_seq'::regclass);
-
-
---
--- Name: sq_historico_atividade; Type: DEFAULT; Schema: public; Owner: postgres
---
-
-ALTER TABLE tb_historico_atividades ALTER COLUMN sq_historico_atividade SET DEFAULT nextval('tb_historico_atividades_sq_historico_atividade_seq'::regclass);
-
-
---
--- Name: sq_municipio; Type: DEFAULT; Schema: public; Owner: postgres
---
-
-ALTER TABLE tb_municipios ALTER COLUMN sq_municipio SET DEFAULT nextval('tb_municipios_sq_municipio_seq'::regclass);
-
-
---
--- Name: sq_pedido; Type: DEFAULT; Schema: public; Owner: postgres
---
-
-ALTER TABLE tb_pedidos ALTER COLUMN sq_pedido SET DEFAULT nextval('tb_pedidos_sq_pedido_seq'::regclass);
-
-
---
--- Name: sq_perfil; Type: DEFAULT; Schema: public; Owner: postgres
---
-
-ALTER TABLE tb_perfil ALTER COLUMN sq_perfil SET DEFAULT nextval('tb_perfil_sq_perfil_seq'::regclass);
-
-
---
--- Name: sq_produto_pedido; Type: DEFAULT; Schema: public; Owner: postgres
---
-
-ALTER TABLE tb_produto_pedido ALTER COLUMN sq_produto_pedido SET DEFAULT nextval('tb_produto_pedido_sq_produto_pedido_seq'::regclass);
-
-
---
--- Name: sq_produto; Type: DEFAULT; Schema: public; Owner: postgres
---
-
-ALTER TABLE tb_produtos ALTER COLUMN sq_produto SET DEFAULT nextval('tb_produtos_sq_produto_seq'::regclass);
-
-
---
--- Name: sq_status; Type: DEFAULT; Schema: public; Owner: postgres
---
-
-ALTER TABLE tb_status ALTER COLUMN sq_status SET DEFAULT nextval('tb_status_sq_status_seq'::regclass);
-
-
---
--- Name: sq_telefone; Type: DEFAULT; Schema: public; Owner: postgres
---
-
-ALTER TABLE tb_telefones ALTER COLUMN sq_telefone SET DEFAULT nextval('tb_telefones_sq_telefone_seq'::regclass);
-
-
---
--- Name: sq_uf; Type: DEFAULT; Schema: public; Owner: postgres
---
-
-ALTER TABLE tb_ufs ALTER COLUMN sq_uf SET DEFAULT nextval('tb_ufs_sq_uf_seq'::regclass);
-
-
---
--- Name: sq_usuario; Type: DEFAULT; Schema: public; Owner: postgres
---
-
-ALTER TABLE tb_usuarios ALTER COLUMN sq_usuario SET DEFAULT nextval('tb_usuarios_sq_usuario_seq'::regclass);
 
 
 --
