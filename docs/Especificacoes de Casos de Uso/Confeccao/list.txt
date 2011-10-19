@@ -1,0 +1,3 @@
+1 - Alocar Pedido
+2- Imprimir Camiseta.
+3 - Finalizar Pedido.

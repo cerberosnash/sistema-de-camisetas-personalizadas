@@ -1,0 +1,2 @@
+1 - Confirmar Pagamento - OK
+2 - Cancelar Pagamento - OK
