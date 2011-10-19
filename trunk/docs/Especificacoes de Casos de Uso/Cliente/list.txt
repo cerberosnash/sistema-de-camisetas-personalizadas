@@ -1,0 +1,6 @@
+1 - Galeria (Filtrar) - OK
+2 - Criar Camiseta(Criar) - OK
+3 - Favoritos(Adicionar no Carrinho e Remover) - OK
+4 - Carrinho(Quantidade, Remover e Finalizar) - OK
+5 - Perfil(Alterar) - OK
+6 - Boleto(Imprimir) - OK
