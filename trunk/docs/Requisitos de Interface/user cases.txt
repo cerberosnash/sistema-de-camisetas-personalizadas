@@ -1,12 +1,12 @@
 1 - Manter Galeria de Produtos - ok
-2 - Manter Cliente
-3 - Gerar Relatorios
+2 - Manter Cliente - ok
+3 - Gerar Relatorios - ok
 4 - Manter Profissional
 5 - Conferir Pagamento - ok
 6 - Confeccionar Produto - ok
-7 - Despachar Produto
-8 - Consultar Galeria 
-9 - Manter Perfil do Cliente
+7 - Despachar Produto - ok
+8 - Consultar Galeria - ok
+9 - Manter Perfil do Cliente - ok
 10 - Manter Produto Favorito
 11 - Manter Carrinho - ok
 12 - Manter Autenticacao - ok
