@@ -1106,7 +1106,10 @@ try{
 
             function validarValoresCamisetas(){
                 if(parseFloat(Ext.getCmp('preco_min').getValue()) > parseFloat(Ext.getCmp('preco_max').getValue())){
-                    Ext.example.msg('Atenção', 'O preço maximo ({0}) nao pode ser menor que o preco minimo ({1})!',Ext.getCmp('preco_max').getValue() , Ext.getCmp('preco_min').getValue());
+                /**
+                     *Debugger
+                     *Ext.example.msg('Atenção', 'O preço maximo ({0}) nao pode ser menor que o preco minimo ({1})!',Ext.getCmp('preco_max').getValue() , Ext.getCmp('preco_min').getValue());
+                     **/
                 }else{
                     AtualizarDataViewCamisetas();
                 }
@@ -1114,7 +1117,10 @@ try{
 
             function validarValoresFavoritos(){
                 if(parseFloat(Ext.getCmp('fr_preco_min').getValue()) > parseFloat(Ext.getCmp('fr_preco_max').getValue())){
-                    Ext.example.msg('Atenção', 'O preço maximo ({0}) nao pode ser menor que o preco minimo ({1})!',Ext.getCmp('fr_preco_max').getValue() , Ext.getCmp('fr_preco_min').getValue());
+                /**
+                     *Debugger
+                     *Ext.example.msg('Atenção', 'O preço maximo ({0}) nao pode ser menor que o preco minimo ({1})!',Ext.getCmp('fr_preco_max').getValue() , Ext.getCmp('fr_preco_min').getValue());
+                     **/
                 }
                 else{
                     AtualizarDataViewFavoritos();
@@ -1169,7 +1175,10 @@ try{
                     selectOnFocus:true,
                     listeners: {
                         select: function(a){
-                            Ext.example.msg('Preco Minimo Selecionado', 'Codigo {0}', a.getValue());
+                            /**
+                             *Debugger
+                             *Ext.example.msg('Preco Minimo Selecionado', 'Codigo {0}', a.getValue());
+                             **/
                             validarValoresCamisetas();
                         }
                     }
@@ -1191,7 +1200,10 @@ try{
                     selectOnFocus:true,
                     listeners: {
                         select: function(a){
-                            Ext.example.msg('Preco Maximo Selecionada', 'Codigo {0}', a.getValue());
+                            /**
+                             *Debugger
+                             *Ext.example.msg('Preco Maximo Selecionada', 'Codigo {0}', a.getValue());
+                             **/
                             validarValoresCamisetas();
                         }
                     }
@@ -1212,7 +1224,10 @@ try{
                     selectOnFocus:true,
                     listeners: {
                         select: function(a){
-                            Ext.example.msg('Tamanho Selecionada', 'Codigo {0}', a.getValue());
+                            /**
+                             *Debugger
+                             *Ext.example.msg('Tamanho Selecionada', 'Codigo {0}', a.getValue());
+                             **/
                             AtualizarDataViewCamisetas();
                         }
                     }
@@ -1233,7 +1248,10 @@ try{
                     triggerAction: 'all',
                     listeners: {
                         select: function(a){
-                            Ext.example.msg('Cor Selecionada', 'Codigo {0}', a.getValue());
+                            /**
+                             *Debugger
+                             *Ext.example.msg('Cor Selecionada', 'Codigo {0}', a.getValue());
+                             **/
                             AtualizarDataViewCamisetas();
                         }
                     }
@@ -1249,7 +1267,10 @@ try{
                     title: 'Pesquisar',
                     iconCls: 'find',
                     handler:  function(a){
-                        Ext.example.msg('Palavra-Chave Selecionada', 'Palavra {0}', Ext.getCmp('query').getValue());
+                        /**
+                         *Debugger
+                         *Ext.example.msg('Palavra-Chave Selecionada', 'Palavra {0}', Ext.getCmp('query').getValue());
+                         **/
                         AtualizarDataViewCamisetas();
                     }
                 }]
@@ -1345,7 +1366,10 @@ try{
                     selectOnFocus:true,
                     listeners: {
                         select: function(a){
-                            Ext.example.msg('Tamanho Selecionada', 'Codigo {0}', a.getValue());
+                            /**
+                             *Debugger
+                             *Ext.example.msg('Tamanho Selecionada', 'Codigo {0}', a.getValue());
+                             **/
                             validarSalvarCriarCamiseta();
                         }
                     }
@@ -1366,7 +1390,10 @@ try{
                     listeners: {
                         select: function(a){
                             validarSalvarCriarCamiseta();
-                            Ext.example.msg('Cor Selecionada', 'Codigo {0}', a.getValue());
+                            /**
+                             *Debugger
+                             *Ext.example.msg('Cor Selecionada', 'Codigo {0}', a.getValue());
+                             **/
                             var conn = new Ext.data.Connection();
                             var data = null;
                             conn.request({
@@ -1380,7 +1407,11 @@ try{
                                         try{
                                             data = eval(responseObject.responseText);
                                             if(data.success===true){
-                                                Ext.example.msg('Processamento', 'Success {0} Cor {1}' ,data.success, data.cor );
+                                                /**
+                                                *Debugger
+                                                *Ext.example.msg('Processamento', 'Success {0} Cor {1}' ,data.success, data.cor );
+                                                **/
+                                               
                                                 Ext.get('iCriarCamiseta').dom.src = controllerProdutos + 'mostrar/?t=' + new Date().getTime();
                                             }else{
                                                 Ext.example.msg('Erro', 'Falha ao processar o cor da camiseta!');
@@ -1446,153 +1477,6 @@ try{
                 }
             }
           
-            /*movido para view-minha-camiseta.js*/
-            var bbarCriarCamiseta = new Ext.Toolbar({
-                height: 30,
-                items:['->',{
-                    xtype: 'button',
-                    text: 'Enviar',
-                    id: 'enviar_mc',
-                    iconCls: 'silk-add',
-                    handler: function(){
-                        if(formUpload.getForm().isValid()){
-                            formUpload.getForm().submit({
-                                url: controllerProdutos + 'upload',
-                                waitMsg: 'Enviando imagem...',
-                                titleMsg: 'Aguarde',
-                                textMsg: 'Aguarde',
-                                success: function(){
-                                    Ext.get('iCriarCamiseta').dom.src = controllerProdutos;
-                                    //   formUpload.getForm().reset();
-                                    Ext.getCmp('recortar_mc').enable();
-                                    Ext.getCmp('tamanho_mc').enable();
-                                    Ext.getCmp('cor_mc').enable();
-                                    Ext.getCmp('nome_mc').enable();
-                                    Ext.getCmp('descricao_mc').enable();
-                                },
-                                failure: function(){
-                                    Ext.example.msg('Erro', 'O envio da imagem falhou!');
-                                }
-                            });
-                        }
-                    }
-                },{
-                    xtype:'button',
-                    text: 'Recortar',
-                    id: 'recortar_mc',
-                    title: 'Recortar',
-                    iconCls: 'cut',
-                    handler:  function(){
-                        Ext.MessageBox.show({
-                            msg: 'Processando Camiseta, Aguarde...',
-                            progressText: 'Processando...',
-                            width:300,
-                            wait:true,
-                            waitConfig: {
-                                interval:100
-                            },
-                            icon:'silk-add',
-                            animEl: 'iCriarCamiseta'
-                        });
-            
-                        Ext.example.msg('Acao', 'Recortando...');
-                        Ext.getCmp('recortar_mc').disable();
-            
-                        document.getElementById("iCriarCamiseta").contentWindow.recortar();
-                        setTimeout(function(){
-                            validarRecorte();
-                            Ext.get('iCriarCamiseta').dom.src = controllerProdutos + 'aguarde';
-                        }, 2000);
-            
-                        setTimeout(function(){
-                            validarSalvarCriarCamiseta();
-                            Ext.MessageBox.hide();
-                            Ext.getCmp('recortar_mc').disable();
-                            Ext.getCmp('restaurar_mc').enable();
-                            Ext.get('iCriarCamiseta').dom.src = controllerProdutos + 'mostrar/?t=' + new Date().getTime()+Math.random(0,9999);
-                        }, 5000);
-            
-                                    
-            
-                    }
-                },{
-                    xtype:'button',
-                    text: 'Restaurar',
-                    id: 'restaurar_mc',
-                    title: 'Restaurar',
-                    iconCls: 'image-edit',
-                    handler:  function(){
-                        Ext.example.msg('Acao', 'Restaurando...');
-                        Ext.get('iCriarCamiseta').dom.src = controllerProdutos;
-                        Ext.getCmp('recortar_mc').enable();
-                        Ext.getCmp('restaurar_mc').disable();
-                        Ext.getCmp('recorte').setValue('');
-                        validarSalvarCriarCamiseta();
-                    }
-                },{
-                    xtype:'button',
-                    text: 'Salvar',
-                    id: 'salvar_mc',
-                    title: 'Salvar',
-                    iconCls: 'picture-save',
-                    handler:  function(){
-                        Ext.example.msg('Acao', 'Salvando...');
-                        var conn = new Ext.data.Connection();
-                        var data = null;
-                        conn.request({
-                            url: controllerAdministrador + 'criar-camiseta',
-                            method: 'POST',
-                            params: {
-                                co_produto: Ext.getCmp('cor_mc').getValue(),
-                                tm_produto: Ext.getCmp('tamanho_mc').getValue(),
-                                nm_produto: Ext.getCmp('nome_mc').getValue(),
-                                ds_produto: Ext.getCmp('descricao_mc').getValue()
-                            },
-                            success: function(responseObject) {
-                                if(responseObject.responseText){
-                                    try{
-                                        data = eval(responseObject.responseText);
-                                        if(data.success===true && data.id){
-                                            Ext.example.msg('Salvando', 'Camiseta {0} salva com sucesso',data.id);
-                                            Ext.example.msg('Noticia', 'A Camiseta {0} agora estara nos seus favoritos',data.id);
-                                            AtualizarDataViewFavoritos();
-                                            Ext.get('iCriarCamiseta').dom.src = controllerProdutos + '?t=' + new Date().getTime()+Math.random(0,9999);
-            
-                                            Ext.getCmp('salvar_mc').disable();
-                                            Ext.getCmp('restaurar_mc').disable();
-                                            Ext.getCmp('recortar_mc').disable();
-            
-                                            Ext.getCmp('cor_mc').getValue('');
-                                            Ext.getCmp('tamanho_mc').setValue('');
-                                            Ext.getCmp('nome_mc').setValue('');
-                                            Ext.getCmp('descricao_mc').setValue('');
-            
-                                            Ext.getCmp('cor_mc').disable();
-                                            Ext.getCmp('tamanho_mc').disable();
-                                            Ext.getCmp('nome_mc').disable();
-                                            Ext.getCmp('descricao_mc').disable();
-                                            Ext.getCmp('descricao_mc').disable();
-            
-                                            formUpload.form.reset();
-            
-            
-            
-                                        }
-                                        else{
-                                            Ext.example.msg('Erro', 'Falha no Processamento');
-                                        }
-                                    }catch(e){
-                                        Ext.example.msg('Erro', '{0}',e);
-                                    }
-                                }
-                            },
-                            failure: function(e) {
-                                Ext.example.msg('Erro', '{0}',e);
-                            }
-                        });
-                    }
-                }]
-            });
           
             function removerCamiseta(botao){
                 if(botao.value){
@@ -1609,7 +1493,10 @@ try{
                                 try{
                                     data = eval(responseObject.responseText);
                                     if(data.success===true){
-                                        Ext.example.msg('Acao', 'Camiseta removida com sucesso');
+                                        /**
+                                         *Debugger
+                                         *Ext.example.msg('Acao', 'Camiseta removida com sucesso');
+                                         **/
                                         storeCamisetas.load();
                                         try{
                                             Ext.getCmp('DataViewCamisetas').store.load();
@@ -1785,7 +1672,7 @@ try{
                             }
                         },
                         failure: function() {
-                            Ext.example.msg('Error', 'MSG-TExt-Response-Error:');
+                            Ext.example.msg('Error', '{0}',e);
                         }
                     });
                 }
@@ -1877,38 +1764,7 @@ try{
                 });
             }
 
-            /*function dateRangeFunc(){
-                // Date picker
-                var fromdate = new Ext.form.DateField({
-                    format: 'Y-M-d', //YYYY-MMM-DD
-                    fieldLabel: '',
-                    id: 'startdt',
-                    name: 'startdt',
-                    width:140,
-                    allowBlank:false,
-                    vtype: 'daterange',
-                    endDateField: 'enddt'// id of the 'To' date field
-                });
-
-                var todate = new Ext.form.DateField({
-                    format: 'Y-M-d', //YYYY-MMM-DD
-                    fieldLabel: '',
-                    id: 'enddt',
-                    name: 'enddt',
-                    width:140,
-                    allowBlank:false,
-                    vtype: 'daterange',
-                    startDateField: 'startdt'// id of the 'From' date field
-                });
-
-                fromdate.render('fromdate');
-                todate.render('todate');
-            }*/
-
-
             nomeUsuarioLogado();
-
-            // dateRangeFunc();
 
             new Ext.Viewport({
                 layout:'border',

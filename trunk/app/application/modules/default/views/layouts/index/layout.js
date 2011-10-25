@@ -963,7 +963,10 @@ try{
                     selectOnFocus:true,
                     listeners: {
                         select: function(a){
-                            Ext.example.msg('Preco Minimo Selecionado', 'Codigo {0}', a.getValue());
+                            /**
+                             *Debugger
+                             *Ext.example.msg('Preco Minimo Selecionado', 'Codigo {0}', a.getValue());
+                             **/
                             validarValoresCamisetas();
                         }
                     }
@@ -985,7 +988,11 @@ try{
                     selectOnFocus:true,
                     listeners: {
                         select: function(a){
-                            Ext.example.msg('Preco Maximo Selecionada', 'Codigo {0}', a.getValue());
+                            /**
+                             *Debugger
+                             *Ext.example.msg('Preco Maximo Selecionada', 'Codigo {0}', a.getValue());
+                             **/
+                            
                             validarValoresCamisetas();
                         }
                     }
@@ -1006,7 +1013,11 @@ try{
                     selectOnFocus:true,
                     listeners: {
                         select: function(a){
-                            Ext.example.msg('Tamanho Selecionada', 'Codigo {0}', a.getValue());
+                            /**
+                             *Debugger
+                             *Ext.example.msg('Tamanho Selecionada', 'Codigo {0}', a.getValue());
+                             **/
+                            
                             AtualizarDataViewCamisetas();
                         }
                     }
@@ -1027,7 +1038,11 @@ try{
                     triggerAction: 'all',
                     listeners: {
                         select: function(a){
-                            Ext.example.msg('Cor Selecionada', 'Codigo {0}', a.getValue());
+                            /**
+                             *Debugger
+                             *Ext.example.msg('Cor Selecionada', 'Codigo {0}', a.getValue());
+                             **/
+                            
                             AtualizarDataViewCamisetas();
                         }
                     }
@@ -1043,7 +1058,11 @@ try{
                     title: 'Pesquisar',
                     iconCls: 'find',
                     handler:  function(a){
-                        Ext.example.msg('Palavra-Chave Selecionada', 'Palavra {0}', Ext.getCmp('query').getValue());
+                        /**
+                         *Debugger
+                         *Ext.example.msg('Palavra-Chave Selecionada', 'Palavra {0}', Ext.getCmp('query').getValue());
+                         **/
+                        
                         AtualizarDataViewCamisetas();
                     }
                 }]
@@ -1172,7 +1191,6 @@ try{
                 margins:'0 0 0 0',
                 activeTab:0,
                 defaults:{
-                    //   closable: true,
                     autoScroll:true
                 },
                 listeners:{
