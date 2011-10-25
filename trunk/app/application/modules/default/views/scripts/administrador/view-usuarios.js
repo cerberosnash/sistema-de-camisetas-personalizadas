@@ -125,11 +125,8 @@ App.Cliente.Usuarios = Ext.extend(Ext.form.FormPanel, {
                     selectionchange: function(sel){
                         var rec = sel.getSelected();
                         if(rec){
-                            Ext.getCmp('QtdUsuarios').setValue(rec.get('qt_produto'));
-                            Ext.getCmp('QtdUsuarios').enable();
-                            Ext.getCmp('btnQtdUsuarios').enable();
-                            Ext.getCmp('btnRemoverUsuarios').enable();
-                        }
+                            
+                    }
                     }
                 }
             }),

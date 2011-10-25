@@ -120,7 +120,10 @@ App.Cliente.MinhaCamiseta = Ext.extend(Ext.form.FormPanel, {
                         animEl: 'iMinhaCamiseta'
                     });
 
-                    Ext.example.msg('Acao', 'Recortando...');
+                    /**
+ *Debugger
+ *Ext.example.msg('Acao', 'Recortando...');
+ **/                    
                     Ext.getCmp('recortar_mc').disable();
 
                     document.getElementById("iMinhaCamiseta").contentWindow.recortar();
@@ -179,8 +182,11 @@ App.Cliente.MinhaCamiseta = Ext.extend(Ext.form.FormPanel, {
                                 try{
                                     data = eval(responseObject.responseText);
                                     if(data.success===true && data.id){
-                                        Ext.example.msg('Salvando', 'Camiseta {0} salva com sucesso',data.id);
-                                        Ext.example.msg('Noticia', 'A Camiseta {0} agora estara nos seus favoritos',data.id);
+                                        /**
+                                         *Debugger
+                                         *Ext.example.msg('Salvando', 'Camiseta {0} salva com sucesso',data.id);
+                                         *Ext.example.msg('Noticia', 'A Camiseta {0} agora estara nos seus favoritos',data.id);
+                                         */
                                         AtualizarDataViewFavoritos();
                                         Ext.get('iMinhaCamiseta').dom.src = controllerProdutos + 'renderizar/?t=' + new Date().getTime()+Math.random(0,9999);
 
@@ -257,7 +263,10 @@ App.Cliente.MinhaCamiseta = Ext.extend(Ext.form.FormPanel, {
                 selectOnFocus:true,
                 listeners: {
                     select: function(a){
-                        Ext.example.msg('Tamanho Selecionada', 'Codigo {0}', a.getValue());
+                        /**
+                         *Debugger
+                         *Ext.example.msg('Tamanho Selecionada', 'Codigo {0}', a.getValue());
+                         **/
                         validarSalvarMinhaCamiseta();
                     }
                 }
@@ -278,7 +287,10 @@ App.Cliente.MinhaCamiseta = Ext.extend(Ext.form.FormPanel, {
                 listeners: {
                     select: function(a){
                         validarSalvarMinhaCamiseta();
-                        Ext.example.msg('Cor Selecionada', 'Codigo {0}', a.getValue());
+                        /**
+                         *Debugger
+                         *Ext.example.msg('Cor Selecionada', 'Codigo {0}', a.getValue());
+                         **/
                         var conn = new Ext.data.Connection();
                         var data = null;
                         conn.request({
@@ -293,7 +305,10 @@ App.Cliente.MinhaCamiseta = Ext.extend(Ext.form.FormPanel, {
                                     try{
                                         data = eval(responseObject.responseText);
                                         if(data.success===true){
-                                            Ext.example.msg('Processamento', 'Success {0} Cor {1}' ,data.success, data.cor );
+                                            /**
+                                             *Debugger
+                                             *Ext.example.msg('Processamento', 'Success {0} Cor {1}' ,data.success, data.cor);
+                                             **/
                                             Ext.get('iMinhaCamiseta').dom.src = controllerProdutos + 'mostrar/?t=' + new Date().getTime();
                                         }else{
                                             Ext.example.msg('Erro', 'Falha ao processar o cor da camiseta!');
@@ -362,7 +377,10 @@ App.Cliente.MinhaCamiseta = Ext.extend(Ext.form.FormPanel, {
                 listeners: {
                     select: function(a){
                         validarSalvarMinhaCamiseta();
-                        Ext.example.msg('Posicao Selecionada', 'Codigo {0}', a.getValue());
+                        /**
+                         *Debugger
+                         *Ext.example.msg('Posicao Selecionada', 'Codigo {0}', a.getValue());
+                         **/
                         var conn = new Ext.data.Connection();
                         var data = null;
                         conn.request({
@@ -377,7 +395,10 @@ App.Cliente.MinhaCamiseta = Ext.extend(Ext.form.FormPanel, {
                                     try{
                                         data = eval(responseObject.responseText);
                                         if(data.success===true){
-                                            Ext.example.msg('Processamento', 'Success {0} Posicao (Verso) {1}' ,data.success, data.posicao );
+                                            /**
+                                             *Debugger
+                                             *Ext.example.msg('Processamento', 'Success {0} Posicao (Verso) {1}' ,data.success, data.posicao );
+                                             **/
                                             Ext.get('iMinhaCamiseta').dom.src = controllerProdutos + 'mostrar/?t=' + new Date().getTime();
                                         }else{
                                             Ext.example.msg('Erro', 'Falha ao processar a camiseta!');
@@ -401,8 +422,6 @@ App.Cliente.MinhaCamiseta = Ext.extend(Ext.form.FormPanel, {
         });
     },
     initComponent : function() {
-        //this.buildItems();
-        //this.buildStores();
         this.buildItems();
         this.buildForm();
         this.buildBbar(this.formUpload);
@@ -450,345 +469,3 @@ function validarRecorte(){
 }
 
 new App.Cliente.MinhaCamiseta;
-
-
-/*Mover*/
-
-
-//var formUpload = new Ext.FormPanel({
-//    fileUpload: true,
-//    id: 'formUpload',
-//    border: true,
-//    frame: true,
-//    width: 250,
-//    height: 35,
-//    method: 'POST',
-//    baseCls: 'x-plain',
-//    bodyStyle: (Ext.isIE? 'padding-left: 3px;' : 'padding-left: 5px;'),
-//    baseParams: {},
-//    onSubmit: Ext.emptyFn,
-//    waitMsgTarget: false,
-//    scope: this,
-//    labelWidth: 42,
-//    defaults: {
-//        allowBlank: false,
-//        msgTarget: 'qtip'
-//    },
-//    items:[{
-//        xtype: 'fileuploadfield',
-//        id: 'imagem',
-//        width: 150,
-//        emptyText: '',
-//        buttonText: '',
-//        buttonCfg:{
-//            iconCls: 'folder-explore'
-//                       
-//        },
-//        fieldLabel: 'Imagem'
-//                   
-//                    
-//    }],
-//    buttons: []
-//});
-
-//function validarRecorte (){
-//    var conn = new Ext.data.Connection();
-//    var data = null;
-//    conn.request({
-//        url: controllerProdutos + 'validar',
-//        method: 'POST',
-//        success: function(responseObject) {
-//            if(responseObject.responseText){
-//                try{
-//                    data = eval(responseObject.responseText);
-//                    if(data){
-//                        Ext.getCmp('recorte').setValue(data.success);
-//                    }
-//                }catch(e){
-//                    Ext.example.msg('Erro', '{0}',e);
-//                    Ext.getCmp('recorte').setValue('false');
-//                }
-//            }
-//        },
-//        failure: function(e) {
-//            Ext.example.msg('Erro', '{0}',e);
-//            Ext.getCmp('recorte').setValue('false');
-//        }
-//    });
-//
-//    return false;
-//}
-
-//var tbarMinhaCamiseta = new Ext.Toolbar({
-//    id: 'tbarMinhaCamiseta',
-//    layout: 'hbox',
-//    border: true,
-//    frame: true,
-//    height: 30,
-//    bodyStyle: (Ext.isIE? 'padding-left: 3px;' : 'padding: 5px;'),
-//    items  : ['Tamanho:',
-//    {
-//        id: 'tamanho_mc',
-//        xtype: 'combo',
-//        fieldLabel:'Tamanho',
-//        store: storeTamanhosCamisetas,
-//        displayField:'mValor',
-//        valueField: 'vValor',
-//        typeAhead: true,
-//        mode: 'local',
-//        value: '',
-//        editable: false,
-//        forceSelection: true,
-//        triggerAction: 'all',
-//        width: 70,
-//        selectOnFocus:true,
-//        listeners: {
-//            select: function(a){
-//                Ext.example.msg('Tamanho Selecionada', 'Codigo {0}', a.getValue());
-//                validarSalvarMinhaCamiseta();
-//            }
-//        }
-//    },'Cor:',
-//    {
-//        xtype: 'comboCores',
-//        id: 'cor_mc',
-//        anchor: '100%',
-//        value: '',
-//        valueField: 'vValor',
-//        displayField: 'mValor',
-//        iconClsField: 'cValor',
-//        width: 120,
-//        editable: false,
-//        selectOnFocus:true,
-//        forceSelection: true,
-//        triggerAction: 'all',
-//        listeners: {
-//            select: function(a){
-//                validarSalvarMinhaCamiseta();
-//                Ext.example.msg('Cor Selecionada', 'Codigo {0}', a.getValue());
-//                var conn = new Ext.data.Connection();
-//                var data = null;
-//                conn.request({
-//                    url: controllerProdutos + 'colorir',
-//                    method: 'POST',
-//                    params: {
-//                        cor: Ext.getCmp('cor_mc').getValue()
-//                    },
-//                    success: function(responseObject) {
-//                        if(responseObject.responseText){
-//                            try{
-//                                data = eval(responseObject.responseText);
-//                                if(data.success===true){
-//                                    Ext.example.msg('Processamento', 'Success {0} Cor {1}' ,data.success, data.cor );
-//                                    Ext.get('iMinhaCamiseta').dom.src = controllerProdutos + 'mostrar/?t=' + new Date().getTime();
-//                                }else{
-//                                    Ext.example.msg('Erro', 'Falha ao processar o cor da camiseta!');
-//                                }
-//                            }catch(e){
-//                                Ext.example.msg('Erro', '{0}',e);
-//                            }
-//                        }
-//                    },
-//                    failure: function(e) {
-//                        Ext.example.msg('Erro', '{0}',e);
-//                    }
-//                });
-//            }
-//        }
-//    },'Nome:',
-//    {
-//        xtype: 'textfield',
-//        name: 'nome_mc',
-//        id: 'nome_mc',
-//        width: 80,
-//        enableKeyEvents : true,
-//        autoCreate:{
-//            tag: 'input',
-//            type: 'text',
-//            maxLength: 25
-//        },
-//        listeners:{
-//            keyup:function(){
-//                validarSalvarMinhaCamiseta();
-//            }
-//        }
-//    },'Descricao:',
-//    {
-//        xtype: 'textfield',
-//        name: 'descricao_mc',
-//        id: 'descricao_mc',
-//        width: 80,
-//        enableKeyEvents : true,
-//        autoCreate:{
-//            tag: 'input',
-//            type: 'text',
-//            maxLength: 100
-//        },
-//        listeners:{
-//            keyup:function(){
-//                validarSalvarMinhaCamiseta();
-//            }
-//        }
-//    },formUpload,{
-//        xtype: 'hidden',
-//        id: 'recorte',
-//        width: 60
-//    }]
-//});
-            
-
-//function validarSalvarMinhaCamiseta(){
-//    if(Ext.getCmp('recorte').getValue() && Ext.getCmp('tamanho_mc').getValue() && Ext.getCmp('cor_mc').getValue() && Ext.getCmp('nome_mc').getValue() && Ext.getCmp('descricao_mc').getValue()){
-//        Ext.getCmp('salvar_mc').enable();
-//    }else{
-//        Ext.getCmp('salvar_mc').disable();
-//    }
-//}
-            
-//            
-//var bbarMinhaCamiseta = new Ext.Toolbar({
-//    height: 30,
-//    items:['->',{
-//        xtype: 'button',
-//        text: 'Enviar',
-//        id: 'enviar_mc',
-//        iconCls: 'silk-add',
-//        handler: function(){
-//            if(formUpload.getForm().isValid()){
-//                formUpload.getForm().submit({
-//                    url: controllerProdutos + 'upload',
-//                    waitMsg: 'Enviando imagem...',
-//                    titleMsg: 'Aguarde',
-//                    textMsg: 'Aguarde',
-//                    success: function(){
-//                        Ext.get('iMinhaCamiseta').dom.src = controllerProdutos;
-//                        //   formUpload.getForm().reset();
-//                        Ext.getCmp('recortar_mc').enable();
-//                        Ext.getCmp('tamanho_mc').enable();
-//                        Ext.getCmp('cor_mc').enable();
-//                        Ext.getCmp('nome_mc').enable();
-//                        Ext.getCmp('descricao_mc').enable();
-//                    },
-//                    failure: function(){
-//                        Ext.example.msg('Erro', 'O envio da imagem falhou!');
-//                    }
-//                });
-//            }
-//        }
-//    },{
-//        xtype:'button',
-//        text: 'Recortar',
-//        id: 'recortar_mc',
-//        title: 'Recortar',
-//        iconCls: 'cut',
-//        handler:  function(){
-//            Ext.MessageBox.show({
-//                msg: 'Processando Camiseta, Aguarde...',
-//                progressText: 'Processando...',
-//                width:300,
-//                wait:true,
-//                waitConfig: {
-//                    interval:100
-//                },
-//                icon:'silk-add',
-//                animEl: 'iMinhaCamiseta'
-//            });
-//
-//            Ext.example.msg('Acao', 'Recortando...');
-//            Ext.getCmp('recortar_mc').disable();
-//
-//            document.getElementById("iMinhaCamiseta").contentWindow.recortar();
-//            setTimeout(function(){
-//                validarRecorte();
-//                Ext.get('iMinhaCamiseta').dom.src = controllerProdutos + 'aguarde';
-//            }, 2000);
-//
-//            setTimeout(function(){
-//                validarSalvarMinhaCamiseta();
-//                Ext.MessageBox.hide();
-//                Ext.getCmp('recortar_mc').disable();
-//                Ext.getCmp('restaurar_mc').enable();
-//                Ext.get('iMinhaCamiseta').dom.src = controllerProdutos + 'mostrar/?t=' + new Date().getTime()+Math.random(0,9999);
-//            }, 5000);
-//
-//                        
-//
-//        }
-//    },{
-//        xtype:'button',
-//        text: 'Restaurar',
-//        id: 'restaurar_mc',
-//        title: 'Restaurar',
-//        iconCls: 'image-edit',
-//        handler:  function(){
-//            Ext.example.msg('Acao', 'Restaurando...');
-//            Ext.get('iMinhaCamiseta').dom.src = controllerProdutos;
-//            Ext.getCmp('recortar_mc').enable();
-//            Ext.getCmp('restaurar_mc').disable();
-//            Ext.getCmp('recorte').setValue('');
-//            validarSalvarMinhaCamiseta();
-//        }
-//    },{
-//        xtype:'button',
-//        text: 'Salvar',
-//        id: 'salvar_mc',
-//        title: 'Salvar',
-//        iconCls: 'picture-save',
-//        handler:  function(){
-//            Ext.example.msg('Acao', 'Salvando...');
-//            var conn = new Ext.data.Connection();
-//            var data = null;
-//            conn.request({
-//                url: controllerFavoritos + 'criar',
-//                method: 'POST',
-//                params: {
-//                    co_produto: Ext.getCmp('cor_mc').getValue(),
-//                    tm_produto: Ext.getCmp('tamanho_mc').getValue(),
-//                    nm_produto: Ext.getCmp('nome_mc').getValue(),
-//                    ds_produto: Ext.getCmp('descricao_mc').getValue()
-//                },
-//                success: function(responseObject) {
-//                    if(responseObject.responseText){
-//                        try{
-//                            data = eval(responseObject.responseText);
-//                            if(data.success===true && data.id){
-//                                Ext.example.msg('Salvando', 'Camiseta {0} salva com sucesso',data.id);
-//                                Ext.example.msg('Noticia', 'A Camiseta {0} agora estara nos seus favoritos',data.id);
-//                                AtualizarDataViewFavoritos();
-//                                Ext.get('iMinhaCamiseta').dom.src = controllerProdutos + '?t=' + new Date().getTime()+Math.random(0,9999);
-//
-//                                Ext.getCmp('salvar_mc').disable();
-//                                Ext.getCmp('restaurar_mc').disable();
-//                                Ext.getCmp('recortar_mc').disable();
-//
-//                                Ext.getCmp('cor_mc').getValue('');
-//                                Ext.getCmp('tamanho_mc').setValue('');
-//                                Ext.getCmp('nome_mc').setValue('');
-//                                Ext.getCmp('descricao_mc').setValue('');
-//
-//                                Ext.getCmp('cor_mc').disable();
-//                                Ext.getCmp('tamanho_mc').disable();
-//                                Ext.getCmp('nome_mc').disable();
-//                                Ext.getCmp('descricao_mc').disable();
-//                                Ext.getCmp('descricao_mc').disable();
-//
-//                                formUpload.form.reset();
-//
-//
-//
-//                            }
-//                            else{
-//                                Ext.example.msg('Erro', 'Falha no Processamento');
-//                            }
-//                        }catch(e){
-//                            Ext.example.msg('Erro', '{0}',e);
-//                        }
-//                    }
-//                },
-//                failure: function(e) {
-//                    Ext.example.msg('Erro', '{0}',e);
-//                }
-//            });
-//        }
-//    }]
-//});

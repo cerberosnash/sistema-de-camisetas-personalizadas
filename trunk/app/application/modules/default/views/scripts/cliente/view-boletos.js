@@ -87,7 +87,11 @@ App.Cliente.Boletos = Ext.extend(Ext.form.FormPanel, {
                 selectOnFocus:true,
                 listeners: {
                     select: function(a){
-                        Ext.example.msg('Acao', 'Carregar o boleto do banco {0}', a.getValue());
+                        /**
+                         *Debugger
+                         *Ext.example.msg('Acao', 'Carregar o boleto do banco {0}', a.getValue());
+                         **/
+                       
                         if(Ext.getCmp('cd_pedido').getValue() && Ext.getCmp('nm_banco').getValue()){
                             Ext.MessageBox.show({
                                 msg: 'Processando o Boleto, Aguarde...',
@@ -136,9 +140,9 @@ App.Cliente.Boletos = Ext.extend(Ext.form.FormPanel, {
                                     Ext.example.msg('Erro', '{0}',e);
                                 }
                             });
-                        }else{
+                        }/**else{
                             Ext.example.msg('Erro', 'Antes de imprimir o boleto selecione o banco e o pedido!');
-                        }
+                        }*/
                     }
                 }
 
@@ -158,7 +162,10 @@ App.Cliente.Boletos = Ext.extend(Ext.form.FormPanel, {
                 selectOnFocus:true,
                 listeners: {
                     select: function(a){
-                        Ext.example.msg('Pedido', 'Pedido Selecionado {0}', a.getValue());
+                        /**
+                         *Debugger
+                         *Ext.example.msg('Pedido', 'Pedido Selecionado {0}', a.getValue());
+                         **/
                         if(Ext.getCmp('cd_pedido').getValue() && Ext.getCmp('nm_banco').getValue()){
                             Ext.MessageBox.show({
                                 msg: 'Processando o Boleto, Aguarde...',

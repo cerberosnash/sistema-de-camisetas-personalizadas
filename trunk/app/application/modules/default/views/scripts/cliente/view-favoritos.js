@@ -182,7 +182,11 @@ App.Cliente.Favoritos = Ext.extend(Ext.form.FormPanel, {
                 selectOnFocus:true,
                 listeners: {
                     select: function(a){
-                        Ext.example.msg('Tamanho Selecionada', 'Codigo {0}', a.getValue());
+                        /**
+                         *Debugger
+                         *Ext.example.msg('Tamanho Selecionada', 'Codigo {0}', a.getValue());
+                         **/
+                        
                         Ext.getCmp('DataViewFavoritos').store.load({
                             params: {
                                 start: 0,
@@ -215,7 +219,10 @@ App.Cliente.Favoritos = Ext.extend(Ext.form.FormPanel, {
                 triggerAction: 'all',
                 listeners: {
                     select: function(a){
-                        Ext.example.msg('Cor Selecionada', 'Codigo {0}', a.getValue());
+                        /**
+                         *Debugger
+                         *Ext.example.msg('Cor Selecionada', 'Codigo {0}', a.getValue());
+                         */
                         Ext.getCmp('DataViewFavoritos').store.load({
                             params: {
                                 start: 0,
