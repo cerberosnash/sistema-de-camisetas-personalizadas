@@ -181,9 +181,20 @@ Ext.apply(Ext.form.VTypes, {
     rastreamentoText: 'Este rastreamento não é válido. Exemplo: SS123456789BR'
 });
 
-Ext.form.VTypes["onlytext"] = /[a-zA-Z'\s]/;
-Ext.form.VTypes["onlytextMask"] = /[a-zA-Z'\s]/;
-Ext.form.VTypes["onlytextText"] = "";
+/*Somente Texto*/
+Ext.apply(Ext.form.VTypes, {
+    onlytext: function(val) {
+        var text = /[a-zA-Z'\s]/;
+        return text.test(val);
+    },
+    onlytextText: '',
+    onlytextMask: /[a-zA-Z'\s]/
+});
+
+
+//Ext.form.VTypes["onlytext"] = /[a-zA-Z'\s]/;
+//Ext.form.VTypes["onlytextMask"] = /[a-zA-Z'\s]/;
+//Ext.form.VTypes["onlytextText"] = "";
 
 /*Comparar Campos*/
 Ext.apply(Ext.form.VTypes,{
@@ -223,8 +234,11 @@ Ext.apply(Ext.form.VTypes, {
                             if(data[0].success===true){
                                 codeCaptcha = data[0].code;
                             }else{
-                                Ext.example.msg('Captcha', 'Falha na verificacao');
-                            }
+                        /**
+                                 *Debugger
+                                 *Ext.example.msg('Captcha', 'Falha na verificacao');
+                                 */
+                        }
                         }catch(e){
                             Ext.example.msg('Erro', '{0}',e);
                         }
