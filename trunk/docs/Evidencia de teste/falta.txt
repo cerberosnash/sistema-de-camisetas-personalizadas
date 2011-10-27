@@ -1,4 +1,0 @@
-manter favoritos
-manter galeria de produtos
-manter perfil de cliente
-manter profissional
