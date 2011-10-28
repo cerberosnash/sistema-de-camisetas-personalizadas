@@ -1,117 +1,14 @@
---
--- PostgreSQL database dump
---
-
-SET statement_timeout = 0;
-SET client_encoding = 'UTF8';
-SET standard_conforming_strings = off;
-SET check_function_bodies = false;
-SET client_min_messages = warning;
-SET escape_string_warning = off;
-
-SET search_path = public, pg_catalog;
-
-ALTER TABLE ONLY public.tb_pedidos DROP CONSTRAINT sq_confeccionador;
-ALTER TABLE ONLY public.tb_usuarios DROP CONSTRAINT fk_tb_usuar_perfil_do_tb_perfi;
-ALTER TABLE ONLY public.tb_usuarios DROP CONSTRAINT fk_tb_usuar_municipio_tb_munic;
-ALTER TABLE ONLY public.tb_telefones DROP CONSTRAINT fk_tb_telef_relations_tb_usuar;
-ALTER TABLE ONLY public.tb_produto_pedido DROP CONSTRAINT fk_tb_produ_produtos__tb_produ;
-ALTER TABLE ONLY public.tb_produto_pedido DROP CONSTRAINT fk_tb_produ_produtos__tb_pedid;
-ALTER TABLE ONLY public.tb_pedidos DROP CONSTRAINT fk_tb_pedid_relations_tb_usuar;
-ALTER TABLE ONLY public.tb_pedidos DROP CONSTRAINT fk_tb_pedid_relations_tb_statu;
-ALTER TABLE ONLY public.tb_municipios DROP CONSTRAINT fk_tb_munic_uf_do_mun_tb_ufs;
-ALTER TABLE ONLY public.tb_historico_atividades DROP CONSTRAINT fk_tb_histo_relations_tb_usuar;
-ALTER TABLE ONLY public.tb_historico_atividades DROP CONSTRAINT fk_tb_histo_relations_tb_ativi;
-ALTER TABLE ONLY public.tb_historico_atividades DROP CONSTRAINT fk_tb_histo_reference_tb_pedid;
-ALTER TABLE ONLY public.tb_favoritos DROP CONSTRAINT fk_tb_favor_produtos__tb_usuar;
-ALTER TABLE ONLY public.tb_favoritos DROP CONSTRAINT fk_tb_favor_produtos__tb_produ;
-DROP INDEX public.index_5;
-DROP INDEX public.index_4;
-ALTER TABLE ONLY public.tb_pedidos DROP CONSTRAINT tb_pedidos_cd_rastreamento_key;
-ALTER TABLE ONLY public.tb_usuarios DROP CONSTRAINT pk_tb_usuarios;
-ALTER TABLE ONLY public.tb_ufs DROP CONSTRAINT pk_tb_ufs;
-ALTER TABLE ONLY public.tb_telefones DROP CONSTRAINT pk_tb_telefones;
-ALTER TABLE ONLY public.tb_status DROP CONSTRAINT pk_tb_status;
-ALTER TABLE ONLY public.tb_produtos DROP CONSTRAINT pk_tb_produtos;
-ALTER TABLE ONLY public.tb_produto_pedido DROP CONSTRAINT pk_tb_produto_pedido;
-ALTER TABLE ONLY public.tb_perfil DROP CONSTRAINT pk_tb_perfil;
-ALTER TABLE ONLY public.tb_pedidos DROP CONSTRAINT pk_tb_pedidos;
-ALTER TABLE ONLY public.tb_municipios DROP CONSTRAINT pk_tb_municipios;
-ALTER TABLE ONLY public.tb_historico_atividades DROP CONSTRAINT pk_tb_historico_atividades;
-ALTER TABLE ONLY public.tb_favoritos DROP CONSTRAINT pk_tb_favoritos;
-ALTER TABLE ONLY public.tb_atividades DROP CONSTRAINT pk_tb_atividades;
-ALTER TABLE public.tb_usuarios ALTER COLUMN sq_usuario DROP DEFAULT;
-ALTER TABLE public.tb_ufs ALTER COLUMN sq_uf DROP DEFAULT;
-ALTER TABLE public.tb_telefones ALTER COLUMN sq_telefone DROP DEFAULT;
-ALTER TABLE public.tb_status ALTER COLUMN sq_status DROP DEFAULT;
-ALTER TABLE public.tb_produtos ALTER COLUMN sq_produto DROP DEFAULT;
-ALTER TABLE public.tb_produto_pedido ALTER COLUMN sq_produto_pedido DROP DEFAULT;
-ALTER TABLE public.tb_perfil ALTER COLUMN sq_perfil DROP DEFAULT;
-ALTER TABLE public.tb_pedidos ALTER COLUMN sq_pedido DROP DEFAULT;
-ALTER TABLE public.tb_municipios ALTER COLUMN sq_municipio DROP DEFAULT;
-ALTER TABLE public.tb_historico_atividades ALTER COLUMN sq_historico_atividade DROP DEFAULT;
-ALTER TABLE public.tb_favoritos ALTER COLUMN sq_favorito DROP DEFAULT;
-ALTER TABLE public.tb_atividades ALTER COLUMN sq_atividade DROP DEFAULT;
-DROP SEQUENCE public.tb_usuarios_sq_usuario_seq;
-DROP TABLE public.tb_usuarios;
-DROP SEQUENCE public.tb_ufs_sq_uf_seq;
-DROP TABLE public.tb_ufs;
-DROP SEQUENCE public.tb_telefones_sq_telefone_seq;
-DROP TABLE public.tb_telefones;
-DROP SEQUENCE public.tb_status_sq_status_seq;
-DROP TABLE public.tb_status;
-DROP SEQUENCE public.tb_produtos_sq_produto_seq;
-DROP TABLE public.tb_produtos;
-DROP SEQUENCE public.tb_produto_pedido_sq_produto_pedido_seq;
-DROP TABLE public.tb_produto_pedido;
-DROP SEQUENCE public.tb_perfil_sq_perfil_seq;
-DROP TABLE public.tb_perfil;
-DROP SEQUENCE public.tb_pedidos_sq_pedido_seq;
-DROP TABLE public.tb_pedidos;
-DROP SEQUENCE public.tb_municipios_sq_municipio_seq;
-DROP TABLE public.tb_municipios;
-DROP SEQUENCE public.tb_historico_atividades_sq_historico_atividade_seq;
-DROP TABLE public.tb_historico_atividades;
-DROP SEQUENCE public.tb_favoritos_sq_favorito_seq;
-DROP TABLE public.tb_favoritos;
-DROP SEQUENCE public.tb_atividades_sq_atividade_seq;
-DROP TABLE public.tb_atividades;
-DROP PROCEDURAL LANGUAGE plpgsql;
-DROP SCHEMA public;
---
--- Name: public; Type: SCHEMA; Schema: -; Owner: -
---
-
-CREATE SCHEMA public;
-
-
---
--- Name: SCHEMA public; Type: COMMENT; Schema: -; Owner: -
---
-
-COMMENT ON SCHEMA public IS 'standard public schema';
-
-
---
--- Name: plpgsql; Type: PROCEDURAL LANGUAGE; Schema: -; Owner: -
---
-
-CREATE OR REPLACE PROCEDURAL LANGUAGE plpgsql;
-
-
-SET search_path = public, pg_catalog;
-
-SET default_with_oids = false;
-
---
--- Name: tb_atividades; Type: TABLE; Schema: public; Owner: -
---
-
 CREATE TABLE tb_atividades (
     sq_atividade integer NOT NULL,
     tx_atividade character varying(100) NOT NULL,
     st_ativo boolean DEFAULT true NOT NULL
 );
+
+INSERT INTO tb_atividades (sq_atividade, tx_atividade, st_ativo) VALUES (1, 'Confirmar Pagamento', true);
+INSERT INTO tb_atividades (sq_atividade, tx_atividade, st_ativo) VALUES (2, 'Cancelar Pagamento', true);
+INSERT INTO tb_atividades (sq_atividade, tx_atividade, st_ativo) VALUES (3, 'Alocar Pedido', true);
+INSERT INTO tb_atividades (sq_atividade, tx_atividade, st_ativo) VALUES (5, 'Finalizar Postagem', true);
+INSERT INTO tb_atividades (sq_atividade, tx_atividade, st_ativo) VALUES (4, 'Finalizar Confeccao do Pedido', true);
 
 
 --

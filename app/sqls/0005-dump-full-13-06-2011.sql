@@ -1,3 +1,9 @@
+CREATE TABLE tb_atividades (
+    sq_atividade integer NOT NULL,
+    tx_atividade character varying(100) NOT NULL,
+    st_ativo boolean DEFAULT true NOT NULL
+);
+
 CREATE TABLE tb_historico_atividades (
     sq_historico_atividade integer NOT NULL,
     sq_usuario integer NOT NULL,
