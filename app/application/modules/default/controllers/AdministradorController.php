@@ -1,6 +1,5 @@
 <?php
 
-
 class AdministradorController extends Base_Controller_Action {
 
     private $upload;
@@ -137,35 +136,35 @@ class AdministradorController extends Base_Controller_Action {
                     $conn->beginTransaction();
 
                     $query1 = Doctrine_Query::create()
-                                    ->update('TbUsuarios')
-                                    ->set('nm_usuario', '?', $this->_getParam('nm_usuario'))
-                                    ->set('nu_cpf', '?', Base_Util::onlyNumbers($this->_getParam('nu_cpf')))
-                                    ->set('sq_municipio', '?', $this->_getParam('sq_municipio'))
-                                    ->set('nu_cep', '?', Base_Util::onlyNumbers($this->_getParam('nu_cep')))
-                                    ->set('tx_endereco', '?', $this->_getParam('tx_endereco'))
-                                    ->set('tx_email', '?', $this->_getParam('tx_email'))
-                                    ->set('tx_senha', '?', Base_Util::md6_encode($this->_getParam('tx_senha')))
-                                    ->set('sq_perfil', '?', $this->_getParam('sq_perfil'))
-                                    ->set('st_ativo', '?', $this->_getParam('st_ativo'))
-                                    ->where('sq_usuario = ?', $sq_usuario);
+                            ->update('TbUsuarios')
+                            ->set('nm_usuario', '?', $this->_getParam('nm_usuario'))
+                            ->set('nu_cpf', '?', Base_Util::onlyNumbers($this->_getParam('nu_cpf')))
+                            ->set('sq_municipio', '?', $this->_getParam('sq_municipio'))
+                            ->set('nu_cep', '?', Base_Util::onlyNumbers($this->_getParam('nu_cep')))
+                            ->set('tx_endereco', '?', $this->_getParam('tx_endereco'))
+                            ->set('tx_email', '?', $this->_getParam('tx_email'))
+                            ->set('tx_senha', '?', Base_Util::md6_encode($this->_getParam('tx_senha')))
+                            ->set('sq_perfil', '?', $this->_getParam('sq_perfil'))
+                            ->set('st_ativo', '?', $this->_getParam('st_ativo'))
+                            ->where('sq_usuario = ?', $sq_usuario);
                     $query1->execute();
 
                     $query2 = Doctrine_Query::create()
-                                    ->update('TbTelefones')
-                                    ->set('nu_ddd', '?', $this->_getParam('dd_celular'))
-                                    ->set('nu_telefone', '?', Base_Util::onlyNumbers($this->_getParam('nu_celular')))
-                                    ->where('sq_usuario = ?', $this->_session->usuario->sq_usuario)
-                                    ->andWhere('tp_telefone = ?', 'Celular')
-                                    ->andWhere('st_ativo = ?', true);
+                            ->update('TbTelefones')
+                            ->set('nu_ddd', '?', $this->_getParam('dd_celular'))
+                            ->set('nu_telefone', '?', Base_Util::onlyNumbers($this->_getParam('nu_celular')))
+                            ->where('sq_usuario = ?', $this->_session->usuario->sq_usuario)
+                            ->andWhere('tp_telefone = ?', 'Celular')
+                            ->andWhere('st_ativo = ?', true);
                     $query2->execute();
 
                     $query3 = Doctrine_Query::create()
-                                    ->update('TbTelefones')
-                                    ->set('nu_ddd', '?', $this->_getParam('dd_residencial'))
-                                    ->set('nu_telefone', '?', Base_Util::onlyNumbers($this->_getParam('nu_residencial')))
-                                    ->where('sq_usuario = ?', $this->_session->usuario->sq_usuario)
-                                    ->andWhere('tp_telefone = ?', 'Residencial')
-                                    ->andWhere('st_ativo = ?', true);
+                            ->update('TbTelefones')
+                            ->set('nu_ddd', '?', $this->_getParam('dd_residencial'))
+                            ->set('nu_telefone', '?', Base_Util::onlyNumbers($this->_getParam('nu_residencial')))
+                            ->where('sq_usuario = ?', $this->_session->usuario->sq_usuario)
+                            ->andWhere('tp_telefone = ?', 'Residencial')
+                            ->andWhere('st_ativo = ?', true);
                     $query3->execute();
 
                     $conn->commit();
