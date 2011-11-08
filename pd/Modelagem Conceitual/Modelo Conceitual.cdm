@@ -1218,8 +1218,8 @@ NAMA 0 Arial,8,N</a:FontList>
 <a:CreationDate>1288200350</a:CreationDate>
 <a:ModificationDate>1289841260</a:ModificationDate>
 <a:CenterTextOffset>(963, -963)</a:CenterTextOffset>
-<a:Rect>((-2195,-25454), (9424,9796))</a:Rect>
-<a:ListOfPoints>((8087,9796),(8087,-8761),(-2188,-8761),(-2195,-25454))</a:ListOfPoints>
+<a:Rect>((-2195,-25454), (9421,9796))</a:Rect>
+<a:ListOfPoints>((8087,9796),(8087,-8761),(-2195,-8761),(-2195,-25454))</a:ListOfPoints>
 <a:CornerStyle>1</a:CornerStyle>
 <a:ArrowStyle>5140</a:ArrowStyle>
 <a:LineColor>11184640</a:LineColor>
@@ -1351,7 +1351,7 @@ NAMA 0 Arial,8,N</a:FontList>
 <a:ModificationDate>1289841184</a:ModificationDate>
 <a:CenterTextOffset>(-674, -1666)</a:CenterTextOffset>
 <a:Rect>((2841,-26265), (18555,-9544))</a:Rect>
-<a:ListOfPoints>((18555,-9544),(18555,-15013),(2869,-15013),(2841,-26265))</a:ListOfPoints>
+<a:ListOfPoints>((18555,-9544),(18555,-15013),(2841,-15013),(2841,-26265))</a:ListOfPoints>
 <a:CornerStyle>1</a:CornerStyle>
 <a:ArrowStyle>4883</a:ArrowStyle>
 <a:LineColor>11184640</a:LineColor>
