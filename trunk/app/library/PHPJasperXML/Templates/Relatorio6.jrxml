@@ -39,7 +39,7 @@ inner join tb_atividades atv on atv.sq_atividade = hatv.sq_atividade
 inner join tb_usuarios usr on usr.sq_usuario = hatv.sq_usuario
 inner join tb_pedidos pdd on pdd.sq_pedido = hatv.sq_pedido
 where hatv.dt_atividade between '$P{dt_inicio}' AND '$P{dt_final}'
-order by pdd.sq_pedido]]>
+order by pdd.sq_pedido, hatv.sq_historico_atividade]]>
 	</queryString>
 	<field name="sq_pedido" class="java.lang.Integer"/>
 	<field name="tx_atividade" class="java.lang.String"/>
