@@ -1,14 +1,17 @@
 <?php
 
-class PedidosController extends Base_Controller_Action {
+class PedidosController extends Base_Controller_Action
+{
 
-    public function init() {
+    public function init ()
+    {
         parent::init();
         $this->_helper->layout->disableLayout();
         $this->_helper->viewRenderer->setNoRender();
     }
 
-    public function carregarAction() {
+    public function carregarAction ()
+    {
         $pedidos = array();
         if ($this->getRequest()->isPost()) {
             if (isset($this->_session->usuario)) {
@@ -32,12 +35,15 @@ class PedidosController extends Base_Controller_Action {
         $this->_prepareJson($out);
     }
 
-    public function processarAction() {
+    public function processarAction ()
+    {
         $pedidos = array();
         if ($this->getRequest()->isPost()) {
             if ($this->_session->usuario->sq_usuario && $this->_getParam('nm_banco') && $this->_getParam('sq_pedido')) {
                 try {
-                    $pedido = Doctrine_Core::getTable('TbPedidos')->findByDql("sq_pedido = {$this->_getParam('sq_pedido')} AND sq_usuario = {$this->_session->usuario->sq_usuario} AND sq_status = 1 AND st_ativo = true limit 1")->toArray();
+                    $pedido = Doctrine_Core::getTable('TbPedidos')
+                            ->findByDql("sq_pedido = {$this->_getParam('sq_pedido')} AND sq_usuario = {$this->_session->usuario->sq_usuario} AND sq_status = 1 AND st_ativo = true limit 1")
+                            ->toArray();
                     $pedido[0]['banco'] = $this->_getParam('nm_banco');
                     $this->_session->boletos = $pedido[0];
                     $out = array(success => true);
@@ -53,7 +59,8 @@ class PedidosController extends Base_Controller_Action {
         $this->_prepareJson($out);
     }
 
-    public function boletoAction() {
+    public function boletoAction ()
+    {
 
         /* Cliente do pedido */
         $cliente = Doctrine_Core::getTable('TbPedidos')->cliente($this->_session->boletos['sq_pedido'], 1/* Aguandando Pagamento */);

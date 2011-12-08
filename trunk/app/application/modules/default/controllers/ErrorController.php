@@ -1,13 +1,16 @@
 <?php
 
-class ErrorController extends Base_Controller_Action {
+class ErrorController extends Base_Controller_Action
+{
 
-    public function init() {
+    public function init ()
+    {
         $this->_helper->layout->disableLayout();
         $this->_helper->viewRenderer->setNoRender();
     }
 
-    public function errorAction() {
+    public function errorAction ()
+    {
         $errors = $this->_request->getParam('error_handler');
         $e = $errors->exception;
 

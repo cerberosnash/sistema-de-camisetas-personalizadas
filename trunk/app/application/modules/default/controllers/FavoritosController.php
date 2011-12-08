@@ -1,21 +1,25 @@
 <?php
 
-class FavoritosController extends Base_Controller_Action {
+class FavoritosController extends Base_Controller_Action
+{
 
     private $upload;
 
-    public function init() {
+    public function init ()
+    {
         parent::init();
         $this->_helper->layout->disableLayout();
         $this->_helper->viewRenderer->setNoRender();
         $this->upload = new Zend_Session_Namespace('upload');
     }
 
-    public function carregarAction() {
+    public function carregarAction ()
+    {
         $this->_prepareJson(Doctrine_Core::getTable('TbProdutos')->listarFavoritos($this->_session->usuario->sq_usuario, $this->_getAllParams()));
     }
 
-    public function criarAction() {
+    public function criarAction ()
+    {
         if ($this->getRequest()->isPost()) {
             if ($this->upload->crop === true) {
                 if ($this->_getParam('tm_produto') && $this->_getParam('co_produto') && $this->_getParam('nm_produto') && $this->_getParam('ds_produto') && $this->upload->imagem) {
@@ -54,7 +58,8 @@ class FavoritosController extends Base_Controller_Action {
         }
     }
 
-    public function adicionarAction() {
+    public function adicionarAction ()
+    {
         if ($this->getRequest()->isPost()) {
             if ($this->_getParam('sq_produto') && $this->_session->usuario->sq_usuario) {
                 try {
@@ -74,7 +79,8 @@ class FavoritosController extends Base_Controller_Action {
         }
     }
 
-    public function removerAction() {
+    public function removerAction ()
+    {
         if ($this->getRequest()->isPost()) {
             if ($this->_getParam('sq_produto') && $this->_session->usuario->sq_usuario) {
                 try {

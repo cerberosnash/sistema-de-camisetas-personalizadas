@@ -1,8 +1,10 @@
 <?php
 
-class PagamentoController extends Base_Controller_Action {
+class PagamentoController extends Base_Controller_Action
+{
 
-    public function init() {
+    public function init ()
+    {
         parent::init();
         $this->_helper->layout->disableLayout();
         if ($this->_session->usuario->tx_perfil != $this->view->originalController) {
@@ -10,20 +12,23 @@ class PagamentoController extends Base_Controller_Action {
         }
     }
 
-    public function indexAction() {
+    public function indexAction ()
+    {
         $this->_helper->layout->disableLayout();
         if ($this->_session->usuario->tx_perfil != $this->view->originalController) {
             $this->_redirect('');
         }
     }
 
-    public function carregarAction() {
+    public function carregarAction ()
+    {
         $this->_helper->layout->disableLayout();
         $this->_helper->viewRenderer->setNoRender();
         $this->_prepareJson(Doctrine_Core::getTable('TbPedidos')->listarPedidos($this->_getAllParams()));
     }
 
-    public function confirmarAction() {
+    public function confirmarAction ()
+    {
         $this->_helper->layout->disableLayout();
         $this->_helper->viewRenderer->setNoRender();
 
@@ -35,11 +40,11 @@ class PagamentoController extends Base_Controller_Action {
                     $conn->beginTransaction();
 
                     $query1 = Doctrine_Query::create()
-                                    ->update('TbPedidos')
-                                    ->set('sq_status', '?', 2) //status de aguardando confeccao
-                                    ->where('sq_status = ?', 1) //status de aguardando pagamento
-                                    ->andWhere('sq_pedido = ?', $this->_getParam('id_pedido'))
-                                    ->andWhere('st_ativo = ?', true);
+                            ->update('TbPedidos')
+                            ->set('sq_status', '?', 2) //status de aguardando confeccao
+                            ->where('sq_status = ?', 1) //status de aguardando pagamento
+                            ->andWhere('sq_pedido = ?', $this->_getParam('id_pedido'))
+                            ->andWhere('st_ativo = ?', true);
 
                     if ($query1->execute() > 0) {
                         $out = array(success => true);
@@ -80,7 +85,8 @@ class PagamentoController extends Base_Controller_Action {
         }
     }
 
-    public function cancelarAction() {
+    public function cancelarAction ()
+    {
         $this->_helper->layout->disableLayout();
         $this->_helper->viewRenderer->setNoRender();
 
@@ -92,10 +98,10 @@ class PagamentoController extends Base_Controller_Action {
                     $conn->beginTransaction();
 
                     $query1 = Doctrine_Query::create()
-                                    ->update('TbPedidos')
-                                    ->set('sq_status', '?', 5)//status de finalizado por falta de pagamento
-                                    ->where('sq_status = ?', 1)//status de aguardando pagamento
-                                    ->andWhere('sq_pedido = ?', $this->_getParam('id_pedido'));
+                            ->update('TbPedidos')
+                            ->set('sq_status', '?', 5)//status de finalizado por falta de pagamento
+                            ->where('sq_status = ?', 1)//status de aguardando pagamento
+                            ->andWhere('sq_pedido = ?', $this->_getParam('id_pedido'));
 
                     if ($query1->execute() > 0) {
                         $out = array(success => true);

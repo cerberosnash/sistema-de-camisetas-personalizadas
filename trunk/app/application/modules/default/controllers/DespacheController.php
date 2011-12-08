@@ -1,21 +1,25 @@
 <?php
 
-class DespacheController extends Base_Controller_Action {
+class DespacheController extends Base_Controller_Action
+{
 
-    public function indexAction() {
+    public function indexAction ()
+    {
         $this->_helper->layout->disableLayout();
         if ($this->_session->usuario->tx_perfil != $this->view->originalController) {
             $this->_redirect('');
         }
     }
 
-    public function carregarAction() {
+    public function carregarAction ()
+    {
         $this->_helper->layout->disableLayout();
         $this->_helper->viewRenderer->setNoRender();
         $this->_prepareJson(Doctrine_Core::getTable('TbPedidos')->listarPedidos($this->_getAllParams()));
     }
 
-    public function guiaAction() {
+    public function guiaAction ()
+    {
         $this->_helper->layout->disableLayout();
         $this->_helper->viewRenderer->setNoRender();
 
@@ -31,17 +35,19 @@ class DespacheController extends Base_Controller_Action {
             $PHPJasperXML->xml_dismantle(simplexml_load_file('../library/PHPJasperXML/Templates/GuiaPostagem.jrxml'));
 
             $PHPJasperXML->transferDBtoArray();
-            $PHPJasperXML->outpage("I");    //page output method I:standard output  D:Download file
+            $PHPJasperXML->outpage("I");
         }
     }
 
-    public function informacoesClienteAction() {
+    public function informacoesClienteAction ()
+    {
         $this->_helper->layout->disableLayout();
         $this->_helper->viewRenderer->setNoRender();
         $this->_prepareJson(Doctrine_Core::getTable('TbPedidos')->cliente($this->_getParam('id_pedido'), 3/* Aguardando Despachar */));
     }
 
-    public function finalizarPostagemAction() {
+    public function finalizarPostagemAction ()
+    {
         $this->_helper->layout->disableLayout();
         $this->_helper->viewRenderer->setNoRender();
         $out = Doctrine_Core::getTable('TbPedidos')->finalizarPostagem($this->_getParam('id_pedido'), $this->_getParam('cd_rastreamento'));

@@ -1,35 +1,41 @@
 <?php
 
-class AdministradorController extends Base_Controller_Action {
+class AdministradorController extends Base_Controller_Action
+{
 
     private $upload;
 
-    public function init() {
+    public function init ()
+    {
         parent::init();
         $this->upload = new Zend_Session_Namespace('upload');
     }
 
-    public function indexAction() {
+    public function indexAction ()
+    {
         $this->_helper->layout->disableLayout();
         if ($this->_session->usuario->tx_perfil != $this->view->originalController) {
             $this->_redirect('');
         }
     }
 
-    public function viewUsuariosAction() {
+    public function viewUsuariosAction ()
+    {
         $this->_helper->layout->disableLayout();
         $this->_helper->viewRenderer->setNoRender();
         $this->startEXTJS();
     }
 
-    public function viewCriarCamisetaAction() {
+    public function viewCriarCamisetaAction ()
+    {
         unset($_SESSION['upload']);
         $this->_helper->layout->disableLayout();
         $this->_helper->viewRenderer->setNoRender();
         $this->startEXTJS();
     }
 
-    public function criarCamisetaAction() {
+    public function criarCamisetaAction ()
+    {
 
         $this->_helper->layout->disableLayout();
         $this->_helper->viewRenderer->setNoRender();
@@ -67,7 +73,8 @@ class AdministradorController extends Base_Controller_Action {
         }
     }
 
-    public function removerCamisetaAction() {
+    public function removerCamisetaAction ()
+    {
         $this->_helper->layout->disableLayout();
         $this->_helper->viewRenderer->setNoRender();
 
@@ -90,14 +97,16 @@ class AdministradorController extends Base_Controller_Action {
         }
     }
 
-    public function carregarUsuariosAction() {
+    public function carregarUsuariosAction ()
+    {
         $this->_helper->layout->disableLayout();
         $this->_helper->viewRenderer->setNoRender();
         $out = Doctrine_Core::getTable('TbUsuarios')->listarUsuarios($this->_getAllParams());
         $this->_prepareJson($out);
     }
 
-    public function carregarUsuarioAction() {
+    public function carregarUsuarioAction ()
+    {
         $this->_helper->layout->disableLayout();
         $this->_helper->viewRenderer->setNoRender();
         if ($this->getRequest()->isPost()) {
@@ -113,7 +122,8 @@ class AdministradorController extends Base_Controller_Action {
         $this->_prepareJson($out);
     }
 
-    public function alterarUsuarioAction() {
+    public function alterarUsuarioAction ()
+    {
         $this->_helper->layout->disableLayout();
         $this->_helper->viewRenderer->setNoRender();
         $sq_usuario = $this->_getParam('sq_usuario') ? $this->_getParam('sq_usuario') : $this->_session->usuario->sq_usuario;
@@ -181,7 +191,8 @@ class AdministradorController extends Base_Controller_Action {
         }
     }
 
-    public function adicionarUsuarioAction() {
+    public function adicionarUsuarioAction ()
+    {
         $this->_helper->layout->disableLayout();
         $this->_helper->viewRenderer->setNoRender();
         if ($this->getRequest()->isPost()) {

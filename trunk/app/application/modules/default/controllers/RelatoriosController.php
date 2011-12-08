@@ -1,15 +1,18 @@
 <?php
 
-class RelatoriosController extends Base_Controller_Action {
+class RelatoriosController extends Base_Controller_Action
+{
 
-    public function init() {
+    public function init ()
+    {
         parent::init();
         if (($this->_session->usuario->tx_perfil != 'administrador')) {
             $this->_redirect('');
         }
     }
 
-    public function indexAction() {
+    public function indexAction ()
+    {
         $this->_helper->layout->disableLayout();
         $this->_helper->viewRenderer->setNoRender();
         if (($this->_session->usuario->tx_perfil != 'administrador')) {
@@ -17,7 +20,8 @@ class RelatoriosController extends Base_Controller_Action {
         }
     }
 
-    public function gerarAction() {
+    public function gerarAction ()
+    {
         $this->_helper->layout->disableLayout();
         $this->_helper->viewRenderer->setNoRender();
 
@@ -86,13 +90,15 @@ class RelatoriosController extends Base_Controller_Action {
                 break;
 
             default:
-
+                $denied = true;
                 break;
         }
 
-        $PHPJasperXML->xml_dismantle(simplexml_load_file("../library/PHPJasperXML/Templates/Relatorio{$this->_getParam('opcao')}.jrxml"));
-        $PHPJasperXML->transferDBtoArray();
-        $PHPJasperXML->outpage("I", $this->_getParam('opcao') . '.pdf');    //page output method I:standard output  D:Download file
+        if (!isset($denied)) {
+            $PHPJasperXML->xml_dismantle(simplexml_load_file("../library/PHPJasperXML/Templates/Relatorio{$this->_getParam('opcao')}.jrxml"));
+            $PHPJasperXML->transferDBtoArray();
+            $PHPJasperXML->outpage("I", $this->_getParam('opcao') . '.pdf');
+        }
     }
 
 }

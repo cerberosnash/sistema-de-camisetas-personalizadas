@@ -1,21 +1,25 @@
 <?php
 
-class CarrinhoController extends Base_Controller_Action {
+class CarrinhoController extends Base_Controller_Action
+{
 
     private $carrinho;
 
-    public function init() {
+    public function init ()
+    {
         parent::init();
         $this->_helper->layout->disableLayout();
         $this->_helper->viewRenderer->setNoRender();
         $this->startCarrinho();
     }
 
-    private function startCarrinho() {
+    private function startCarrinho ()
+    {
         $this->carrinho = new Zend_Session_Namespace('carrinho');
     }
 
-    public function carregarAction() {
+    public function carregarAction ()
+    {
         try {
             $images = array(); #corrige o bug que ExtJs que processa uma chave do json nula
             $cont = 0; #corrige o bug que ExtJs que processa uma chave do json nula
@@ -46,7 +50,8 @@ class CarrinhoController extends Base_Controller_Action {
         $this->_prepareJson($out);
     }
 
-    public function adicionarAction() {
+    public function adicionarAction ()
+    {
         if ($this->getRequest()->isPost() && $this->_getParam('sq_produto')) {
             if ($this->carrinho->camiseta[$this->_getParam('sq_produto')]->sq_produto) {
                 $this->carrinho->camiseta[$this->_getParam('sq_produto')]->sq_produto = $this->_getParam('sq_produto');
@@ -64,7 +69,8 @@ class CarrinhoController extends Base_Controller_Action {
         $this->_prepareJson($out);
     }
 
-    public function removerAction() {
+    public function removerAction ()
+    {
         if ($this->_getParam('sq_produto')) {
             unset($this->carrinho->camiseta[$this->_getParam('sq_produto')]);
             $out = array(success => true, id => $this->_getParam('sq_produto'));
@@ -74,7 +80,8 @@ class CarrinhoController extends Base_Controller_Action {
         $this->_prepareJson($out);
     }
 
-    public function finalizarAction() {
+    public function finalizarAction ()
+    {
         $error = false;
         try {
             if (count($this->carrinho->camiseta) > 0) {
@@ -126,7 +133,8 @@ class CarrinhoController extends Base_Controller_Action {
         $this->_prepareJson($out);
     }
 
-    public function quantidadeAction() {
+    public function quantidadeAction ()
+    {
         if ($this->_getParam('sq_produto') && $this->_getParam('qt_produto')) {
             $this->carrinho->camiseta[$this->_getParam('sq_produto')]->nu_quantidade = $this->_getParam('qt_produto');
             $out = array(success => true, id => $this->_getParam('sq_produto'), quantidade => $this->carrinho->camiseta[$this->_getParam('sq_produto')]->nu_quantidade);
@@ -136,7 +144,8 @@ class CarrinhoController extends Base_Controller_Action {
         $this->_prepareJson($out);
     }
 
-    private function valorTotal() {
+    private function valorTotal ()
+    {
         $total = 0;
         if (isset($this->carrinho->camiseta)) {
             foreach ($this->carrinho->camiseta as $key => $value) {
