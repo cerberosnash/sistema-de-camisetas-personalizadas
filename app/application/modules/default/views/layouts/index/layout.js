@@ -349,7 +349,7 @@ try{
                     name: 'email',
                     id: 'aEmail',
                     vtype:'email',
-                    value: 'admin@camisetas.com'
+                    value: ''
                 }, {
                     fieldLabel: 'Senha',
                     name: 'senha',
@@ -389,7 +389,7 @@ try{
                     name: 'email',
                     id: 'rEmail',
                     vtype:'email',
-                    value: 'admin@camisetas.com'
+                    value: ''
                 },{
                     xtype: 'compositefield',
                     fieldLabel: 'Código',
