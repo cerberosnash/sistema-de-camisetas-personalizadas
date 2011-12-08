@@ -1,20 +1,25 @@
 <?php
 
-class ProdutosController extends Base_Controller_Action {
+class ProdutosController extends Base_Controller_Action
+{
 
-    public function indexAction() {
+    public function indexAction ()
+    {
         $this->_helper->layout->disableLayout();
     }
 
-    public function aguardeAction() {
+    public function aguardeAction ()
+    {
         $this->_helper->layout->disableLayout();
     }
 
-    public function mostrarAction() {
+    public function mostrarAction ()
+    {
         $this->_helper->layout->disableLayout();
     }
 
-    public function renderizarAction() {
+    public function renderizarAction ()
+    {
         $this->_helper->layout->disableLayout();
         $this->_helper->viewRenderer->setNoRender(); //suppress auto-rendering
         $posicao = $this->_getParam('verso') === 'true' ? 'verso' : 'cores';
@@ -27,7 +32,8 @@ class ProdutosController extends Base_Controller_Action {
         $img->output("png", null, 9);
     }
 
-    public function validarAction() {
+    public function validarAction ()
+    {
         $this->_helper->layout->disableLayout();
         $this->_helper->viewRenderer->setNoRender(); //suppress auto-rendering
         if ($_SESSION['upload']['crop']) {
@@ -38,7 +44,8 @@ class ProdutosController extends Base_Controller_Action {
         $this->_prepareJson($out);
     }
 
-    public function colorirAction() {
+    public function colorirAction ()
+    {
         $this->_helper->layout->disableLayout();
         $this->_helper->viewRenderer->setNoRender(); //suppress auto-rendering
 
@@ -54,7 +61,8 @@ class ProdutosController extends Base_Controller_Action {
         $this->_prepareJson($out);
     }
 
-    public function uploadAction() {
+    public function uploadAction ()
+    {
         $this->_helper->layout->disableLayout();
         $this->_helper->viewRenderer->setNoRender();
         $md5 = md5(microtime() . rand(1, 99999999)) . '.png';
@@ -84,7 +92,8 @@ class ProdutosController extends Base_Controller_Action {
         $this->_prepareJson($out);
     }
 
-    public function recortarAction() {
+    public function recortarAction ()
+    {
         $this->_helper->layout->disableLayout();
         $this->_helper->viewRenderer->setNoRender(); //suppress auto-rendering
         $_SESSION['upload']['crop'] = false;
@@ -103,7 +112,8 @@ class ProdutosController extends Base_Controller_Action {
         $this->_prepareJson($out);
     }
 
-    public function gerarAction() {
+    public function gerarAction ()
+    {
         if (!$_SESSION['upload']['standby']) {
             $posicao = $_SESSION['upload']['verso'] === 'true' ? 'verso' : 'cores';
             $imagem = $_SESSION['upload']['imagem'] ? $_SESSION['upload']['imagem'] : 'default.png';

@@ -34,11 +34,11 @@ pdt.sq_produto,
 pdt.nm_produto,
 pdt.fg_verso,
 pdt.vl_produto,
-COUNT(*) AS total
+sum(pxp.nu_quantidade) AS total
 FROM tb_produto_pedido pxp
 INNER JOIN tb_produtos pdt ON pdt.sq_produto = pxp.sq_produto
 INNER JOIN tb_historico_atividades atv ON atv.sq_pedido = pxp.sq_pedido
-WHERE atv.sq_atividade = 4 AND atv.dt_atividade >= '$P{dt_inicio}'  AND atv.dt_atividade <= '$P{dt_final}'
+WHERE atv.sq_atividade = 4 AND atv.dt_atividade BETWEEN '$P{dt_inicio}'  AND '$P{dt_final}'
 GROUP BY
 pdt.sq_produto,
 pdt.vl_produto,

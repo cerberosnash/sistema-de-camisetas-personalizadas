@@ -1,15 +1,18 @@
 <?php
 
-class ConfeccaoController extends Base_Controller_Action {
+class ConfeccaoController extends Base_Controller_Action
+{
 
-    public function indexAction() {
+    public function indexAction ()
+    {
         $this->_helper->layout->disableLayout();
         if ($this->_session->usuario->tx_perfil != $this->view->originalController) {
             $this->_redirect('');
         }
     }
 
-    public function carregarAction() {
+    public function carregarAction ()
+    {
         $this->_helper->layout->disableLayout();
         $this->_helper->viewRenderer->setNoRender();
         $aParams = $this->_getAllParams();
@@ -17,7 +20,8 @@ class ConfeccaoController extends Base_Controller_Action {
         $this->_prepareJson(Doctrine_Core::getTable('TbPedidos')->listarPedidos($aParams));
     }
 
-    public function alocarAction() {
+    public function alocarAction ()
+    {
         $this->_helper->layout->disableLayout();
         $this->_helper->viewRenderer->setNoRender();
         $out = Doctrine_Core::getTable('TbPedidos')->alocar($this->_session->usuario->sq_usuario);
@@ -46,7 +50,8 @@ class ConfeccaoController extends Base_Controller_Action {
         $this->_prepareJson($out);
     }
 
-    public function finalizarConfeccaoAction() {
+    public function finalizarConfeccaoAction ()
+    {
         $this->_helper->layout->disableLayout();
         $this->_helper->viewRenderer->setNoRender();
         $id_pedido = Doctrine_Core::getTable('TbPedidos')->checkAlocado($this->_session->usuario->sq_usuario);
@@ -77,7 +82,8 @@ class ConfeccaoController extends Base_Controller_Action {
         $this->_prepareJson($out);
     }
 
-    public function carregarProdutosAction() {
+    public function carregarProdutosAction ()
+    {
         $this->_helper->layout->disableLayout();
         $this->_helper->viewRenderer->setNoRender();
         $id_pedido = Doctrine_Core::getTable('TbPedidos')->checkAlocado($this->_session->usuario->sq_usuario);

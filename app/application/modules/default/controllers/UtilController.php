@@ -1,22 +1,25 @@
 <?php
 
-class UtilController extends Base_Controller_Action {
+class UtilController extends Base_Controller_Action
+{
 
-    public function init() {
+    public function init ()
+    {
         parent::init();
         $this->_helper->layout->disableLayout();
         $this->_helper->viewRenderer->setNoRender();
     }
 
-    public function indexAction() {
-        /* debugger */
+    public function indexAction ()
+    {
         $this->_helper->layout->disableLayout();
         if ($this->_session->usuario->tx_perfil) {
             $this->_redirect($this->_session->usuario->tx_perfil);
         }
     }
 
-    public function codigoAction() {
+    public function codigoAction ()
+    {
         $this->_helper->layout->disableLayout();
         $this->_helper->viewRenderer->setNoRender();
         if ($_SESSION['autenticacao']['captcha']) {
@@ -27,7 +30,8 @@ class UtilController extends Base_Controller_Action {
         $this->_prepareJson($out);
     }
 
-    public function combosAction() {
+    public function combosAction ()
+    {
         $this->_helper->layout->disableLayout();
         $this->_helper->viewRenderer->setNoRender();
 
@@ -39,8 +43,12 @@ class UtilController extends Base_Controller_Action {
                 break;
 
             case 'municipios':
-                $out['municipios'] = Doctrine_Core::getTable('TbMunicipios')->findByDql('sq_uf = ? AND st_ativo = ?', array($this->_getParam('sq_uf'), true))->toArray();
-                $out['totalCount'] = Doctrine_Core::getTable('TbMunicipios')->findByDql('sq_uf = ? AND st_ativo = ?', array($this->_getParam('sq_uf'), true))->count();
+                $out['municipios'] = Doctrine_Core::getTable('TbMunicipios')
+                        ->findByDql('sq_uf = ? AND st_ativo = ?', array($this->_getParam('sq_uf'), true))
+                        ->toArray();
+                $out['totalCount'] = Doctrine_Core::getTable('TbMunicipios')
+                        ->findByDql('sq_uf = ? AND st_ativo = ?', array($this->_getParam('sq_uf'), true))
+                        ->count();
                 $this->_prepareJson($out);
                 break;
 
@@ -53,8 +61,9 @@ class UtilController extends Base_Controller_Action {
         }
     }
 
-    public function captchaAction() {
-        $captcha = new Captcha(72, 25, 4);
+    public function captchaAction ()
+    {
+        new Captcha(72, 25, 4);
     }
 
 }

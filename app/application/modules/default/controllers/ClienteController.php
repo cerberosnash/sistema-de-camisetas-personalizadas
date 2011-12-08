@@ -1,44 +1,52 @@
 <?php
 
-class ClienteController extends Base_Controller_Action {
+class ClienteController extends Base_Controller_Action
+{
 
-    public function init() {
+    public function init ()
+    {
         parent::init();
         if (($this->_session->usuario->tx_perfil != $this->view->originalController) && ($this->view->originalAction != 'adicionar')) {
             $this->_redirect('');
         }
     }
 
-    public function indexAction() {
+    public function indexAction ()
+    {
         $this->_helper->layout->disableLayout();
     }
 
-    public function viewBoletosAction() {
+    public function viewBoletosAction ()
+    {
         $this->_helper->layout->disableLayout();
         $this->_helper->viewRenderer->setNoRender();
         $this->startEXTJS();
     }
 
-    public function viewMinhaCamisetaAction() {
+    public function viewMinhaCamisetaAction ()
+    {
         unset($_SESSION['upload']);
         $this->_helper->layout->disableLayout();
         $this->_helper->viewRenderer->setNoRender();
         $this->startEXTJS();
     }
 
-    public function viewCarrinhoAction() {
+    public function viewCarrinhoAction ()
+    {
         $this->_helper->layout->disableLayout();
         $this->_helper->viewRenderer->setNoRender();
         $this->startEXTJS();
     }
 
-    public function viewFavoritosAction() {
+    public function viewFavoritosAction ()
+    {
         $this->_helper->layout->disableLayout();
         $this->_helper->viewRenderer->setNoRender();
         $this->startEXTJS();
     }
 
-    public function carregarAction() {
+    public function carregarAction ()
+    {
         $this->_helper->layout->disableLayout();
         $this->_helper->viewRenderer->setNoRender();
 
@@ -66,7 +74,8 @@ class ClienteController extends Base_Controller_Action {
         $this->_prepareJson($out);
     }
 
-    public function adicionarAction() {
+    public function adicionarAction ()
+    {
         $this->_helper->layout->disableLayout();
         $this->_helper->viewRenderer->setNoRender();
 
@@ -130,7 +139,8 @@ class ClienteController extends Base_Controller_Action {
         }
     }
 
-    public function alterarAction() {
+    public function alterarAction ()
+    {
         $this->_helper->layout->disableLayout();
         $this->_helper->viewRenderer->setNoRender();
 
@@ -156,34 +166,34 @@ class ClienteController extends Base_Controller_Action {
                     $conn->beginTransaction();
 
                     $query1 = Doctrine_Query::create()
-                                    ->update('TbUsuarios')
-                                    ->set('nm_usuario', '?', $this->_getParam('nm_usuario'))
-                                    ->set('nu_cpf', '?', Base_Util::onlyNumbers($this->_getParam('nu_cpf')))
-                                    ->set('sq_municipio', '?', $this->_getParam('sq_municipio'))
-                                    ->set('nu_cep', '?', Base_Util::onlyNumbers($this->_getParam('nu_cep')))
-                                    ->set('tx_endereco', '?', $this->_getParam('tx_endereco'))
-                                    ->set('tx_email', '?', $this->_getParam('tx_email'))
-                                    ->set('tx_senha', '?', Base_Util::md6_encode($this->_getParam('tx_senha')))
-                                    ->where('sq_usuario = ?', $sq_usuario)
-                                    ->andWhere('st_ativo = ?', true);
+                            ->update('TbUsuarios')
+                            ->set('nm_usuario', '?', $this->_getParam('nm_usuario'))
+                            ->set('nu_cpf', '?', Base_Util::onlyNumbers($this->_getParam('nu_cpf')))
+                            ->set('sq_municipio', '?', $this->_getParam('sq_municipio'))
+                            ->set('nu_cep', '?', Base_Util::onlyNumbers($this->_getParam('nu_cep')))
+                            ->set('tx_endereco', '?', $this->_getParam('tx_endereco'))
+                            ->set('tx_email', '?', $this->_getParam('tx_email'))
+                            ->set('tx_senha', '?', Base_Util::md6_encode($this->_getParam('tx_senha')))
+                            ->where('sq_usuario = ?', $sq_usuario)
+                            ->andWhere('st_ativo = ?', true);
                     $query1->execute();
 
                     $query2 = Doctrine_Query::create()
-                                    ->update('TbTelefones')
-                                    ->set('nu_ddd', '?', $this->_getParam('dd_celular'))
-                                    ->set('nu_telefone', '?', Base_Util::onlyNumbers($this->_getParam('nu_celular')))
-                                    ->where('sq_usuario = ?', $this->_session->usuario->sq_usuario)
-                                    ->andWhere('tp_telefone = ?', 'Celular')
-                                    ->andWhere('st_ativo = ?', true);
+                            ->update('TbTelefones')
+                            ->set('nu_ddd', '?', $this->_getParam('dd_celular'))
+                            ->set('nu_telefone', '?', Base_Util::onlyNumbers($this->_getParam('nu_celular')))
+                            ->where('sq_usuario = ?', $this->_session->usuario->sq_usuario)
+                            ->andWhere('tp_telefone = ?', 'Celular')
+                            ->andWhere('st_ativo = ?', true);
                     $query2->execute();
 
                     $query3 = Doctrine_Query::create()
-                                    ->update('TbTelefones')
-                                    ->set('nu_ddd', '?', $this->_getParam('dd_residencial'))
-                                    ->set('nu_telefone', '?', Base_Util::onlyNumbers($this->_getParam('nu_residencial')))
-                                    ->where('sq_usuario = ?', $this->_session->usuario->sq_usuario)
-                                    ->andWhere('tp_telefone = ?', 'Residencial')
-                                    ->andWhere('st_ativo = ?', true);
+                            ->update('TbTelefones')
+                            ->set('nu_ddd', '?', $this->_getParam('dd_residencial'))
+                            ->set('nu_telefone', '?', Base_Util::onlyNumbers($this->_getParam('nu_residencial')))
+                            ->where('sq_usuario = ?', $this->_session->usuario->sq_usuario)
+                            ->andWhere('tp_telefone = ?', 'Residencial')
+                            ->andWhere('st_ativo = ?', true);
                     $query3->execute();
 
                     $conn->commit();

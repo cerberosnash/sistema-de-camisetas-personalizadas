@@ -32,14 +32,14 @@
 		<![CDATA[select
 usr.sq_usuario,
 usr.nm_usuario,
-count(*) as total_produtos,
+sum(pxp.nu_quantidade) as total_produtos,
 sum(pdt.vl_produto) as total_valor
 FROM tb_produto_pedido pxp
 inner join tb_pedidos pdd on pdd.sq_pedido = pxp.sq_pedido
 inner join tb_usuarios usr on usr.sq_usuario = pdd.sq_confeccionador
 inner join tb_produtos pdt on pdt.sq_produto = pxp.sq_produto
 inner join tb_historico_atividades hatv on hatv.sq_pedido = pxp.sq_pedido
-where hatv.sq_atividade = 4 and hatv.dt_atividade >= '$P{dt_inicio}' and hatv.dt_atividade <= '$P{dt_final}'
+where hatv.sq_atividade = 4 and hatv.dt_atividade between '$P{dt_inicio}' and '$P{dt_final}'
 group by
 usr.sq_usuario,
 usr.nm_usuario

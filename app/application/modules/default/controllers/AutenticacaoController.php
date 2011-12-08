@@ -1,14 +1,17 @@
 <?php
 
-class AutenticacaoController extends Base_Controller_Action {
+class AutenticacaoController extends Base_Controller_Action
+{
 
-    public function init() {
+    public function init ()
+    {
         parent::init();
         $this->_helper->layout->disableLayout();
         $this->_helper->viewRenderer->setNoRender();
     }
 
-    public function autenticarAction() {
+    public function autenticarAction ()
+    {
         if ($this->getRequest()->isPost()) {
             if ($this->_getParam('tx_email') && $this->_getParam('tx_senha')) {
                 try {
@@ -53,7 +56,8 @@ class AutenticacaoController extends Base_Controller_Action {
         $this->_prepareJson($out);
     }
 
-    public function recuperarAction() {
+    public function recuperarAction ()
+    {
         $this->_helper->layout->disableLayout();
         $this->_helper->viewRenderer->setNoRender();
         if ($this->getRequest()->isPost()) {
@@ -63,21 +67,17 @@ class AutenticacaoController extends Base_Controller_Action {
             if (count($usuario) > 0) {
                 if ($usuario[0]['st_ativo'] === true) {
                     $sendMail = $this->sendMailNotification(
-                                    array(
-                                        template => 'recuperar-senha',
-                                        email => $this->_getParam('tx_email'),
-                                        assunto => 'Recuperacao de Senha - Camisetas Personalizadas',
-                                        message => array(
-                                            nome => $usuario[0]['nm_usuario'],
-                                            senha => Base_Util::md6_decode($usuario[0]['tx_senha'])
-                                        )
-                                    )
+                            array(
+                                template => 'recuperar-senha',
+                                email => $this->_getParam('tx_email'),
+                                assunto => 'Recuperacao de Senha - Camisetas Personalizadas',
+                                message => array(
+                                    nome => $usuario[0]['nm_usuario'],
+                                    senha => Base_Util::md6_decode($usuario[0]['tx_senha'])
+                                )
+                            )
                     );
-//                    $mail = new Base_PHPMailer();
-//                    $mail->AddAddress($this->_getParam('tx_email'), $usuario[0]['nm_usuario']);
-//                    $mail->Subject = 'Recuperacao de Senha - Camisetas Personalizadas';
-//                    $mail->MsgHTML($this->templateRecuperarSenha($usuario[0]['nm_usuario'], $usuario[0]['tx_senha']));
-//!$mail->Send()
+
                     if (!$sendMail) {
                         $out = array(success => false, error => 'Ocorreu um erro ao tentar enviar o email com a senha!');
                     } else {
